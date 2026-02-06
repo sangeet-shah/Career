@@ -1,0 +1,27 @@
+﻿namespace Career.Data.Domains.Stores;
+
+/// <summary>
+/// Represents a store mapping record
+/// </summary>
+public class StoreMapping : BaseEntity
+{
+    /// <summary>
+    /// Gets or sets the entity identifier
+    /// </summary>
+    public int EntityId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the entity name
+    /// </summary>
+    public string EntityName { get; set; }
+
+    /// <summary>
+    /// Gets or sets the store identifier
+    /// </summary>
+    public int StoreId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the store
+    /// </summary>
+    public  Store Store { get; set; }
+}

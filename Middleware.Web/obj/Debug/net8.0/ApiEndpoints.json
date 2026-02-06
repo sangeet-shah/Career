@@ -1,0 +1,93 @@
+[
+  {
+    "ContainingType": "Program\u002B\u003C\u003Ec",
+    "Method": "\u003C\u003CMain\u003E$\u003Eb__0_5",
+    "RelativePath": "",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.String",
+        "MediaTypes": [
+          "text/plain"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.StorisController",
+    "Method": "GetChatMeterReviewFeed",
+    "RelativePath": "api/Storis/GetChatMeterReviewFeed",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.StorisController",
+    "Method": "GetLocationKeys",
+    "RelativePath": "api/Storis/GetLocationKeys/{productKey}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productKey",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.StorisController",
+    "Method": "GetPowerReviewInvoice",
+    "RelativePath": "api/Storis/GetPowerReviewInvoice",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.StorisController",
+    "Method": "GetProductDeliveryDate",
+    "RelativePath": "api/Storis/GetProductDeliveryDate/{sku}/{zipcode}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "sku",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "zipcode",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.StorisController",
+    "Method": "UpdateStorisProduct",
+    "RelativePath": "api/Storis/UpdateStorisProduct/{productKey}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "productKey",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]
