@@ -1,0 +1,229 @@
+﻿@model Career.Web.Models.CorporateManagement.CorporateManagementSettingsModel
+@using Career.Data.Domains.Media
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+
+@{
+    var httpContext = httpContextAccessor.HttpContext.Request;
+    var HostUrl = string.Format("{0}://{1}", httpContext.Scheme, httpContext.Host.Value);
+    var CurrentPageURL = string.Format("{0}://{1}{2}", httpContext.Scheme, httpContext.Host.Value, httpContext.Path);
+}
+
+@if (TempData["ClearCache"] != null)
+{
+    <div class="alert alert-success alert-dismissable">
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+        @TempData["ClearCache"]
+    </div>
+}
+<div class="home-slider-banner">
+    @if (!Model.IsMobile)
+    {
+        @if (!string.IsNullOrEmpty(Model.HomeWebBannerUrl))
+        {
+            <a href="@Model.HomeBannerLink" class="homebanner_@(Model.HomeWebBannerId)_@DisplaySections.FMUSA_HomePage_TopBanner">
+                <img class="home-slider-picture" src="@Model.HomeWebBannerUrl" alt="@Model.HomeBannerAltText" title="@Model.HomeBannerTitle">
+            </a>
+        }
+    }
+    else
+    {
+        @if (!string.IsNullOrEmpty(Model.HomeMobileBannerUrl))
+        {
+            <a href="@Model.HomeBannerLink" class="homebanner_@(Model.HomeWebBannerId)_@DisplaySections.FMUSA_HomePage_TopBanner">
+                <img class="home-slider-picture" src="@Model.HomeMobileBannerUrl" alt="@Model.HomeBannerAltText" title="@Model.HomeBannerTitle">
+            </a>
+        }
+    }
+
+    @if (!string.IsNullOrEmpty(Model.HomeWebBannerUrl) || !string.IsNullOrEmpty(Model.HomeMobileBannerUrl))
+    {
+        <script>
+            CallGtagEventPromotion("view_promotion", "@Html.Raw(Model.HomeBannerTitle)", "@DisplaySections.FMUSA_HomePage_TopBanner.ToString()", "@Model.HomeWebBannerId", "@DisplaySections.FMUSA_HomePage_TopBanner.ToString()")
+
+            $(".homebanner_@(Model.HomeWebBannerId)_@DisplaySections.FMUSA_HomePage_TopBanner").click(function (e) {
+                CallGtagEventPromotion("select_promotion", "@Html.Raw(Model.HomeBannerTitle)", "@DisplaySections.FMUSA_HomePage_TopBanner.ToString()", "@Model.HomeWebBannerId", "@DisplaySections.FMUSA_HomePage_TopBanner.ToString()")
+            });
+        </script>
+    }
+</div>
+<div class="our-story-main-body">
+    <div class="container home-about-section">
+        <div class="row">
+            <div class="col-12">
+                @if (!Model.IsMobile)
+                {
+                    @Html.Raw(Model.ContentDescription)
+                }
+                else
+                {
+                    @Html.Raw(Model.ContentMobileDescription)
+                }
+            </div>
+        </div>
+    </div>
+    <div class="container intro-section">
+        <div class="intro-area-section">
+            @if (!string.IsNullOrEmpty(Model.LeftWebBannerUrl) ||
+            !string.IsNullOrEmpty(Model.LeftMobileBannerUrl))
+            {
+                <div class="intro-area-widget come-work" role="button">
+                    @if (!Model.IsMobile)
+                    {
+                        @if (!string.IsNullOrEmpty(Model.LeftWebBannerUrl))
+                        {
+                            <div class="intro-area leftbanner_@(Model.LeftWebBannerId)_@DisplaySections.FMUSA_HomePage_Banner1" onclick="footer1ImageLink('@Model.LeftBannerLink');">
+                                <div class="intro-area-icon">
+                                    <i><img src="@Model.LeftWebBannerUrl" alt="@Model.LeftBannerAltText" title="@Model.LeftBannerTitle"></i>
+                                </div>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        @if (!string.IsNullOrEmpty(Model.LeftMobileBannerUrl))
+                        {
+                            <div class="intro-area leftbanner_@(Model.LeftWebBannerId)_@DisplaySections.FMUSA_HomePage_Banner1" onclick="footer1ImageLink('@Model.LeftBannerLink');">
+                                <div class="intro-area-icon">
+                                    <i><img src="@Model.LeftMobileBannerUrl" alt="@Model.LeftBannerAltText" title="@Model.LeftBannerTitle"></i>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+
+                <script>
+                    CallGtagEventPromotion("view_promotion", "@Html.Raw(Model.LeftBannerTitle)", "@DisplaySections.FMUSA_HomePage_Banner1.ToString()", "@Model.LeftWebBannerId", "@DisplaySections.FMUSA_HomePage_Banner1.ToString()")
+                    function footer1ImageLink(LeftBannerLink) {
+                        window.location.href = LeftBannerLink;
+                    }
+
+                    $(".leftbanner_@(Model.LeftWebBannerId)_@DisplaySections.FMUSA_HomePage_Banner1").click(function (e) {
+                        CallGtagEventPromotion("select_promotion", "@Html.Raw(Model.LeftBannerTitle)", "@DisplaySections.FMUSA_HomePage_Banner1.ToString()", "@Model.LeftWebBannerId", "@DisplaySections.FMUSA_HomePage_Banner1.ToString()")
+                    });
+                </script>
+            }
+
+            @if (!string.IsNullOrEmpty(Model.RightWebBannerUrl))
+            {
+                <div class="intro-area-widget hidden-xs intro-mr-0" role="button" aria-label="button">
+                    <div class="intro-area intro-investing rightbanner_@(Model.RightWebBannerId)_@DisplaySections.FMUSA_HomePage_Banner2" data-bs-toggle="modal" data-bs-target="#investing">
+                        <div class="intro-area-icon">
+                            <i><img src="@Model.RightWebBannerUrl" alt="@Model.RightBannerAltText" title="@Model.RightBannerTitle"></i>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    CallGtagEventPromotion("view_promotion", "@Html.Raw(Model.RightBannerTitle)", "@DisplaySections.FMUSA_HomePage_Banner2.ToString()", "@Model.RightWebBannerId", "@DisplaySections.FMUSA_HomePage_Banner2.ToString()")
+                    $(".rightbanner_@(Model.RightWebBannerId)_@DisplaySections.FMUSA_HomePage_Banner2").click(function (e) {
+                        CallGtagEventPromotion("select_promotion", "@Html.Raw(Model.RightBannerTitle)", "@DisplaySections.FMUSA_HomePage_Banner2.ToString()", "@Model.RightWebBannerId", "@DisplaySections.FMUSA_HomePage_Banner2.ToString()")
+                    });
+                </script>
+            }
+        </div>
+    </div>
+</div>
+
+@if (Model.BlogPostList.Any())
+{
+    <div class="home-news-section" role="main">
+        <div class="container home-news-section-title">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="home-news-heading" aria-label="heading">
+                        <h2>Furniture Mart USA in the News</h2>
+                        <a href="/news/">READ MORE</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container home-news-section-body">
+            <div class="row">
+                <div class="col-md-12">
+                    @foreach (var blogPost in Model.BlogPostList)
+                    {
+                        <a class="read-article" href="/@blogPost.SeName.Replace("inspiration/","news/")">
+                            <div class="news-item">
+                                <div class="news-text">
+                                    <h4>@Html.Raw(blogPost.Title)</h4>
+                                    @if (blogPost.StartDateUtc != null)
+                                    {
+                                        <span>@blogPost.StartDateUtc?.ToString("MMMM dd, yyyy")</span>
+                                    }
+                                    <p>@Html.Raw(blogPost.BodyOverview)</p>
+                                    <div class="news-mobile-arrow">
+                                        <img class="img-responsive" src="~/images/news-right-arrow.png" alt="news items">
+                                    </div>
+                                </div>
+                                <div class="news-picture">
+                                    @if (!string.IsNullOrEmpty(blogPost.FMUSAPictureURL))
+                                    {
+                                        <img class="img-responsive" src="@blogPost.FMUSAPictureURL" alt="news items">
+                                    }
+                                </div>
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<div class="modal fade investing-popup" id="investing" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal"><img src="~/images/close.png" alt="close"></button>
+            </div>
+            <div class="modal-body">
+                <h4 class="modal-title">Benefits & Perks</h4>
+                <div class="row">
+                    <div class="col-md-7">
+                        <ul>
+                            <li>Paid Time Off</li>
+                            <li>Sick Leave</li>
+                            <li>Employee Discount</li>
+                            <li>Employee Referral Bonus</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-5">
+                        <ul>
+                            <li>401K Plan</li>
+                            <li>Medical Coverage</li>
+                            <li>Dental Coverage</li>
+                            <li>Vision Coverage</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // set active menu side bar
+    SetActiveMenu("menu-home");
+</script>
+
+<script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "Organization",
+      "url": "@CurrentPageURL",
+      "sameAs": "https://www.linkedin.com/company/furnituremartusa/",
+      "logo": "@HostUrl.TrimEnd('/')/images/gtag_logo.jpg",
+      "name": "Furniture Mart USA",
+      "description": "It is the goal of Furniture Mart USA to provide the best quality furniture, mattresses, and accessories at the lowest possible cost. We strive to best serve the needs of our customers and to retain the small business spirit we have preserved since our founding. Creating livable, lovable homes is our passion. This is Furniture Mart USA",
+      "address": {
+        "@@type": "PostalAddress",
+        "streetAddress": "140 East Hinks Lane",
+        "addressLocality": "Sioux Falls",
+        "addressCountry": "US",
+        "addressRegion": "South Dakota",
+        "postalCode": "57104"
+      },
+      "iso6523Code": "0060:09‐832‐8180"
+    }
+</script>

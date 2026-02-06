@@ -1,0 +1,500 @@
+﻿@model LocationDetailModel
+
+@{
+    ViewBag.PageTitle = Model.StoreName;
+    ViewBag.Canonical = "locations/"+Model.LocationId+"/";
+}
+@using Career.Data.Domains.Common
+@using Career.Web.Models.StoreManagement
+@using Microsoft.AspNetCore.Http
+@using Career.Data
+@{
+
+    int count = 0;
+    string imageList = "";
+    foreach (string schemaPictureUrl in Model.SchemaPictureUrls)
+    {
+        if (count > 0)
+        {
+            imageList = imageList + "," + Environment.NewLine + "\"" + schemaPictureUrl + "\"";
+        }
+        else
+        {
+            imageList = "\"" + schemaPictureUrl + "\"";
+        }
+
+        count++;
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head itemscope itemtype="http://schema.org/WebSite">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/MaterialDesign-Webfont/1.8.36/css/materialdesignicons.min.css" rel="stylesheet" crossorigin="anonymous">
+    <link href="~/css/owl.carousel.css" type="text/css" rel="stylesheet">
+    <script src="~/js/owl.carousel.min.js"></script>
+    @await Html.PartialAsync("~/Views/Shared/_GoogleAnalytics.cshtml")
+</head>
+
+<body>
+    <div class="body-content">
+        <div class="container">
+            <div class="page store-detail-page">
+                <div class="store-detail-section">
+                    <div class="main-section">
+                        <div class="new-title isBorder">
+                            <h1>@Model.StoreName</h1>
+                        </div>
+                        <div class="page-body panel-body">
+                            <div class="common-margin-bottom border-bottom">
+                                <div class="row">
+                                    <div class="col-12 col-md-4 col-lg-3 store-info-details common-margin-bottom">
+                                        <div class="store-image-section">
+                                            <img class="img-responsive" src="@Model.StorePictureURL" alt="@Model.StoreName" title="@Model.StoreName">
+                                            <span>
+                                                @Model.StoreOpenCloseMessage
+                                            </span>
+                                        </div>
+                                        <div class="store-address-section mt-10">
+                                            <div class="title isBorder">
+                                                <h2>
+                                                    <!--Location Maroon Icon-->
+                                                    <svg width="18px" height="26px" viewBox="0 0 20 28" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                        <title></title>
+                                                        <desc></desc>
+                                                        <defs></defs>
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-size="32" font-family="Material-Design-Icons, Material Design Icons" font-weight="normal">
+                                                            <g transform="translate(-1820.000000, -28.000000)" fill="#831b1d">
+                                                                <g transform="translate(98.000000, 2.000000)">
+                                                                    <g>
+                                                                        <g transform="translate(1504.000000, 13.000000)">
+                                                                            <g transform="translate(172.000000, 5.000000)">
+                                                                                <text>
+                                                                                    <tspan x="40" y="34"></tspan>
+                                                                                </text>
+                                                                            </g>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+                                                    </svg>
+                                                    address
+                                                </h2>
+                                            </div>
+                                            <div class="store-address-detail">
+                                                <p class="minicarttext">
+                                                    @(Model.StoreAddress), @(Model.City), @(Model.State) @Model.Zipcode
+                                                </p>
+                                            </div>
+                                            <div class="get-direction-link">
+                                                <a target="_blank" href="https://www.google.com/maps?saddr=Your+Location&daddr=@Model.Latitude,@Model.Longitude" class="minicarttext ancgetdirection" data-storeid="@Model.StoreId" data-locationid="@Model.LocationId" onclick="DirectionClick();">
+                                                    Get Directions
+                                                </a>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="store-contact-section mt-10">
+                                            <div class="title">
+                                                <h2>
+                                                    <!--Phone Icon Maroon-->
+                                                    <svg width="13px" height="24px" viewBox="0 0 13 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                        <title></title>
+                                                        <desc></desc>
+                                                        <defs></defs>
+                                                        <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" letter-spacing="1.15200007" font-size="24" font-family="Material-Design-Icons, Material Design Icons" font-weight="normal">
+                                                            <g transform="translate(-810.000000, -313.000000)" fill="#831B1D">
+                                                                <g transform="translate(0.000000, 105.000000)">
+                                                                    <g transform="translate(520.000000, 191.000000)">
+                                                                        <g transform="translate(271.000000, 8.000000)">
+                                                                            <text>
+                                                                                <tspan x="14" y="30"></tspan>
+                                                                            </text>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </g>
+                                                    </svg>
+                                                    contact
+                                                </h2>
+                                            </div>
+                                            <div class="store-contact-detail">
+                                                <p class="minicarttext">
+                                                    <a class="minicarttext anch-mobile-number" data-mobile="@Model.PhoneNumber" href="tel:@Model.PhoneNumber" onclick="PhoneClick();">
+                                                        @Model.PhoneNumber
+                                                    </a>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        @if (!string.IsNullOrEmpty(Model.StoreHoursFromDb))
+                                        {
+                                            <div class="store-hours-section mt-10">
+                                                <div class="title">
+                                                    <h2>
+                                                        <!--Clock Icon Maroon-->
+                                                        <svg width="21px" height="20px" viewBox="0 0 21 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <title></title>
+                                                            <desc></desc>
+                                                            <defs></defs>
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" font-size="23" font-family="Material-Design-Icons, Material Design Icons" font-weight="normal">
+                                                                <g transform="translate(-228.000000, -872.000000)" fill="#831B1D">
+                                                                    <g transform="translate(200.000000, 423.000000)">
+                                                                        <g transform="translate(27.000000, 441.000000)">
+                                                                            <text>
+                                                                                <tspan x="0" y="27"></tspan>
+                                                                            </text>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        hours
+                                                    </h2>
+                                                </div>
+                                                <div class="store-hours-detail">
+                                                    @Html.Raw(Model.StoreHoursFromDb)
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.PickupHoursFromDb))
+                                        {
+                                            <div class="store-pickup-section store-hours-section mt-10">
+                                                <div class="title">
+                                                    <h2>
+                                                        <!--Free Store Picup Marron Icon-->
+                                                        <svg width="26px" height="26px" viewBox="0 0 59 36" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <title></title>
+                                                            <desc></desc>
+                                                            <defs></defs>
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                                <g transform="translate(-260.000000, -3634.000000)" fill="#831B1D">
+                                                                    <g transform="translate(80.000000, 3577.000000)">
+                                                                        <g>
+                                                                            <g transform="translate(180.000000, 57.000000)">
+                                                                                <g>
+                                                                                    <path d="M59,30.8878087 L59,25.1669394 L59,24.1931744 L59,23.2802697 L59,10.864766 C59,9.39924966 58.0854409,8.16378532 56.607485,8.01711197 C55.6308517,7.92034408 54.5383467,8.35549531 53.9637174,9.17771813 C53.7987776,9.41324754 53.6764028,9.68042431 53.6113727,9.97559682 C53.4417034,10.7509572 53.5741283,11.5774402 53.5528457,12.3631469 C53.5291984,13.2468386 53.5611222,14.134182 53.5611222,15.0184823 L53.5611222,19.3852097 L5.55711423,19.3852097 L5.55711423,15.6934232 L5.55711423,12.7313518 C5.55711423,11.5737886 5.76402806,9.79240728 5.07648297,8.92940805 C4.43564128,8.12544333 3.10193387,7.84244288 2.12707415,8.08284111 C0.891503006,8.38775127 0,9.55809508 0,10.864766 L0,23.2802697 L0,24.1931744 L0,25.1669394 L0,30.8878087 L0,34.6002878 C0,35.9379974 1.85867735,36.7535256 2.71943888,34.9885766 L2.71943888,30.8878087 L56.2805611,30.8878087 L56.2805611,34.6002878 C56.2805611,35.9379974 58.1392385,36.7535256 59,34.9885766 L59,30.8878087 Z"></path>
+                                                                                    <path d="M9.72037428,17 L25.4292235,17 C26.2969989,17 27,16.2331874 27,15.2878351 L27,1.7121649 C27,0.766207412 26.2969989,0 25.4292235,0 L14.9373253,0 C11.1079477,0 8,3.0854071 8,6.7754281 L8,15.3059917 C8,16.2138204 8.77671592,17 9.72037428,17"></path>
+                                                                                    <path d="M32.5593883,17 L48.2920986,17 C49.2289153,17 50,16.2138204 50,15.3059917 L50,6.7754281 C50,3.02488519 46.9145851,0 43.1124327,0 L32.5593883,0 C31.6979043,0 31,0.766207412 31,1.7121649 L31,15.2878351 C31,16.2331874 31.6979043,17 32.5593883,17"></path>
+                                                                                </g>
+                                                                            </g>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        free pickup
+                                                    </h2>
+                                                </div>
+                                                <div class="store-hours-detail">
+                                                    @Html.Raw(Model.PickupHoursFromDb)
+                                                </div>
+
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.PinterestUrlFromDb) || !string.IsNullOrEmpty(Model.GoogleUrlFromDb) || !string.IsNullOrEmpty(Model.FacebookUrlFromDb) || !string.IsNullOrEmpty(Model.TwitterUrlFromDb) || !string.IsNullOrEmpty(Model.LinkedInUrlFromDb))
+                                        {
+                                            <div class="social-section mt-10">
+                                                <div class="title">
+                                                    <h2>
+                                                        <!--Share Maroon Icon-->
+                                                        <svg width="18px" height="20px" viewBox="0 0 12 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                                                            <title></title>
+                                                            <desc></desc>
+                                                            <defs></defs>
+                                                            <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" letter-spacing="0.466666698" font-size="16" font-family="Material-Design-Icons, Material Design Icons" font-weight="normal">
+                                                                <g transform="translate(-199.000000, -603.000000)" fill="#831B1D">
+                                                                    <g transform="translate(-870.000000, -1532.000000)">
+                                                                        <g transform="translate(885.000000, 1564.000000)">
+                                                                            <g transform="translate(177.000000, 564.000000)">
+                                                                                <text>
+                                                                                    <tspan x="5" y="20"></tspan>
+                                                                                </text>
+                                                                            </g>
+                                                                        </g>
+                                                                    </g>
+                                                                </g>
+                                                            </g>
+                                                        </svg>
+                                                        social
+                                                    </h2>
+                                                </div>
+                                                <!-- AddThis Button BEGIN -->
+                                                <ul class="social-media">
+                                                    @if (!string.IsNullOrEmpty(Model.PinterestUrlFromDb))
+                                                    {
+                                                        <li class="youtube">
+                                                            <a class="ancPintrest" href="@Model.PinterestUrlFromDb" target="_blank">
+                                                                @if (!string.IsNullOrEmpty(Model.LocationPinterestIconUrl))
+                                                                {
+                                                                    <img src="@Model.LocationPinterestIconUrl" alt="Pinterest-image" title="Pinterest-image" />
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(Model.FacebookUrlFromDb))
+                                                    {
+                                                        <li class="facebook">
+                                                            <a class="ancFaceBook" href="@Model.FacebookUrlFromDb" target="_blank">                                                                
+                                                                @if (!string.IsNullOrEmpty(Model.LocationFaceBookIconUrl))
+                                                                {
+                                                                    <img src="@Model.LocationFaceBookIconUrl" alt="Facebook-image" title="Facebook-image" />
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(Model.GoogleUrlFromDb))
+                                                    {
+                                                        <li class="google-plus">
+                                                            <a class="ancGooglePlus" href="@Model.GoogleUrlFromDb" target="_blank">
+                                                                @if (!string.IsNullOrEmpty(Model.LocationGoogleIconUrl))
+                                                                {
+                                                                    <img src="@Model.LocationGoogleIconUrl" alt="Google-image" title="Google-image" />
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(Model.TwitterUrlFromDb))
+                                                    {
+                                                        <li class="twitter">
+                                                            <a class="ancTwitter" href="@Model.TwitterUrlFromDb" target="_blank">
+                                                                @if (!string.IsNullOrEmpty(Model.LocationTwitterIconUrl))
+                                                                {
+                                                                    <img src="@Model.LocationTwitterIconUrl" alt="Twitter-image" title="Twitter-image" />
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(Model.LinkedInUrlFromDb))
+                                                    {
+                                                        <li class="LinkedIn">
+                                                            <a class="ancLinkedIn" href="@Model.LinkedInUrlFromDb" target="_blank">                                                                
+                                                                @if (!string.IsNullOrEmpty(Model.LocationLinkedInIconUrl))
+                                                                {
+                                                                    <img src="@Model.LocationLinkedInIconUrl" alt="LinkedIn-image" title="LinkedIn-image" />
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(Model.InstagramUrlFromDb))
+                                                    {
+                                                        <li class="LinkedIn">
+                                                            <a class="ancLinkedIn" href="@Model.InstagramUrlFromDb" target="_blank">
+                                                                @if (!string.IsNullOrEmpty(Model.LocationInstagramIconUrl))
+                                                                {
+                                                                    <img src="@Model.LocationInstagramIconUrl" alt="Instagram-image" title="Instagram-image" />
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                    @if (!string.IsNullOrEmpty(Model.YouTubeUrlFromDb))
+                                                    {
+                                                        <li class="LinkedIn">
+                                                            <a class="ancLinkedIn" href="@Model.YouTubeUrlFromDb" target="_blank">
+                                                                @if (!string.IsNullOrEmpty(Model.LocationYouTubeIconUrl))
+                                                                {
+                                                                    <img src="@Model.LocationYouTubeIconUrl" alt="Youtube-image" title="Youtube-image" />
+                                                                }
+                                                            </a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                                <div class="clearfix"></div>
+                                                <!-- AddThis Button END -->
+                                            </div>
+                                        }                                        
+                                    </div>
+                                    <div class="col-12 col-md-8 col-lg-9">
+                                        @if (Model.PhysicalStoreBannerModel != null && !string.IsNullOrEmpty(Model.PhysicalStoreBannerModel.ImageUrl))
+                                        {
+                                            <div class="virtual-tour-section">
+                                                <a href="@Model.PhysicalStoreBannerModel.Url">  <img class="img-responsive" src="@Model.PhysicalStoreBannerModel.ImageUrl" alt="@Model.PhysicalStoreBannerModel.Alt" title="@Model.PhysicalStoreBannerModel.Title"></a>
+                                            </div>
+                                        }
+                                        <div class="why-buy-section">
+                                            <h2>Why You'll Want to Buy From Us</h2>
+                                            <div class="row hide-mobile">
+                                                <div class="col-sm-6">
+                                                    <div class="box">
+                                                        <div class="desc">
+                                                            <div class="svg-icon">
+                                                                <i></i>
+                                                            </div>
+                                                            <h4>New Selection</h4>
+                                                            <p>
+                                                                Hundreds of the latest styles from over 40 locations arrive weekly, and all at clearance prices!
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="box">
+                                                        <div class="desc">
+                                                            <div class="svg-icon brand-svg">
+                                                                <i></i>
+                                                            </div>
+                                                            <h4>Brand Name Furniture</h4>
+                                                            <p>
+                                                                Get unheard of value from top brands like Ashley Furniture, Sealy, Restonic and more.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="box">
+                                                        <div class="desc">
+                                                            <div class="svg-icon credit-svg">
+                                                                <i></i>
+                                                            </div>
+                                                            <h4>No Credit Check Financing</h4>
+                                                            <p>
+                                                                Take home furniture and mattresses with flexible and affordable payment options.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="box">
+                                                        <div class="desc">
+                                                            <div class="svg-icon pricing-svg">
+                                                                <i></i>
+                                                            </div>
+                                                            <h4>Incredible Pricing Every Day</h4>
+                                                            <p>
+                                                                Products are sold at, near, or below cost, giving you the best savings on every item.
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="why-buy-slider">
+                                                <ul class="owl-carousel" id="why-buy-slider">
+                                                    <li>
+                                                        <div class="box">
+                                                            <div class="desc">
+                                                                <div class="svg-icon">
+                                                                    <i></i>
+                                                                </div>
+                                                                <h4>New Section</h4>
+                                                                <p>
+                                                                    Hundreds of the latest styles from over 40 locations arrive weekly, and all at clearance prices!
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="box">
+                                                            <div class="desc">
+                                                                <div class="svg-icon brand-svg">
+                                                                    <i></i>
+                                                                </div>
+                                                                <h4>Brand Name Furniture</h4>
+                                                                <p>
+                                                                    Get unheard of value from top brands like Ashley Furniture, Sealy, Restonic and more.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="box">
+                                                            <div class="desc">
+                                                                <div class="svg-icon credit-svg">
+                                                                    <i></i>
+                                                                </div>
+                                                                <h4>No Credit Check Financing</h4>
+                                                                <p>
+                                                                    Take home furniture and mattresses with flexible and affordable payment options.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="box">
+                                                            <div class="desc">
+                                                                <div class="svg-icon pricing-svg">
+                                                                    <i></i>
+                                                                </div>
+                                                                <h4>Incredible Pricing Every Day</h4>
+                                                                <p>
+                                                                    Products are sold at, near, or below cost, giving you the best savings on every item.
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                                <script>
+                                                    $(document).ready(function () {
+                                                        $('.owl-carousel').owlCarousel({
+                                                            items: 1,
+                                                            margin: 0,
+                                                            dots: true,
+                                                            loop: true,
+                                                            dotsEach: true,
+                                                            nav: false,
+                                                        });
+                                                    });
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="store-about">
+                                            @if (!string.IsNullOrEmpty(Model.StoreName))
+                                            {
+                                                <h2>About @Model.StoreName.Split('-').LastOrDefault() in @(Model.StoreName.Split('-').FirstOrDefault().Trim())<span>,</span> @Model.State</h2>
+                                            }
+                                            @if (!string.IsNullOrEmpty(Model.Description))
+                                            {
+                                                <p>@Html.Raw(Model.Description)</p>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*Google schema*@
+        <script type="application/ld+json">
+            {
+            "@@context": "https://schema.org",
+            "@@type": "Store",
+            @if (Model.SchemaPictureUrls.Any())
+            {
+            @:"image": [
+                 @Html.Raw(imageList)
+                 @Html.Raw(Environment.NewLine)
+            @:],
+            }
+            "priceRange": "$$$",
+            "@@id": "https://www.thefurnituremart.com/",
+            "name": "@Model.StoreName",
+            "address": {
+            "@@type": "PostalAddress",
+            "streetAddress": "@Model.StoreAddresFromDb",
+            "addressLocality": "United States",
+            "addressRegion": "US",
+            "postalCode": "@Model.Zipcode",
+            "addressCountry": "US"
+            },
+            "geo":{
+            "@@type": "GeoCoordinates",
+            "latitude": @Model.Latitude,
+            "longitude": @Model.Longitude
+            },
+            "aggregateRating": {
+            "ratingValue": "@Model.Rating",
+            "reviewCount": "@(Model.PhysicalStoreReviews != null ? Model.PhysicalStoreReviews.Count : 0)"
+            },
+            "url":"https://www.thefurnituremart.com/",
+            "telephone": "@Model.PhoneNumber",
+            "currenciesAccepted" :"USD"
+            }
+        </script>
+    </div>
+</body>
+</html>

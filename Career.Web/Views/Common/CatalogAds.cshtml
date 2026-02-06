@@ -1,0 +1,42 @@
+﻿@model Career.Web.Models.Common.CatalogAdModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "Catalog";
+    ViewBag.Canonical = "catalog/";
+}
+
+<div class="catalog">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-12">
+                    <div class="title">
+                        <h1>
+                            CATALOG
+                        </h1>
+                    </div>
+                    <hr />
+                </div>
+
+                <div class="col-md-12">
+                    @if (!string.IsNullOrEmpty(Model.EcommPlugin))
+                    {
+                        <script type="text/javascript" src="@Model.EcommPlugin"></script>
+                    }
+
+                    @foreach (var url in Model.URLs)
+                    {
+                        <div id="catalog-@url.Value"></div>
+
+                        @if (!string.IsNullOrEmpty(url.Text))
+                        {
+                            <script data-cfasync="false" data-height="undefined" data-publication="@url.Text" data-publication-aspect-ratio="2" data-responsive="true" data-width="undefined" data-wrapper-id="catalog-@url.Value" publitas-embed src="https://view.publitas.com/embed.js">
+                            </script>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

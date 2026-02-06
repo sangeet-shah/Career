@@ -1,0 +1,89 @@
+﻿@model Career.Web.Models.ScheduleOrder.ScheduleOrderDetailsModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "Fulfillment";
+}
+
+<div class="container schedule-order-fulfillment">
+    <div class="row row-bg">
+        <div class="col-12 padding-mobile">
+            <h4 class="text-left text-md-center">Let's Get You on the Books!</h4>
+            <h5 class="text-left text-md-center">Choose your desired date from the options below</h5>
+        </div>
+        <div class="col-12 text-center schedule-detail padding-schedule-detail">
+            <div class="form-group ishiddenimg mb-img">
+                <img src="/images/calnder.png" class="icon-width-1">
+            </div>
+            <div class="form-group">
+                <div class="row width-option-section">
+                    <div class="col-12 col-sm-7 pl-0 d-flex align-items-start flex-column justify-content-start mob-mb-date-option">
+                        <div class="d-flex align-items-center">
+                            <input type="radio" name="option"><span>option 1</span>
+                        </div>
+                        <p class="date-option">
+                            Monday,July 19,2021
+                        </p>
+                    </div>
+                    <div class="col-12 col-sm-5 pl-0 d-flex align-items-start flex-column justify-content-start">
+                        <div class="d-flex align-items-center">
+                            <input type="radio" name="option"><span>option 1</span>
+                        </div>
+                        <p class="date-option">
+                            Monday,July 19,2021
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-left fulfillment-desc">
+                Delivery dates are not guaranteed, confirmation of final delivery date will be <br /> communicated by email or text
+            </div>
+            <div class="form-group">
+                <input type="button" name="confirm" class="btn schedulebtn confirm-fullfillment" value="CONFIRM">
+            </div>
+        </div>
+    </div>
+    <div class="row schedule-order-fulfillment-row">
+        <div class="col-12 col-sm-6 pl-md-0 pl-0 pr-0 pr-md-1 pad-right-zero mob-btm">
+            <div class="schedule-detail padding-fulfillment">
+                <div class="form-group text-center ishiddenimg fulfillment-img">
+                    <img class="lazyload icon-width-2" src="/images/Icon_Store.svg" loading="lazy" height="0" width="0">
+                </div>
+                <div class="form-group  fulfillment-title-mb-1">
+                    <h3>Want Your New Additions Faster?</h3>
+                </div>
+                <div class="form-group fulfillment-title-mb fulfillment-pickup-title2">
+                    Try pickup!
+                </div>
+                <div class="form-group fulfillment-dropOff">
+                    Your order is available for pickup at:
+                </div>
+                <span class="mb-address">
+                    Distribution Center 5353<br /> E. River Road Fridley,<br /> MN 55421
+                </span>
+                <div class="form-group text-center">
+                    <input type="button" name="confirm" class="btn  schedulebtn orderfulfillbtn" value="SWITCH TO PICKUP">
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-sm-6 pr-md-0 pr-0 pl-0 pl-md-1 pad-right-zero">
+            <div class="schedule-detail padding-fulfillment padding-fulfillment-dropoff">
+                <div class="form-group text-centerishidden ishiddenimg fulfillment-img text-center">
+                    <img class="lazyload icon-width" src="/images/Icon_Dropoff.svg" loading="lazy" height="0" width="0">
+                </div>
+                <div class="form-group fulfillment-title-mb-1">
+                    <h3>Not ready to bring <br /> your purchase home</h3>
+                </div>
+                <div class="form-group  fulfillment-title-mb fulfillment-pickup-title2">
+                    That's okay! Let us know when you will be.
+                </div>
+                <div class="form-group fulfillment-dropOff mob-mar-fulfillment-dropOff">
+                    By choosing this option it moves you to the back of the line and gives the product to the nextperson anxiously waiting; so we cannot guarantee your product will be ready when you are.
+                </div>
+                <div class="form-group text-center">
+                    <input type="button" name="confirm" class="btn schedulebtn dropOffbtn orderfulfillbtn" value="DELAY DELIVERY">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

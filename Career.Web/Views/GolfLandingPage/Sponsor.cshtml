@@ -1,0 +1,93 @@
+﻿@using Career.Data
+@inject AppSettings _appSettings
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sponsorship levels - Furniture Mart USA</title>
+    <link rel="canonical" href="https://furnituremartusa.com/golf/sponsors/">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    @await Html.PartialAsync("~/Views/Shared/_GoogleAnalytics.cshtml")
+</head>
+<body>
+
+    <div class="golf-page">
+        <div class="golf-head">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul>
+                            <li><a href="/golf/">event details</a></li>
+                            <li><a href="/golf/sponsors/" class="active-page">sponsorship levels</a></li>
+                            <li><a href="/golf/register/">registration form</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="golf-banner golf-sponsors">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="golf-banner-text">
+                            <h2>sponsorship levels</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="golf-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="golf-body-title">
+                            <h3>sponsorship</h3>
+                            <p>We welcome you to participate as an event sponsor. Your participation will provide much needed support to impactful organizations in our local communities.</p>
+                        </div>
+                        <div class="golf-body-level">
+                            <div class="golf-body-level-item executive-sponsor">
+                                <h4>EXECUTIVE SPONSOR | $10,000</h4>
+                                <p>Logo recognition on: event program, golf balls, onsite banner, acknowledgement during program, and post event acknowledgement in local media. Also includes TWO 4-player teams.</p>
+                            </div>
+                            <div class="golf-body-level-item diamond-sponsor">
+                                <h4>DIAMOND SPONSOR | $7,500</h4>
+                                <p>Logo recognition on: event program, on-site banner, acknowledgment during program, and post-event acknowledgment in local media. Also includes one 4-player team.</p>
+                            </div>
+                            <div class="golf-body-level-item titanium-sponsor">
+                                <h4>TITANIUM SPONSOR | $5,000</h4>
+                                <p>Logo recognition on: event program, on-site banner, acknowledgment during program, and post-event acknowledgement in local media. Also includes one 4-player team.</p>
+                            </div>
+                            <div class="golf-body-level-item dinner-sponsor">
+                                <h4>Meal Sponsor | $3,000</h4>
+                                <p>Logo recognition on: event program, on-site banner and acknowledgment during program. Also includes one 4-player team.</p>
+                            </div>
+                           @*  <div class="golf-body-level-item lunch-sponsor">
+                                <h4>LUNCH SPONSOR | $3,000</h4>
+                                <p>Logo recognition on: event program, on-site banner and acknowledgment during program. Also includes one 4-player team.</p>
+                            </div>  *@                           
+                            <div class="golf-body-level-item flag-sponsor">
+                                <h4>Hole Sponsor | $2000</h4>
+                                <p>Logo recognition on: event program, sign at one hole or practice range/green and acknowledgment during program. Also includes one 4-player team.</p>
+                            </div>
+                            <div class="golf-body-level-item individual-player">
+                                <h4>individual player | $400</h4>
+                            </div>
+                            <div class="form-group text-center">
+                                <a href="/golf/register/" class="golf-btn">register</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

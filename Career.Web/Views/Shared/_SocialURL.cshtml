@@ -1,0 +1,13 @@
+﻿@model SocialUrl
+
+<div class="input-group phone-input OtherSocialURLGroup">
+    <div class="form-group">
+        <label for="portfolio" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Other URL:</label>
+        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+            <input type="url" id="other_url_@(Model.Count)" name="other_url_@(Model.Count)" class="form-control" placeholder="Other URL" />            
+        </div>
+    </div>
+    <span class="input-group-btn btn-remove">
+        <button class="btn btn-danger btn-remove-phone" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+    </span>
+</div>

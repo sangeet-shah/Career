@@ -1,0 +1,169 @@
+﻿@using Career.Web.Models.LandingPage;
+@model LandingPageModel
+
+@{
+    //title
+    ViewBag.PageTitle = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : "Contest Pages";
+    ViewBag.MetaDescription = !string.IsNullOrEmpty(Model.MetaDescription) ? Model.MetaDescription : ViewBag.PageTitle;
+}
+
+
+<style>
+    .contest-page {
+        padding-top: 30px;
+        margin-top: 30px;
+    }
+
+        .contest-page .page-title h1 {
+            font-size: 42px;
+            color: #000;
+            border-bottom: 1px solid #d5d5d5;
+            margin: 0px 0px 30px 0px;
+            padding: 0px 0px 15px 0px;
+        }
+
+    .cover-picture {
+        margin-bottom: 30px;
+    }
+
+    .fan-caves-box-warpper .title {
+        margin-bottom: 30px;
+    }
+
+        .fan-caves-box-warpper .title h2 {
+            color: #323232;
+            font-size: 30px;
+            margin: 0px;
+        }
+
+    .fan-caves-box-content h3 {
+        color: #323232;
+    }
+
+    .fan-caves-box-content {
+        margin-bottom: 30px;
+    }
+
+        .fan-caves-box-content img {
+            width: 100%;
+            max-height: 253px;
+        }
+
+    .register-chance-win-box .form-control {
+        box-shadow: none;
+        border: 1px solid #a3a3a3;
+        height: 45px;
+    }
+
+    .register-chance-win-box {
+        margin-top: 30px;
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #d5d5d5;
+    }
+
+        .register-chance-win-box .submit-btn {
+            text-align: left;
+            display: inline-block;
+            margin: 20px 0px;
+        }
+
+            .register-chance-win-box .submit-btn .contestpage-submit-button {
+                min-width: 270px;
+                padding: 10px 0px;
+                font-size: 16px;
+            }
+
+    .header-box {
+        display: none;
+    }
+
+    #ui-datepicker-div select.ui-datepicker-month, #ui-datepicker-div select.ui-datepicker-year {
+        width: 48% !important;
+        padding: 2px 34px 2px 4px !important;
+        height: 34px !important;
+        margin: 0px 1% !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev, #ui-datepicker-div .ui-datepicker-next {
+        top: 7px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev-hover,
+    #ui-datepicker-div .ui-datepicker-next-hover {
+        top: 7px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev {
+        left: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-next {
+        right: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev-hover {
+        left: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-next-hover {
+        right: 5px !important;
+    }
+
+    #ui-datepicker-div select.ui-datepicker-month, #ui-datepicker-div select.ui-datepicker-year {
+        background-color: #fff !important;
+    }
+
+    input.datepicker-icon {
+        background-image: url(../../images/calendar-icon.svg);
+        background-repeat: no-repeat;
+        background-size: 26px 25px;
+        background-position: 98% center;
+    }
+</style>
+
+<div class="container">
+    <div class="page contest-page from-panel">
+        <div class="main-section">
+            @if (Model.DisplayTitle)
+            {
+                <div class="page-title isBorder">
+                    <h1>@Model.Title</h1>
+                </div>
+            }            
+            <div class="page-body panel-body">                
+                <div class="fan-caves-box-warpper">                    
+                    <div class="common-margin-bottom">
+                        <div class="register-chance-win-box" id="contest-page-form">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div id="success" class="contest-page-success">
+                                        Thank you! Your entry has been submitted.
+                                    </div>
+                                    <div class="new-entry-widget">
+                                        <a class="btn btn-primary new-entry-btn" href="/@(Model.SeName)/">SUBMIT NEW ENTRY</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @if (!string.IsNullOrEmpty(Model.DisclaimerText))
+                {
+                    <div class="disclaimers-text">
+                        @Html.Raw(Model.DisclaimerText)
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(window).scrollTop($('#contest-page-form').position().top);
+    
+    // if user resubmit form or refresh page then we have to refresh page to show new form
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

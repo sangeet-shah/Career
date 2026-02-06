@@ -1,0 +1,90 @@
+﻿@model Career.Web.Models.ScheduleOrder.ScheduleOrderDetailsModel
+@{
+    var className1 = string.Empty;
+    var className2 = string.Empty;
+    var className3 = string.Empty;
+    var className4 = string.Empty;
+    if (Model.Items.Any())
+    {
+        className1 = "col-sm-4 col-0";
+        className2 = "col-sm-4 col-6";
+        className3 = "col-sm-4 col-6";
+        className4 = "col-sm-12 col-12";
+    }
+    else
+    {
+        className1 = "col-sm-0 col-0";
+        className2 = "col-sm-8 col-6";
+        className3 = "col-sm-4 col-6";
+        className4 = "col-sm-12 col-12";
+    }
+}
+<div class="form-group row">
+ <div class="@className1">
+
+    </div>
+ <div class="@className2 text-right">
+    <label for="MerchandiseTotal">Merchandise Total:</label>
+ </div>
+    <div class="@className3 text-right">
+       <span>@Model.MerchandiseTotal</span>
+    </div>
+</div>
+<div class="form-group row">
+<div class="@className1">
+
+    </div>
+<div class="@className2 text-right">
+    <label for="MerchandiseTotal">Delivery Charge:</label>
+</div>
+    <div class="@className3 text-right">
+       <span>@Model.DeliveryCharge</span>
+    </div>
+</div>
+<div class="form-group row">
+ <div class="@className1">
+
+    </div>
+ <div class="@className2 text-right">
+    <label for="MerchandiseTotal">Tax:</label>
+ </div>
+    <div class="@className3 text-right">
+       <span> @Model.Tax</span>
+    </div>
+</div>
+<div class="form-group row">
+<div class="@className1">
+
+    </div>
+<div class="@className2 text-right">
+    <label for="TotalSalesOrder">Total Sales Order:</label>
+ </div>
+    <div class="@className3 text-right">
+       <span> @Model.TotalSalesOrder</span>
+    </div>
+</div>
+<div class="form-group row amount-paid">
+<div class="@className1">
+
+    </div>
+ <div class="@className2 text-right">
+    <label for="TotalSalesOrder">Amount Paid:</label>
+</div>
+    <div class="@className3 text-right">
+       <span> -@Model.AmountPaid</span>
+    </div>
+</div>
+<div class="form-group row">
+ <div class="@className4 text-right pad-left-zero pad-right-zero">
+    <label for="Discover">DISCOVER</label>
+    <label> @Model.OrderDate.ToString("d")</label>
+    </div>
+</div>
+<div class="form-group row amountDue">
+
+<div class="@className4 text-right pad-left-zero pad-right-zero">
+    <label for="AmountDue" class="amountduelabel">Amount Due:</label><label class="amountduevalue"> @Model.AmountDue</label>
+   
+        
+    </div>
+</div>

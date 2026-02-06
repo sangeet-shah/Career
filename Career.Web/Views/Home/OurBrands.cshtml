@@ -1,0 +1,67 @@
+﻿@model Career.Web.Models.CorporateManagement.CorporateManagementSettingsModel
+@{
+    //page title
+    ViewBag.PageTitle = "Our brands";
+    ViewBag.Canonical = "brands/";
+}
+
+<div class="our-brands-widget">
+    <div class="container">
+        <h2 class="brands-title">Our Brands</h2>
+        <div class="brands-grid">
+            @foreach (var careerBrandModel in Model.CareerBrandListModel)
+            {
+                <div class="brands-grid-box">
+                    <div class="our-brands-item">
+                        <div class="our-brands-logo">
+                            <a href="@careerBrandModel.Url" target="_blank">
+                                <img src="@careerBrandModel.PictureUrl" alt="@careerBrandModel.AltAttribute" title="@careerBrandModel.TitleAttribute">
+                            </a>
+                        </div>
+                        <div class="our-brands-text">
+                            @Html.Raw(careerBrandModel.Description)
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+
+    <div class="our-manufactures-widget">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2 class="manufactures-title">OUR MANUFACTURERS</h2>
+                </div>
+                @foreach (var corporateVendor in Model.CorporateVendors)
+                {
+                    <div class="col-md-3 col-sm-4">
+                        <div class="our-manufactures-item">
+                            <div class="our-manufactures-logo">
+                                <img src="@corporateVendor.CorporatePictureUrl" alt="@corporateVendor.CorporatePictureAltText" title="@corporateVendor.CorporatePictureTitle">
+                            </div>
+                            <div class="our-manufactures-text">
+                                <p>@corporateVendor.CorporateShortDescription</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.our-manufactures-logo, .our-brands-logo').on("click", function () {
+            $(this).siblings(".our-manufactures-text, .our-brands-text").addClass("active");
+        })
+        $('.our-manufactures-text, .our-brands-text').on("click", function () {
+            $(this).removeClass("active");
+        })
+    });
+
+    // set active menu side bar
+    SetActiveMenu("menu-brand");
+</script>

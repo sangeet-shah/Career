@@ -1,0 +1,19 @@
+﻿@{
+    //page title
+    ViewBag.PageTitle = "Access denied";
+}
+
+<div class="content-wrapper">
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissable">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            @TempData["Error"]
+        </div>
+    }
+    <div class="content-header">
+        <div class="container-fluid">
+            <h1>Access denied.</h1>
+        </div>
+    </div>
+</div>

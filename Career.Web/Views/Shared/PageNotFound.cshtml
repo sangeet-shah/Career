@@ -1,0 +1,39 @@
+﻿
+@{
+    //page title
+    ViewBag.PageTitle = "Page not found";
+}
+
+@using Career.Data.Domains.Common
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var httpContext = httpContextAccessor.HttpContext.Request;
+    var CurrentPageURL = string.Format("{0}://{1}{2}{3}", httpContext.Scheme, httpContext.Host.Value, httpContext.Path, httpContext.QueryString);
+}
+
+<div class="page-not-found-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1 class="m-0 text-dark">@ViewBag.PageTitle</h1>
+                <div class="card">
+                    <div class="card-body">
+                        <p><strong>The page you requested was not found, and we have a fine guess why.</strong></p>
+                        <ul>
+                            <li>If you typed the URL directly, please make sure the spelling is correct.</li>
+                            <li>The page no longer exists. In this case, we profusely apologize for the inconvenience and for any damage this may cause.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // set active menu side bar
+    SetActiveMenu("my-dashboard");
+</script>
+
+

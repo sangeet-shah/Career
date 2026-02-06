@@ -1,0 +1,126 @@
+﻿@using Career.Data
+@using Career.Data.Services
+@using Career.Data.Services.Settings
+@using Career.Data.Services.Stores
+@using Microsoft.Extensions.Configuration
+@using Career.Data.Domains
+@using Career.Data.Domains.Seo
+
+@inject ISettingService _settingService
+@inject IStoreService storeService
+
+@{
+    var seoSettings = await _settingService.LoadSettingAsync<SeoSettings>(3);
+    var store = await storeService.GetCurrentStoreAsync();
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="theme-color" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" media="(prefers-color-scheme: dark)">
+    <meta charset="utf-8">
+
+    <!-- anti-flicker snippet (recommended)  -->
+    @RenderSection("metatags", false)
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        @{
+            if (string.IsNullOrEmpty(ViewBag.PageTitle))
+            {
+                @store.DefaultTitle
+            }
+            else
+            {
+                @Html.Raw(ViewBag.PageTitle + " ") @(seoSettings.PageTitleSeparator.Trim() + " ")  @store.DefaultTitle
+            }
+        }
+    </title>
+
+    <link rel="canonical" href="https://furnituremartusa.com/@(ViewBag.Canonical)">
+
+    @await Component.InvokeAsync("FaviconIcon")
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    @if (!string.IsNullOrEmpty(ViewBag.MetaDescription))
+    {
+        <meta name="description" content="@ViewBag.MetaDescription" />
+    }
+    else
+    {
+        <meta name="description" content="@store.HomepageDescription" />
+    }
+
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/owl.carousel.css">
+    <script src="~/js/jquery-3.7.1.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/js/moment.min.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script src="~/js/customscript.js"></script>
+
+    @await Html.PartialAsync("~/Views/Shared/_GoogleAnalytics.cshtml")
+
+    @Html.Raw(ViewData["HeadCustom"])
+</head>
+<body class="">
+    <!-- Tracking Codes: Ad-Taxi -->
+    @await Html.PartialAsync("~/Views/Shared/_AdTaxi.cshtml")
+
+
+    <div class="loader" id="loader" style="display:none;">
+        <img class="loader-icon" src="~/images/spinner.gif" alt="loader">
+    </div>
+
+    @await Html.PartialAsync("~/Views/Shared/_Header.cshtml")
+
+    @RenderBody()
+
+    <!-- Control Sidebar -->
+    <aside class="control-sidebar control-sidebar-dark">
+    </aside>
+    <!-- /.control-sidebar -->
+    @await Html.PartialAsync("~/Views/Shared/_Footer.cshtml")
+
+    @* accessiBe - Code Installation https://accessibe.com/blog/knowledgebase/accessibe-website-onboarding *@
+    <script>
+        (function(){
+        var s = document.createElement('script');
+        var h = document.querySelector('head') || document.body;
+        s.src = 'https://acsbapp.com/apps/app/dist/js/app.js';
+        s.async = true;
+        s.onload = function(){
+            acsbJS.init({
+                statementLink : '',
+                footerHtml : '',
+                hideMobile : false,
+                hideTrigger : false,
+                disableBgProcess : false,
+                language : 'en',
+                position : 'left',
+                leadColor : '#ad1f23',
+                triggerColor : '#ad1f23',
+                triggerRadius : '50%',
+                triggerPositionX : 'right',
+                triggerPositionY : 'bottom',
+                triggerIcon : 'people',
+                triggerSize : 'medium',
+                triggerOffsetX : 20,
+                triggerOffsetY : 65,
+                    mobile : {
+                        triggerSize : 'small',
+                        triggerPositionX : 'right',
+                        triggerPositionY : 'bottom',
+                        triggerOffsetX : 10,
+                        triggerOffsetY : 150,
+                        triggerRadius : '50%'
+                    }
+                });
+            };
+            h.appendChild(s);
+        })();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,362 @@
+﻿@using Career.Data.Domains.Common
+@using Career.Data.Domains.Locations
+@using Career.Data.Domains.PhysicalStores
+
+@model Career.Web.Models.Career.CareerSearchModel
+@{
+    //page title
+    ViewBag.PageTitle = "Careers";    
+    ViewBag.Canonical = "careers/";
+}
+
+@*Multiselect*@
+<link href="~/lib/bootstrap/css/bootstrap-multiselect.css" rel="stylesheet">
+<script src="~/lib/bootstrap/js/bootstrap-multiselect.js"></script>
+
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<script rel="stylesheet" src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+
+<link href="~/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+
+<div class="careers-widget">
+    <div class="careers-widget-gallery">
+        <div class="container">
+            <div class="careers-gallery">
+                <div class="careers-gallery-item">
+                    <img src="@Model.TopImage1Url" alt="@Model.TopImage1AltText" title="@Model.TopImage1Title">
+                </div>
+                <div class="careers-gallery-item">
+                    <img src="@Model.TopImage2Url" alt="@Model.TopImage2AltText" title="@Model.TopImage2Title">
+                </div>
+                <div class="careers-gallery-item m-mr-0">
+                    <img src="@Model.TopImage3Url" alt="@Model.TopImage3AltText" title="@Model.TopImage3Title">
+                </div>
+                <div class="careers-gallery-item last-item">
+                    <div class="careers-gallery-text">
+                        @Html.Raw(Model.TopDescription)
+                    </div>
+                </div>
+            </div>
+            <div class="careers-coming-soon-widget">
+                @if (!Model.IsMobile)
+                {
+                    <img src="@Model.ImageUrl?tr=w-1240" class="img-responsive" alt="@Model.AltText">
+                }
+                else
+                {
+                    <img src="@Model.MobileImageUrl" class="img-responsive" alt="@Model.MobileAltText">
+                }
+                @*<img src="" class="img-responsive" alt="">*@
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row careers-body">
+            @if (Model.IsMobile)
+            {
+                <div class="col-md-12">
+                    <h2 class="careers-title-mobile">FURNITURE MART USA CAREERS</h2>
+                </div>
+            }
+            <div class="left-side side-filters">
+                <h3>Filter by:</h3>
+                @if (!Model.IsMobile)
+                {
+                    <div class="block block-state-navigation">
+                        <div class="block-title first default-active">
+                            <h4>State</h4>
+                        </div>
+                        <div class="state-item block-item @(Model.SelectedStates.Any() ?"active":"")">
+                            @foreach (var state in Model.AvailableStates)
+                            {
+                                var checkboxChecked = Model.SelectedStates.Any(s => s == state.Value);
+                                <div class="form-check">
+                                    <input type="checkbox" name="state" value="@(state.Value)" onchange="DisplayAjaxLoading();window.location='@(UrlPrepare(Model.Parameters, "state", state.Value,!checkboxChecked, false))'" class="form-check-input" id="state-@(state.Value)" checked="@(checkboxChecked)">
+                                    <label class="form-check-label" for="state-@(state.Value)">@state.Text</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="block block-city-navigation">
+                        <div class="block-title">
+                            <h4>City</h4>
+                        </div>
+                        <div class="state-item block-item @(Model.SelectedCities.Any() ?"active":"")">
+                            @foreach (var city in Model.AvailableCities)
+                            {
+                                var checkboxChecked = Model.SelectedCities.Any(s => s == city.Value);
+                                <div class="form-check">
+                                    <input type="checkbox" name="city" value="@(city.Value)" onchange="DisplayAjaxLoading();window.location='@(UrlPrepare(Model.Parameters, "city", city.Value,!checkboxChecked, false))'" class="form-check-input" id="city-@(city.Value)" checked="@(checkboxChecked)">
+                                    <label class="form-check-label" for="city-@(city.Value)">@city.Text</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="block block-department-navigation">
+                        <div class="block-title">
+                            <h4>Job Category</h4>
+                        </div>
+                        <div class="state-item block-item @(Model.SelectedJobCategories.Any() ?"active":"")">
+                            @foreach (var jobCategory in Model.AvailableJobCategories)
+                            {
+                                var checkboxChecked = Model.SelectedJobCategories.Any(s => s == jobCategory.Value);
+                                <div class="form-check">
+                                    <input type="checkbox" name="jobcategory" value="@(jobCategory.Value)" onchange="DisplayAjaxLoading();window.location='@(UrlPrepare(Model.Parameters, "jobcategory", jobCategory.Value,!checkboxChecked, false))'" class="form-check-input" id="jobcategory-@(jobCategory.Value)" checked="@(checkboxChecked)">
+                                    <label class="form-check-label" for="jobcategory-@(jobCategory.Value)">@jobCategory.Text</label>
+                                </div>
+                            }
+                        </div>
+                    </div>                    
+                }
+                else
+                {
+                    <div class="mobile-block mobile-filter">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="mobile-block-item">
+                                    <select asp-for="State" asp-items="Model.AvailableStates" class="form-control" name="state"></select>                                    
+                                </div>
+                            </div>                            
+                            <div class="col-xs-6">
+                                <div class="mobile-block-item">
+                                    <select asp-for="City" asp-items="Model.AvailableCities" class="form-control" name="city"></select>                                    
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <div class="mobile-block-item">
+                                    <select asp-for="JobCategory" asp-items="Model.AvailableJobCategories" class="form-control" name="jobcategory"></select>                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>    
+                    <script>
+                        $('#State').change(function () {
+                            DisplayAjaxLoading();
+                            window.location = '?state=' + this.value + '&city=' + $('#City').val().replace(" ", "+") + '&jobcategory=' + $('#JobCategory').val();
+                        });
+                        
+                        $('#City').change(function () {
+                            DisplayAjaxLoading();
+                            window.location = '?state=' + $('#State').val() + '&city=' + this.value.replace(" ", "+") + '&jobcategory=' + $('#JobCategory').val();
+                        });
+
+                        $('#JobCategory').change(function () {
+                            DisplayAjaxLoading();
+                            window.location = '?state=' + $('#State').val() + '&city=' + $('#City').val().replace(" ", "+") + '&jobcategory=' + $('#JobCategory').val();
+                        });
+                    </script>
+                }
+            </div>
+            <div class="right-side">
+                @if (!Model.IsMobile)
+                {
+                    @if (Model.CarrerList.Any())
+                    {
+                        <table id="careers-data-tab" class="table table-hover careers-data-table-web">
+                            <thead>
+                                <tr>
+                                    <th>Job Title</th>
+                                    <th>Job Category</th>
+                                    <th>Location</th>                                    
+                                    <th>Date Posted</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var career in Model.CarrerList)
+                                {
+                                    <tr>
+                                        <td>                                            
+                                            <a href="/careers/careerdetail/?id=@career.JobId">
+                                                @career.JobTitle
+                                            </a>
+                                        </td>
+                                        <td>
+                                            @career.JobCategory
+                                        </td>
+                                        <td>
+                                            @career.City,  @career.State
+                                        </td>                                        
+                                        <td>
+                                            @career.DatePostedString
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="news-pager">
+                            <div class="pager">
+                                <ul class="pagination">
+                                    @for (var i = 1; i <= Model.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                                            <a href="@UrlPrepare(Model.Parameters, "page", i.ToString())" class="page-link">@i</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="no-data-found">
+                            <span>No job found.</span>
+                        </div>
+                    }
+                }
+                else
+                {
+                    @if (Model.CarrerList.Any())
+                    {
+                        <table id="careers-data-tab" class="table table-hover careers-data-table-mobile">
+                            <thead style="display: none;">
+                                <tr>
+                                    <th>Job title</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var career in Model.CarrerList)
+                                {
+                                    <tr>   
+                                        <td>
+                                            <div class="careers-data-tab-title">
+                                                <a href="/careers/careerdetail/?id=@career.JobId">
+                                                    @career.JobTitle
+                                                </a>
+                                            </div>
+                                            <div class="careers-data-tab-dic">
+                                                @career.City, @career.State
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <a class="tab-arrow" href="/careers/careerdetail/?id=@career.JobId">
+                                                <img src="/images/right-arrow.png" alt="arrow">
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                        <div class="news-pager">
+                            <div class="pager">
+                                <ul class="pagination">
+                                    @for (var i = 1; i <= Model.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(i == Model.Page ? "active" : "")">
+                                            <a href="@(UrlPrepare(Model.Parameters, "page", i.ToString()))" class="page-link">@i</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="no-data-found">
+                            <span>No job found.</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        @if (Model.IsMobile)
+        {
+            <div class="careers-gallery-text mobile-show">
+                @Html.Raw(Model.TopDescription)
+            </div>
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('.block-title').on("click", function () {
+            $(this).removeClass("default-active");
+            $(this).toggleClass('active_arrow');
+            $(this).siblings(".block-item").slideToggle();
+        })
+    });
+
+    // set active menu side bar
+    SetActiveMenu("menu-career");
+
+    // Handler for .ready() called.
+        $(document).ready(function() {
+        setTimeout(function() {
+            $('html, body').animate({
+                scrollTop: $('.careers-widget .careers-body').offset().top
+            }, 'slow');
+        }, 200); 
+    });
+
+</script>
+
+@functions{
+
+    private string BuildQuerystring(Dictionary<string, string> querystringParams)
+    {
+        var paramList = new List<string>();
+        foreach (var parameter in querystringParams)
+        {
+            paramList.Add(parameter.Key + "=" + parameter.Value.Replace(" ", "+"));
+        }
+
+        return "?" + string.Join("&", paramList);
+    }
+
+    public string UrlPrepare(Dictionary<string, string> parameters, string fieldname, string value, bool append = true, bool IsSingle = true)
+    {
+        var newParameters = new Dictionary<string, string>();
+        foreach (var e in parameters)
+        {
+            if (e.Key == "page")
+            {
+                continue;    
+            }
+
+            newParameters.Add(e.Key, e.Value);
+        }
+
+        if (!append)
+        {
+            if (newParameters.ContainsKey(fieldname))
+            {
+                if (IsSingle)
+                    newParameters.Remove(fieldname);
+                else
+                {
+                    var splitValues = newParameters[fieldname].Split('~').ToList();
+                    splitValues = splitValues.Where(x => x != value).ToList();
+                    if (!splitValues.Any())
+                        newParameters.Remove(fieldname);
+                    else
+                        newParameters[fieldname] = string.Join('~', splitValues);
+                }
+            }
+        }
+        else if (newParameters.ContainsKey(fieldname))
+        {
+            if (IsSingle)
+            {
+                newParameters[fieldname] = value;
+            }
+            else
+            {
+                newParameters[fieldname] = newParameters[fieldname] + "~" + value;
+            }
+        }
+        else
+        {
+            newParameters.Add(fieldname, value);
+        }
+
+        if (newParameters.Count() > 1 && newParameters.FirstOrDefault().Key == "page")
+        {
+            newParameters.Remove(newParameters.FirstOrDefault().Key);
+        }
+
+        return BuildQuerystring(newParameters);
+    }
+}

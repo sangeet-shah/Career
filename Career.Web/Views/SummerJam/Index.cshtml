@@ -1,0 +1,193 @@
+﻿@model Career.Web.Models.SummerJams.SummerJamModel
+
+@{
+    ////title
+    ViewBag.PageTitle = "Summer Jam";
+    ViewBag.Canonical = "summerjam/";
+}
+
+<link href="~/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+<script async src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=TY3bR5"></script>
+
+<form asp-route="summerjam" method="post" id="summer-jam" name="summerjam" >
+    @if (!Model.Success)
+    {
+        <div class="page prize-page">
+            <div class="prize-bg">
+                <div class="container">
+                    <div class="prize-data">
+                        <div class="prize-title">
+                            @if (!string.IsNullOrEmpty(Model.FMUSASummerJamSetting.Title1))
+                            {
+                                <h2>@Model.FMUSASummerJamSetting.Title1</h2>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.FMUSASummerJamSetting.Title2))
+                            {
+                                <h3>@Model.FMUSASummerJamSetting.Title2</h3>
+                            }
+                            @if (!string.IsNullOrEmpty(Model.FMUSASummerJamSetting.Title3))
+                            {
+                                <h4>@Model.FMUSASummerJamSetting.Title3</h4>
+                            }
+                        </div>
+                        <div class="prize-flex">
+                            <div class="flex-left">
+                                <div class="max-width">
+                                    <div class="package">
+                                        <h4>ONE GRAND PRIZE PACKAGE</h4>
+                                        <div class="desc">
+                                            <p>A Pair of <b>GA Tickets</b> for all 3 Days <br> + a <b>VIP Backstage</b> Tour <br> + 6 Piece Patio Set Valued at $5799</p>
+                                        </div>
+                                    </div>
+                                    <div class="gally-btn-flex">
+                                        <div id="daily-lineup-popup" class="g-btn">Daily Line-Up</div>
+                                        <div id="view-patio-popup" class="g-btn">View Patio Set</div>
+                                    </div>
+                                    <div class="runners-prize">
+                                        <h4>RUNNERS UP PRIZES</h4>
+                                        <ul>
+                                            <li>
+                                                <p>A Pair of Single Day <b>Thursday</b> Tickets</p>
+                                            </li>
+                                            <li>
+                                                <p>A Pair of Single Day <b>Friday</b> Tickets</p>
+                                            </li>
+                                            <li>
+                                                <p>A Pair of Single Day <b>Saturday</b> Tickets</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="for-mb">
+                                        <div class="reg-here">
+                                            <div id="scrollToForm">
+                                                <h3>register here</h3>
+                                                <div class="down-icon"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="prize-img-mb">
+                                <img src="~/images/prize_mobile.png" alt="prize">
+                            </div>
+                            <div class="flex-right">
+                                <div class="max-width reg-form">
+                                    <div class="scroll-form"></div>
+                                    <div id="klaviyo-form"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="prize-logos">
+                        <img class="logo-small" src="~/images/ashley-homestore.png" alt="logo">
+                        <img src="~/images/tcsj-logo-white.png" alt="logo">
+                    </div>
+                </div>
+            </div>
+            <div class="prize-img">
+                <img src="~/images/prize.png" alt="prize">
+            </div>
+            <div class="prize-info-bg">
+                <div class="container">
+                    <div class="prize-info">
+                        @if (!string.IsNullOrEmpty(Model.FMUSASummerJamSetting.Disclaimer))
+                        {
+                            @Html.Raw(Model.FMUSASummerJamSetting.Disclaimer)
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="page prize-page thank-prize">
+            <div class="prize-bg">
+                <div class="container">
+                    <div class="prize-data">
+                        <div class="prize-title">
+                            <h2>THANKS FOR</h2>
+                            <h3>REGISTERING</h3>
+                        </div>
+                    </div>
+                    <div class="prize-logos">
+                        <img class="logo-small" src="~/images/ashley-homestore.png" alt="logo">
+                        <img src="~/images/tcsj-logo-white.png" alt="logo">
+                    </div>
+                </div>
+                <div class="for-mb">
+                    <div class="prize-img-mb">
+                        <img src="~/images/prize_mobile.png" alt="prize">
+                    </div>
+                </div>
+                <div class="prize-img">
+                    <img src="~/images/prize.png" alt="prize">
+                </div>
+            </div>
+        </div>
+    }
+</form>
+<script>
+    $(document).ready(function () {
+
+        var mobile = (/iphone|ipod|ipad|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
+        if (mobile) {
+            $('#klaviyo-form').addClass("klaviyo-form-W9vDLE");
+        }
+        else {
+            $('#klaviyo-form').addClass("klaviyo-form-VFt5cB");
+        }
+
+        $("#scrollToForm").on("click", function () {
+            $('html, body').animate({ scrollTop: $('.scroll-form').offset().top - 20 }, 'slow');
+        });
+
+        $("#daily-lineup-popup").on("click", function () {
+            if (mobile) {
+                $("#daily-lineup-image").attr("src", '@Model.FMUSASummerJamSetting.DailyLineUpMobileImageIdUrl');
+        }
+        else {
+                $("#daily-lineup-image").attr("src", '@Model.FMUSASummerJamSetting.DailyLineUpWebImageIdUrl');
+        }
+            $("#dailydialog").addClass('active');
+            $(".pic-layer").addClass('active');
+        });
+        $("._close", "#dailydialog").on("click", function () {
+            $("#dailydialog").removeClass('active');
+            $(".pic-layer").removeClass('active');
+        });
+
+        $("#view-patio-popup").on("click", function () {
+            if (mobile) {
+                 $("#view-patio-image").attr("src", '@Model.FMUSASummerJamSetting.ViewPatioSetMobileImageIdUrl');
+        }
+        else {
+                 $("#view-patio-image").attr("src", '@Model.FMUSASummerJamSetting.ViewPatioSetWebImageIdUrl');
+        }
+            $("#viewdialog").addClass('active');
+            $(".pic-layer").addClass('active');
+        });
+        $("._close", "#viewdialog").on("click", function () {
+            $("#viewdialog").removeClass('active');
+            $(".pic-layer").removeClass('active');
+        });
+    })
+</script>
+
+<div class="pic-layer"></div>
+<div id="dailydialog" class="pic-popup">
+    <div class="inner">
+        <div class="_close">X</div>
+        <img id="daily-lineup-image" alt="daily lineup image">
+    </div>
+</div>
+<div id="viewdialog" class="pic-popup">
+    <div class="inner">
+        <div class="_close">X</div>
+        <img id="view-patio-image"  alt="view patio image">
+    </div>
+</div>
+

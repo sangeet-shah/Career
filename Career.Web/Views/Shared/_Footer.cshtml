@@ -1,0 +1,65 @@
+﻿@using Career.Data.Domains.Common
+
+<div class="our-story-footer" aria-label="our story footer" role="contentinfo">
+    @await Component.InvokeAsync("SocialIcons")
+    <div class="our-story-footer-upper-bg" role="img"></div>
+    <div class="our-story-footer-upper">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-brand-logo">
+                        <a href="https://www.thefurnituremart.com/" id="brand-1" target="_blank" aria-label="furniture mart">
+                            <img src="~/images/furniture-mart.png" class="img-responsive" alt="furniture mart"> 
+                            <span class="sr-only">(opens in a new tab)</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 w-270">
+                    <div class="footer-brand-logo">
+                        <a href="https://www.ashleyfurniture.com/" id="brand-2" target="_blank" aria-label="ashley">
+                            <img src="~/images/ashley-homestore.png" class="img-responsive mob-ashley-width" alt="ashley">
+                            <span class="sr-only">(opens in a new tab)</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6">
+                    <div class="footer-brand-logo">
+                        <a href="https://www.unclaimedfreightfurniture.com/" id="brand-3" target="_blank" aria-label="unclaimed freight">
+                            <img src="~/images/unclaimed-freight.svg" class="img-responsive" alt="unclaimed freight">
+                            <span class="sr-only">(opens in a new tab)</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-6 w-365">
+                    <div class="footer-brand-logo m-pb-0">
+                        <a href="http://www.carpetonesiouxfalls.com/" id="brand-4" target="_blank" aria-label="carpet one">
+                            <img src="~/images/carpet-one.svg" class="img-responsive" alt="carpet one">
+                            <span class="sr-only">(opens in a new tab)</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="our-story-footer-lower">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="float-lg-left">
+                        <ul class="our-story-footer-link">
+                            <li><a href="@Url.RouteUrl("privacy-policy")" class="menu-privacyPolicy">Privacy Policy</a></li>
+                            <li><a href="@Url.RouteUrl("terms-conditions")" class="menu-termsConditions">Terms & Conditions</a></li>
+                            <li><a href="@Url.RouteUrl("conditions-of-use")" class="menu-conditionsOfUse">Terms of Use</a></li>
+                            <li><a href="@Url.RouteUrl("OffersPromotions")" class="menu-offersPromotions">Offers and Promotions</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="float-lg-right">
+                        <p> @Html.Raw("© " + DateTime.Now.Year + " Furniture Mart USA")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

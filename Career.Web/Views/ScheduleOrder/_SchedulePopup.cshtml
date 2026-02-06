@@ -1,0 +1,80 @@
+@model Career.Web.Models.ScheduleOrder.ScheduleOrderDetailsModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "Delivery schedule";
+}
+
+<form asp-route="Schedule" method="post" id="schedule" name="schedule">
+    <input asp-for="OrderId" type="hidden">
+    <input asp-for="IsZipCodeVerified" type="hidden" value="@Model.IsZipCodeVerified">
+    <div class="modal-header">
+        <button type="button" class="close arrowTR" data-bs-dismiss="modal" aria-label="Close" onclick="BootstrapPopupCloseEvent();">
+            <span aria-hidden="true"></span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="form">
+            <div class="row">
+                <div class="col-12">
+                    <label class="popup-title">
+                        Please confirm your shipping information.
+                    </label>
+                </div>
+                <div class="col-md-12 margin-zipcode" id="pnlZip">
+                    <div class="form-group">
+                        <input asp-for="ZipCode" name="zipcode" class="form-control" placeholder="ZIP" onkeydown="return (event.keyCode!=13);">
+                    </div>
+                </div>
+                <div class="col-md-12 margin-zipcode" id="pnlPhone">
+                    <div class="form-group">
+                        <input asp-for="PhoneNumber" name="phonenumber" class="form-control" placeholder="Phone number" onkeydown="return (event.keyCode!=13);">
+                    </div>
+                </div>
+                <div class="col-md-12 text-center">
+                    <input type="button" name="save" id="btnDontHaveIt" class="btn schedulebtn popupbtn" onclick="switchVisible();" value="I DON’T HAVE IT">
+                    <input type="submit" name="save" class="btn  schedulebtn" value="CONFIRM">
+
+                </div>
+                @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+                {
+                    <div class="zipcode-error-message error-text">@Model.ErrorMessage</div>
+                }
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function() {
+
+        zipCodeVerified();
+    });
+
+    function zipCodeVerified() {
+        if ($('#IsZipCodeVerified').val() == 'False') {
+            $('#pnlPhone').show();
+            $('#pnlZip').hide();
+        } else {
+            $('#pnlPhone').hide();
+            $('#pnlZip').show();
+        }
+    }
+
+    function switchVisible() {
+        if (document.getElementById('pnlPhone')) {
+
+           if (document.getElementById('pnlPhone').style.display == 'none') {
+              document.getElementById('pnlPhone').style.display = 'block';
+              document.getElementById('pnlZip').style.display = 'none';
+              $('#IsZipCodeVerified').val(false);
+              $('#ZipCode').val('');
+           } else {
+              document.getElementById('pnlPhone').style.display = 'none';
+              document.getElementById('pnlZip').style.display = 'block';
+              $('#PhoneNumber').val('');
+              $('#IsZipCodeVerified').val(true);
+           }
+       }
+    }
+</script>

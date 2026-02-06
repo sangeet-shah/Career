@@ -1,0 +1,313 @@
+﻿@model Career.Web.Models.Career.CareerJobDetailModel
+@using Career.Data.Domains.Career;
+@using System.Web;
+@using Career.Data.Domains.Common
+@using System.Text.RegularExpressions
+@{
+    ViewBag.PageTitle = Model.JobTitle;
+    ViewBag.Canonical = "careers/";
+    ViewData["HeadCustom"] = "<meta property='og:type' content='website' />" +
+                            "<meta property='og:title' content='" + Model.JobTitle + "' />" +
+                            "<meta property='og:url' content='" + Model.CurrentPageURL + "' />" +
+                            "<meta property='og:site_name' content='Furniture Mart USA' />" +
+                            "<link rel='canonical' href='" + @Model.baseURL + "/careers/careerdetail/?id=" + @Model.JobId + "' />";
+
+    var applyNowURL = "https://recruitingbypaycor.com/career/SubmitResume.action?clientId=8a7883c6974d4d58019783f945de0e4b&id="+Model.JobId+"&specialization=";
+}
+
+<section class="contact summery-page career-details-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @if (!Model.IsMobile)
+                {
+                    <div class="col-md-12 col-centered">
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-7 col-md-6 col-lg-8">
+                                <div class="title">
+                                    <h1 class="short">@Model.JobTitle</h1>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-5 col-md-6 col-lg-4 share-applybutton-wrapper">
+                                <div class="career-details-share">
+                                    <img class="social-share" src="~/images/social-share.svg" alt="social share">
+                                    <span>Share</span>
+                                    <div class="social-share-icons">
+                                        <div class="social-share-wrapper">
+                                            <ul>
+                                                <li>
+                                                    <a class="fb-share" href="https://www.facebook.com/sharer/sharer.php?u=@Uri.EscapeDataString(Model.CurrentPageURL)" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                                                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" /></svg>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="linkedin-share" href="https://www.linkedin.com/shareArticle?mini=true&url=@Model.CurrentPageURL&title=@Model.JobTitle - @Model.City, @Model.State&ro=false&summary=@HttpUtility.UrlEncode(Model.JobSummaryContent)" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                                                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z" /></svg>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a class="twitter-share" href="https://twitter.com/intent/tweet?text=@Model.JobTitle - @Model.City, @Model.State&url=@Model.CurrentPageURL" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                                                        <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z" /></svg>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="applynow-button">
+                                    <a href="@applyNowURL" class="btn btn-primary apply-button">
+                                        apply now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">                               
+                                <div>
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(Model.Address))
+                                        {
+                                            <p>Address: <span>@Model.Address</span></p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.City))
+                                        {
+                                            <p>City: <span>@Model.City</span></p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.State))
+                                        {
+                                            <p>State: <span>@Model.State</span></p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.ZipCode))
+                                        {
+                                            <p>Zip Code: <span>@Model.ZipCode</span></p>
+                                        }
+                                    </div>
+                                </div>
+                                @if (!string.IsNullOrEmpty(Model.StoreName))
+                                {
+                                    <div>
+                                        <p>
+                                            Location:
+                                            <span>
+                                                <span>
+                                                    @Model.StoreName
+                                                </span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                }
+                                <div class="location-info">
+                                    @if (!string.IsNullOrEmpty(Model.JobCategory))
+                                    {
+                                        <p>Job Category: <span>@Model.JobCategory</span></p>
+                                    }
+                                    @if (!string.IsNullOrEmpty(Model.Type))
+                                    {
+                                        <p>Type: <span>@Model.Type</span></p>
+                                    }
+                                    @if (Model.BaseSalaryAmount > 0)
+                                    {
+                                        <p>Base Salary: <span>@Model.BaseSalary</span></p>
+                                    }
+                                    @if (Model.ExpirationDate != null)
+                                    {
+                                        <p>Expires: <span>@Model.ExpirationDate.Value.ToString("MMMM") @Model.ExpirationDate.Value.Day, @Model.ExpirationDate.Value.Year</span></p>
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.JobSummaryContent))
+                        {
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="job-description">
+                                        <div class="title">
+                                            <h4>JOB SUMMARY: </h4>
+                                        </div>                                                                                
+                                        <div class="content">
+                                            <p>@Html.Raw(Model.JobSummaryContent)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <br />
+                        <div class="row">
+                            <div class="col-xs-12 col-sm-3 col-md-3 col-lg-2">
+                                <a href="@applyNowURL" class="btn btn-primary apply-button">
+                                    apply now
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="job-details-page">                       
+                        <div class="job-details-title">
+                            @if (!string.IsNullOrEmpty(Model.JobTitle))
+                            {
+                                <h3>@Model.JobTitle</h3>
+                            }
+                            <div class="job-details-share">
+                                <img class="social-share" src="~/images/social-share.svg" alt="social share">
+                                <div class="social-share-icons">
+                                    <div class="social-share-wrapper">
+                                        <ul>
+                                            <li>
+                                                <a class="fb-share" href="https://www.facebook.com/sharer/sharer.php?u=@Uri.EscapeDataString(Model.CurrentPageURL)" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                                                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" /></svg>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="linkedin-share" href="https://www.linkedin.com/shareArticle?mini=true&url=@Model.CurrentPageURL&title=@Model.JobTitle - @Model.City, @Model.State&ro=false&summary=@HttpUtility.UrlEncode(Model.JobSummaryContent)" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                                                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z" /></svg>
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a class="twitter-share" href="https://twitter.com/intent/tweet?text=@Model.JobTitle - @Model.City, @Model.State&url=@Model.CurrentPageURL" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+                                                    <svg fill="#fff" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M459.37 151.716c.325 4.548.325 9.097.325 13.645 0 138.72-105.583 298.558-298.558 298.558-59.452 0-114.68-17.219-161.137-47.106 8.447.974 16.568 1.299 25.34 1.299 49.055 0 94.213-16.568 130.274-44.832-46.132-.975-84.792-31.188-98.112-72.772 6.498.974 12.995 1.624 19.818 1.624 9.421 0 18.843-1.3 27.614-3.573-48.081-9.747-84.143-51.98-84.143-102.985v-1.299c13.969 7.797 30.214 12.67 47.431 13.319-28.264-18.843-46.781-51.005-46.781-87.391 0-19.492 5.197-37.36 14.294-52.954 51.655 63.675 129.3 105.258 216.365 109.807-1.624-7.797-2.599-15.918-2.599-24.04 0-57.828 46.782-104.934 104.934-104.934 30.213 0 57.502 12.67 76.67 33.137 23.715-4.548 46.456-13.32 66.599-25.34-7.798 24.366-24.366 44.833-46.132 57.827 21.117-2.273 41.584-8.122 60.426-16.243-14.292 20.791-32.161 39.308-52.628 54.253z" /></svg>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="job-specification">
+                            <ul>
+                                @if (!string.IsNullOrEmpty(Model.Type))
+                                {
+                                    <li><span>Type:</span><p>@Model.Type </p></li>
+                                }
+                                @if (Model.BaseSalaryAmount > 0)
+                                {
+                                    <li>
+                                        <span>Base Salary:</span><p>@Model.BaseSalary </p>
+                                    </li>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.JobCategory))
+                                {
+                                    <li><span>Job Category:</span><p>@Model.JobCategory</p></li>
+                                }
+                                @if (!string.IsNullOrEmpty(Model.StoreName))
+                                {
+                                    <li>
+                                        <span>Location: </span>
+                                        <p>@Model.StoreName</p>
+                                    </li>
+                                }
+                                <li>
+                                    <div>
+                                        @if (!string.IsNullOrEmpty(Model.Address))
+                                        {
+                                            <span>Address:</span><p>@Model.Address</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.City))
+                                        {
+                                            <span>City:</span><p>@Model.City</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.State))
+                                        {
+                                            <span>State:</span><p>@Model.State</p>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.ZipCode))
+                                        {
+                                            <span>Zip Code:</span><p>@Model.ZipCode</p>
+                                        }
+                                    </div>
+                                </li>
+                                @if (Model.ExpirationDate.HasValue)
+                                {
+                                    <li><span>Expires:</span><p>@Model.ExpirationDate.Value.ToString("MMMM") @Model.ExpirationDate.Value.Day, @Model.ExpirationDate.Value.Year</p></li>
+                                }
+                            </ul>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.JobSummaryContent))
+                        {
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                    <div class="job-description">
+                                        <div class="title">
+                                            <h4>JOB SUMMARY: </h4>
+                                        </div>
+                                        <div class="content">
+                                            <p> @Html.Raw(Model.JobSummaryContent)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <br />
+                        <div class="apply-btn-widget">
+                            <a href="@applyNowURL" class="btn btn-primary apply-button">
+                                apply now
+                            </a>
+                        </div>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).ready(function () {
+    
+        $(".fb-share").click(function () {
+            CallGtagEventShare("share", "facebook", "job", '@Model.JobId.ToString()');
+        });
+        $(".linkedin-share").click(function () {
+            CallGtagEventShare("share", "linkedin", "job", '@Model.JobId.ToString()');
+        });
+        $(".twitter-share").click(function () {
+            CallGtagEventShare("share", "twitter", "job", '@Model.JobId.ToString()');
+        });
+    });
+</script>
+
+<script type="application/ld+json">
+    {
+      "@@context": "http://schema.org/",
+      "@@type": "JobPosting",
+      "employmentType": "@Model.Type",
+      "url": "@Model.CurrentPageURL",
+      "datePosted": "@Model.PostedDate",
+      "validThrough": "@(Model.ExpirationDate.HasValue ? Model.ExpirationDate.Value.ToString() : string.Empty)",
+      "title": "@Model.JobTitle",
+      "jobLocation": {
+        "@@type": "Place",
+        "address": {
+           "@@type": "PostalAddress",
+           "streetAddress": "@Model.Address",
+           "addressLocality": "@Model.City",
+           "addressRegion": "@Model.State",           
+           "postalCode": "@Model.ZipCode",
+           "addressCountry": "US"
+        }
+      },
+      "hiringOrganization" : {
+        "@@type" : "Organization",
+        "name" : "Furniture Mart USA",
+        "sameAs" : "@Model.baseURL/",
+        "logo" : "@Model.baseURL.TrimEnd('/')/images/main-logo.png"
+      },
+    @if (Model.BaseSalaryAmount > 0)
+    {
+        @:"baseSalary": {
+        @:  "@@type": "MonetaryAmount",
+        @:  "currency": "USD",
+        @:  "value": {
+        @:     "@@type": "QuantitativeValue",
+        @:     "value": @Model.BaseSalaryAmount,
+        @:     "unitText": "@Model.BaseSalaryUnitText"
+        @:  }
+        @:},
+    }
+      "description" : "@(!string.IsNullOrEmpty(Model.JobSummaryContent) ? Regex.Replace(Model.JobSummaryContent, "<.*?>", String.Empty) : string.Empty)"
+    }
+</script>

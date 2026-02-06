@@ -1,0 +1,34 @@
+﻿@model Career.Web.Models.Career.CareerLayout
+@{
+    ViewBag.PageTitle = "Thank You";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Career.Data.Domains.Common
+
+<section class="contact thankyou-page" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-centered">
+                <h2 class="short">thank you.</h2>
+                <hr>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                        <div class="message">
+                            <p>@Model.ThankyouPageText</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                        <a class="btn btn-primary homepage-button" href="/">back to homepage</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- begin LinkUp.com conversion-tracking code -->
+<script>/* <![CDATA[ */ var linkup_conversion_id = '34b31d43-d3df-11e8-b86d-525400e3d9b1'; /* ]]> */</script>
+<script src="https://www.linkup.com/employers/track/conversion.js"></script> <noscript><img height=1 width=1 border=0 src="https://www.linkup.com/employers/track/conversion.gif?id=34b31d43-d3df-11e8-b86d-525400e3d9b1&noscript=1"></noscript>
+<!-- end LinkUp.com conversion-tracking code -->

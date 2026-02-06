@@ -1,0 +1,138 @@
+﻿@using Career.Data
+@inject AppSettings _appSettings
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Charity Golf Classic - Furniture Mart USA</title>    
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/owl.carousel.css">
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+    <link rel="canonical" href="https://furnituremartusa.com/golf/">
+    @await Html.PartialAsync("~/Views/Shared/_GoogleAnalytics.cshtml")
+</head>
+<body>
+    <div class="golf-page">
+        <div class="golf-head">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <ul>
+                            <li><a href="/golf/" class="active-page">event details</a></li>
+                            <li><a href="/golf/sponsors/">sponsorship levels</a></li>
+                            <li><a href="/golf/register/">registration form</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="golf-banner golf-classic">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="golf-banner-text">
+                            <img src="~/images/careers-furnituremartusa-logo-wight.png" class="careers-fm-logo" alt="careers furnituremartusa">
+                            <div class="classic-date">12th Annual</div>
+                            <h2>CHARITY GOLF CLASSIC</h2>
+                            <p>Tuesday June 17th, 2025</p>
+                            <span>Grand Falls Casino & Golf Resort • Larchwood, IA</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="golf-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="golf-body-title">
+                            <h3>Please Join Us</h3>
+                            <p>Gather your team together for the 12th Annual Furniture Mart USA Charity Golf Classic. Join us for a day filled with golf, fun, and philanthropy. <br /><br />Proceeds benefit dozens of non-profit organizations serving our neighbors in need.</p>
+                        </div>
+                        <div class="golf-body">
+                            <div class="sponsor-logo">
+                                <div class="second-row owl-carousel" id="sponsor-list">                                    
+                                    <div class="picture"><img src="~/images/golf-sponsor-Camp-High-Hopes.png" alt="CampHighHopes"></div>
+                                    <div class="picture"><img src="~/images/golf-HopeHaven.jpg" alt="HopeHaven"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-American-Legion.jpg" alt="AmericanLegion"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-Best-Christmas-Ever-stack.png" alt="BestChristmasEverStack"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-CF.png" alt="CF"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-CrittentonCenter.png" alt="CrittentonCenter"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-firefighters-for-healing.png" alt="firefighters-for-healing"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-LegacyChildenFoundation.jpg" alt="LegacyChildenFoundation"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-logo.svg" alt="golf-sponsor-logo"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-Promising-Futures-Fund.png" alt="PromisingFuturesFund"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-Reading4Research.png" alt="Reading4Research"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-Rising-Star-Foundation.png" alt="RisingStarFoundation"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-SFHopeCoalition.jpg" alt="SFHopeCoalition"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-TeddyBearDen.png" alt="TeddyBearDen"></div>
+                                    <div class="picture"><img src="~/images/golf-sponsor-VCP-Full-Logo.png" alt="VCPFullLogo"></div>
+                                </div>
+                            </div>
+                            <div class="event-details">
+                                <div class="event-item">
+                                    <h4>tournament format</h4>
+                                    <p>The tournament is played in a 4-Player Scramble Format with a variety of games and prizes at each hole!</p>
+                                </div>
+                                <div class="event-item">
+                                    <h4>tournament fees include</h4>
+                                    <ul>
+                                        <li>- 18 Holes of Golf & Cart</li>
+                                        <li>- Poolside Lunch </li>
+                                        <li>- Awards Dinner </li>
+                                    </ul>
+                                    <ul>
+                                        <li>- $10,000 Hole-in-One Challenge </li>
+                                        <li>- Prizes at every hole!</li>
+                                        <li>- Custom Apparel and more!</li>
+                                    </ul>
+                                </div>
+                                <div class="event-item">
+                                    <h4>19th Hole Celebration</h4>
+                                    <p>After golf, celebrate with friends over dinner as we honor this year’s charities and the day’s top golfers.</p>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <a href="/golf/register/" class="golf-btn">register</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/jquery-3.7.1.js"></script>
+    <script src="~/js/owl.carousel.min.js"></script>
+    <script asp-location="Footer">
+        $(document).ready(function () {
+            $('#sponsor-list').owlCarousel({
+                loop: false,
+                autoplay:true,
+                padding:25,
+                nav: true,
+                dots: false,
+                margin: 30,
+                items: 1,
+                responsive: {
+                    481: {
+                        items: 3,
+                        margin: 90,
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+

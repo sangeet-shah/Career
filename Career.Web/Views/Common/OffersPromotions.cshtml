@@ -1,0 +1,64 @@
+﻿@model OffersPromotionListModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "Offers and Promotions";
+    ViewBag.Canonical = "offers-promotions/";
+}
+
+<div class="container">
+    <div class="page offers-promotions-page from-panel">
+        <div class="row">
+            <div class="col-12 mb-5">
+                <div class="page-body">
+                    <div class="page-title">
+                        <h4>Offers and Promotions</h4>
+
+                        @if (Model.OffersPromotions.Any())
+                        {
+                            <div class="accordion" id="accordionPanelsStayOpenExample">
+                                @foreach (var offersPromotion in Model.OffersPromotions)
+                                {
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="panelsStayOpen-headingOne-@offersPromotion.Id">
+                                            <button @(!string.IsNullOrEmpty(offersPromotion.Anchor) ? "id=" + offersPromotion.Anchor : string.Empty) class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne-@offersPromotion.Id" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne-@offersPromotion.Id">
+                                            <span>@offersPromotion.Title</span>
+                                                
+                                            </button>
+                                        </h2>
+                                        <div id="panelsStayOpen-collapseOne-@offersPromotion.Id" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne-@offersPromotion.Id">
+                                            <div class="accordion-body">
+                                                <p>@Html.Raw(offersPromotion.Description)</p>
+                                            </div>
+                                        </div>
+                                    </div>                            
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div>No data found.</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script asp-location="Footer">
+    function openAccordionByFragment() {
+        const fragmentId = window.location.hash.substring(1);
+
+        if (fragmentId) {
+            $('#' + fragmentId).click();
+            window.scrollTo({ top: 0 });
+        }
+    }
+
+    // Call the function on page load
+    openAccordionByFragment();
+
+    // Optionally, call the function again when the hash changes (for dynamic content)
+    window.addEventListener("hashchange", openAccordionByFragment);
+</script>

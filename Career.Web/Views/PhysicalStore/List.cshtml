@@ -1,0 +1,62 @@
+﻿@model Career.Web.Models.StoreManagement.LocationModel
+@{
+    //page title
+    ViewBag.PageTitle = "Locations";
+    ViewBag.Canonical = "locations/";
+}
+
+<div class="locations-widget">
+    @if (!string.IsNullOrEmpty(Model.LocationMapImageUrl))
+    {
+        <div class="container map-fuctional-widget">
+            <div class="col-md-12">
+                <div class="map-fuctional">
+                    <img class="img-responsive locationMap-icon" src="@Model.LocationMapImageUrl" alt="@Model.LocationMapImageAltText" title="@Model.LocationMapImageTitle">
+                </div>
+            </div>
+        </div>
+    }
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                @foreach (var physicalStore in Model.LocationList.Where(p => p.State == "SD" || p.State == "ND"))
+                {
+                    @await Html.PartialAsync("ListState.cshtml", physicalStore)
+                }
+            </div>
+            <div class="col-md-4">
+                <div class="pl-75">
+                    @foreach (var physicalStore in Model.LocationList.Where(p => p.State == "IA" || p.State == "IL" || p.State == "WI"))
+                    {
+                        @await Html.PartialAsync("ListState.cshtml", physicalStore)
+                    }
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="pl-75">
+                    @foreach (var physicalStore in Model.LocationList.Where(p => p.State == "MN"))
+                    {
+                        @await Html.PartialAsync("ListState.cshtml", physicalStore)
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (Model.IsMobile)
+{
+    <script>
+        $(document).ready(function () {
+            $('.locations-item-title').on("click", function () {
+                $(this).toggleClass("active");
+                $(this).siblings(".locations-item-group").slideToggle();
+            })
+        });
+    </script>
+}
+
+<script>
+    // set active menu side bar
+    SetActiveMenu("menu-location");
+</script>

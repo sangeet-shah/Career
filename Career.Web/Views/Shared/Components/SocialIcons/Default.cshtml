@@ -1,0 +1,45 @@
+﻿@model Career.Web.Models.CorporateManagement.CorporateManagementSettingsModel
+
+<div class="container">
+    <ul class="social-media-icon">
+        @if (!string.IsNullOrEmpty(Model.FacebookImageUrl))
+        {
+            <li>
+                <a class="facebook" aria-label="facebook" @(!string.IsNullOrEmpty(Model.FacebookURL) ? "href=" + Model.FacebookURL : "") target="_blank">
+                    <img src="@Model.FacebookImageUrl" title="@Model.FacebookImageTitle" alt="@Model.FacebookImageAltText" role="presentation" />
+                    <span class="sr-only">(opens in a new tab)</span>
+                </a>
+            </li>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.YouTubeImageUrl))
+        {
+            <li>
+                <a class="youtube" aria-label="youtube" @(!string.IsNullOrEmpty(Model.YouTubeURL) ? "href=" + Model.YouTubeURL : "") target="_blank">
+                    <img src="@Model.YouTubeImageUrl" title="@Model.YouTubeImageTitle" alt="@Model.YouTubeImageAltText" role="presentation" />
+                    <span class="sr-only">(opens in a new tab)</span>
+                </a>
+            </li>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.TwitterImageUrl))
+        {
+            <li>
+                <a class="twitter" aria-label="twitter" @(!string.IsNullOrEmpty(Model.TwitterURL) ? "href=" + Model.TwitterURL : "") target="_blank">
+                    <img src="@Model.TwitterImageUrl" title="@Model.TwitterImageTitle" alt="@Model.TwitterImageAltText" role="presentation" />
+                    <span class="sr-only">(opens in a new tab)</span>
+                </a>
+            </li>
+        }
+
+        @if (!string.IsNullOrEmpty(Model.LinkedInImageUrl))
+        {
+            <li>
+                <a class="linkedin" aria-label="linkedin" @(!string.IsNullOrEmpty(Model.LinkedInURL) ? "href=" + Model.LinkedInURL : "") target="_blank">
+                    <img src="@Model.LinkedInImageUrl" title="@Model.LinkedInImageTitle" alt="@Model.LinkedInImageAltText" role="presentation" />
+                    <span class="sr-only">(opens in a new tab)</span>
+                </a>
+            </li>
+        }
+    </ul>
+</div>

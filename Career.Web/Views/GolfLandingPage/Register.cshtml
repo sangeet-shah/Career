@@ -1,0 +1,260 @@
+﻿@model Career.Web.Models.GolfLanding.GolfLandingPageModel
+@using Career.Data
+@inject AppSettings _appSettings
+
+@{
+    Layout = null;
+    var imageSrc = "/images/default-image.png";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Registration form - Furniture Mart USA</title>
+    <link rel="canonical" href="https://furnituremartusa.com/golf/register/">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="shortcut icon" href="~/images/favicon.ico">
+
+    <script src="~/js/jquery-3.7.1.js"></script>
+    <script src="~/js/jquery.validate.min.js"></script>
+</head>
+<body>
+    @await Html.PartialAsync("~/Views/Shared/_GoogleAnalytics.cshtml")
+
+    <form action="/golf/register/" method="post" id="golf_register" name="golf_register">
+        <div class="golf-page">
+            <div class="golf-head">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <ul>
+                                <li><a href="/golf/">event details</a></li>
+                                <li><a href="/golf/sponsors/">sponsorship levels</a></li>
+                                <li><a href="/golf/register/" class="active-page">registration form</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="golf-banner golf-register">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="golf-banner-text">
+                                <h2>Registration</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="golf-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @if (Model.IsActive)
+                            {
+                                <div class="golf-body-title">
+                                    <h3>sponsorship</h3>
+                                    @if (!Model.Success)
+                                    {
+                                        <p>Thank you for your event sponsorship! Your participation will provide much needed support to impactful organizations in our local communities. Registration Deadline is May 16th. For more information, contact Bob Brant 612-214-0232 or Mark Millage 605-977-7808. No payment is required at this time.</p>
+                                    }
+                                </div>
+                                @if (Model.Success)
+                                {
+                                    <div class="golf-body-form-sucess-message">
+                                        <span>Your registration is complete! We will be in touch to verify payment.</span>
+                                        <span>Thank you for your contribution. we can't wait to see you all!</span>
+                                    </div>
+
+                                }
+                                else
+                                {
+                                    <div class="golf-body-form">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="CompanyName" name="companyname" placeholder="Company Name" required="required" type="text" value="@Model.CompanyName">
+                                                            @Html.ValidationMessageFor(c => c.CompanyName)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="PhoneNumber" name="phonenumber" placeholder="Main Contact Phone Number" required="required" type="text" value="@Model.PhoneNumber">
+                                                            @Html.ValidationMessageFor(c => c.PhoneNumber)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="Email" name="email" placeholder="Main Contact Email" required="required" type="email" value="@Model.Email">
+                                                            @Html.ValidationMessageFor(c => c.Email)
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <select asp-for="SponsorshipLevelId" asp-items="Model.AvailableSponsorshipLevels"
+                                                                    class="form-control" name="sponsorshiplevelid"></select>
+                                                            @Html.ValidationMessageFor(c => c.SponsorshipLevelId)
+                                                        </div>
+                                                    </div>
+                                                    
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="Contact1" name="contact1" placeholder="Team Member 1 - Main Contact" type="text" value="@Model.Contact1">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="Contact2" name="contact2" placeholder="Team Member 2" type="text" value="@Model.Contact2">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="Contact3" name="contact3" placeholder="Team Member 3" type="text" value="@Model.Contact3">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <div class="form-group">
+                                                            <input class="form-control" id="Contact4" name="contact4" placeholder="Team Member 4" type="text" value="@Model.Contact4">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                        <div class="form-group row logo_upload">
+                                            <div class="loader" id="loader">
+                                                <img class="loader-icon" src="~/images/spinner.gif" alt="loader">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="label-wrapper">
+                                                    <label class="control-label">
+                                                        @Html.DisplayNameFor(m => m.PictureId)
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="logo_upload_tab">
+                                                    <div class="picture">
+                                                        <img id="myUploadedImg" src="@imageSrc" alt="Photo" />
+                                                    </div>
+                                                    <div class="d-flex">
+                                                        <div class="position-relative">
+                                                            <span class="upload_file_logo">Upload a file</span>
+                                                            <input type="file" class="upload" id="f_UploadImage" accept="image/*">
+                                                        </div>
+                                                        <div class="remove-image-button float-left">
+                                                            <button type="button" class="btn btn-danger" id="RemoveLogoImage">Remove picture</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <input class="form-control" id="PictureId" name="pictureid" type="hidden">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group text-center">
+                                                    <input type="submit" id="btnregister" name="btnregister" class="golf-btn" value="submit">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <div class="golf-body-title">
+                                    <h3>sponsorship</h3>
+                                    @if (!string.IsNullOrEmpty(Model.Description))
+                                    {
+                                        @Html.Raw(Model.Description)
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+    <script>
+        $('.picture').hide();
+        $('img').bind('contextmenu', function (e) {
+            return false;
+        });
+
+        $(document).ready(function () {
+            if (@Model.PictureId > 0) {
+                $('#RemoveLogoImage').show();
+            } else {
+                $('#RemoveLogoImage').hide();
+            }
+        });
+
+        $("#f_UploadImage").on('change', function () {            
+            //start load
+            $(".logo_upload #loader").addClass("active");
+            var formData = new FormData();
+            formData.append('file', $('#f_UploadImage')[0].files[0]);
+            $.ajax({
+                url: '/picture/asyncupload',
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function (response) {                    
+                    //stop load
+                    $(".logo_upload #loader").removeClass("active");
+
+                    if (response.success) {
+                        $('.picture').show();
+                        $("#PictureId").val(response.pictureId);
+                        $("#myUploadedImg").attr("src", response.image);
+                        $('#RemoveLogoImage').show();
+                    }
+                    else {
+                        alert(response.message);
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    //stop load
+                    $(".logo_upload #loader").removeClass("active");
+
+                    // Handle upload error (e.g., display error message)
+                    console.error("Upload failed:", thrownError);
+                }
+            });
+        });
+
+        $("#RemoveLogoImage").on('click', function () {
+            $("#f_UploadImage").val("");
+            $("#myUploadedImg").attr("src", "/images/default-image.png");
+            $('#RemoveLogoImage').hide();
+            $("#PictureId").val(0);
+            $('.picture').hide();
+        });
+
+        $(function () {
+            $('.upload[type="file"]').change(function () {
+                if ($(this).val() != "") {
+                    $(this).css('color', '#333');
+                    $(this).css('width', 'auto');
+                } else {
+                    $(this).css('color', 'transparent');
+                    $(this).css('width', '104px');
+                }
+            });
+        })
+    </script>
+</body>
+</html>

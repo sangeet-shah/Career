@@ -1,0 +1,162 @@
+﻿@model Career.Web.Models.ScheduleOrder.ScheduleOrderDetailsModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "Payment";
+}
+
+<form asp-rount="ScheduleOrderPayment" method="post" class="schedule-order-payment" id="scheduleorderpayment" name="scheduleorderpayment">
+    <input asp-for="OrderId" type="hidden" name="orderid">
+    <div class="container">
+        <div class="row title-order-payment">
+            <div class="col-12 pad-left-zero pad-right-zero">
+                <h4 class="text-left text-md-center desktop-title">You are SO CLOSE to Your New Home Addition</h4>
+                <h4 class="text-left text-md-center mob-title">You are SO CLOSE!</h4>
+                <h5 class="text-left text-md-center">Pay the remaining balance on your open order to schedule your delivery!</h5>
+            </div>
+        </div>
+        <div class="row billing-section">
+            <div class="col-12 col-sm-7 col-lg-8 padding-30 pad-right-zero pad-left-zero ">
+                <div class="billing-address-form">
+                    <div class="title billing-address"><h6>Billing Address</h6></div>
+                    <div class="row">
+                        <div class="col-sm-6 md6-pd-r-half billing-address">
+                            <div class="form-group">
+                                <div class="checkout-required">
+                                    <input asp-for="@Model.DeliverTo.FirstName" class="form-control" placeholder="First Name*">
+                                </div>
+                                <div class="error"><span asp-validation-for="@Model.DeliverTo.FirstName"></span></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 md6-pd-l-half billing-address">
+                            <div class="form-group">
+                                <div class="checkout-required">
+                                    <input asp-for="@Model.DeliverTo.LastName" class="form-control" placeholder="Last Name*">
+                                </div>
+                                <div class="error"><span asp-validation-for="@Model.DeliverTo.LastName"></span></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 md6-pd-r-half billing-address">
+                            <div class="form-group">
+                                <div class="checkout-required">
+                                    <input asp-for="@Model.DeliverTo.Address1" class="form-control" placeholder="Street Address*">
+                                </div>
+                                <div class="error"><span asp-validation-for="@Model.DeliverTo.Address1"></span></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 md6-pd-l-half billing-address">
+                            <div class="form-group">
+                                <input asp-for="@Model.DeliverTo.Address2" class="form-control" placeholder="Apt.,Suite.Etc.(Optional)">
+                                <div class="error"><span asp-validation-for="@Model.DeliverTo.Address2"></span></div>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-5 md-pd-r-half billing-address">
+                            <div class="form-group">
+                                <div class="checkout-required">
+                                    <input asp-for="@Model.DeliverTo.City" class="form-control" placeholder="City">
+                                </div>
+                                <div class="error"><span asp-validation-for="@Model.DeliverTo.City"></span></div>
+                            </div>
+                        </div>
+                        <div class="col-8 col-sm-5 md-pd-l-half md-pd-r-half col-pd-r-half billing-address padding-state-mob">
+                            <div class="form-group">
+                                <div class="checkout-required">
+                                    <input asp-for="@Model.DeliverTo.State" class="form-control" placeholder="State">
+                                </div>
+                                <div class="error"><span asp-validation-for="@Model.DeliverTo.State"></span></div>
+                            </div>
+                        </div>
+                        <div class="col-4 col-sm-2 md-pd-l-half col-pd-l-half billing-address">
+                            <div class="form-group">
+                                <div class="checkout-required">
+                                    <input asp-for="@Model.DeliverTo.ZipCode" class="form-control" placeholder="ZIP" >
+                                </div>
+                                <div class="error"><span asp-validation-for="@Model.DeliverTo.ZipCode"></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="checkout-data payment-method">
+                    <div class="payment-wrapper">
+                        <div class="title billing-address"><h6>Credit or Debit Card</h6></div>
+                        <div class="payment-data">
+                            <div class="row">
+                                <div class="col-sm-6 md6-pd-r-half pad-right-zero pad-left-zero">
+                                    <div class="form-group">
+                                        <input asp-for="@Model.CardPaymentInfo.CardholderName" class="form-control" placeholder="Name on Card*">
+                                        <div class="error"><span asp-validation-for="@Model.CardPaymentInfo.CardholderName"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 md6-pd-l-half pad-right-zero pad-left-zero" id="card-number-field">
+                                    <div class="form-group">
+                                        <input asp-for="@Model.CardPaymentInfo.CardNumber" class="form-control" placeholder="Card Number*">
+                                        <div class="error"><span asp-validation-for="@Model.CardPaymentInfo.CardNumber"></span></div>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-sm-5 padding-state-mob  md-pd-r-half pad-left-zero">
+                                    <div class="form-group">
+                                        <div class="dropdown dropdown-border">
+                                            <input asp-for="@Model.CardPaymentInfo.ExpireMonth" class="form-control" placeholder="Expire Month*">
+                                            <div class="error"><span asp-validation-for="@Model.CardPaymentInfo.ExpireMonth"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-sm-5 padding-state-mob  md-pd-l-half md-pd-r-half col-pd-r-half pad-left-zero">
+                                    <div class="form-group">
+                                        <div class="dropdown dropdown-border">
+                                            <input asp-for="@Model.CardPaymentInfo.ExpireYear" class="form-control" placeholder="Expire Year*">
+                                            <div class="error"><span asp-validation-for="@Model.CardPaymentInfo.ExpireYear"></span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-4 col-sm-2  md-pd-l-half col-pd-l-half pad-right-zero pad-left-zero">
+                                    <div class="form-group">
+                                        <input asp-for="@Model.CardPaymentInfo.CardCode" class="form-control" placeholder="CVV*">
+                                        <div class="error"><span asp-validation-for="@Model.CardPaymentInfo.CardCode"></span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-5 col-lg-4 order-first order-md-2 pad-right-zero pad-left-zero col-mob-mb">
+                <div class="schedule-detail">
+                    <div class="form-group text-center  img-section ishiddenimg">
+                        <img src="/images/1.png">
+                    </div>
+                    <div class="order-total">
+                        @await Html.PartialAsync("_ScheduleOrderTotal.cshtml", Model)
+                    </div>
+                    <div class="form-group row confirm-btn">
+                        <div class="col-12 text-center text-md-right">
+                            <input type="submit" name="nextstep" class="btn schedulebtn paymentbtn" value="CONFIRM PAYMENT">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script asp-location="Footer">
+    $(document).ready(function () {
+        window.addEventListener('resize', scheduleorderpayment);
+        scheduleorderpayment();
+    });
+    function scheduleorderpayment() {
+        var e = window, a = 'inner';
+        if (!('innerWidth' in window)) {
+            a = 'client';
+            e = document.documentElement || document.body;
+        }
+        var result = { width: e[a + 'Width'], height: e[a + 'Height'] };
+        if (result.width <= 767) {
+            $(".title-order-payment").insertBefore('.img-section');
+            $(".confirm-btn").insertAfter('.billing-section');
+        }
+        else {
+            $(".title-order-payment").insertBefore('.billing-section');
+            $(".confirm-btn").insertAfter('.order-total');
+        }
+    }
+</script>

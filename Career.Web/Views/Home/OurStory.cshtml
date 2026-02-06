@@ -1,0 +1,29 @@
+﻿@model Career.Web.Models.CorporateManagement.CorporateManagementSettingsModel
+@{
+    //page title
+    ViewBag.PageTitle = "Our story";
+    ViewBag.Canonical = "ourstory/";
+
+    var imageUrl = Model.IsMobile ? Model.OurStoryMobileBannerUrl : Model.OurStoryBannerUrl;
+    var altText = Model.IsMobile ? Model.OurStoryMobileBannerAltText : Model.OurStoryBannerAltText;
+    var titleText = Model.IsMobile ? Model.OurStoryMobileBannerTitle : Model.OurStoryBannerTitle;
+
+}
+<div class="our-story-con">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="our-story-widget">
+                    <img class="web-story-photo" src="@imageUrl" alt="@altText" title="@titleText">
+                    <h3>@Model.OurStoryTitle</h3>
+                    @Html.Raw(Model.OurStoryFullDescription)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // set active menu side bar
+    SetActiveMenu("menu-ourstory");
+</script>

@@ -1,0 +1,22 @@
+﻿@model Career.Web.Models.ScheduleOrder.ScheduleOrderDetailsModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "Delivery schedule";
+}
+
+<div class="container">
+    <div class="modal fade bd-example-modal-lg zipcode-popup delivery-schedule-popup" id="deliverySchedule-zipcode-popup" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content isTitle">
+                @await Html.PartialAsync("_SchedulePopup.cshtml", Model)
+            </div>
+        </div>
+    </div>
+</div>
+
+<script asp-location="Footer">
+    $(document).ready(function() {
+        $('#deliverySchedule-zipcode-popup').modal('show');
+    });
+</script>

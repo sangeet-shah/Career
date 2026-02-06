@@ -1,0 +1,17 @@
+﻿using Career.Data.Domains.CorporateManagement;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+namespace Career.Data.Services.Media;
+
+public interface IGalleryService
+{
+    /// <summary>
+    /// Gets highlighted photo gallery
+    /// </summary>        
+    /// <returns>Photo gallery</returns>
+    Task<IList<CorporateGalleryPicture>> GetHighlightedGalleryAsync(int corporateGalleryId);
+
+    Task<CorporateGallery> GetCorporateGalleryAsync();
+
+	}

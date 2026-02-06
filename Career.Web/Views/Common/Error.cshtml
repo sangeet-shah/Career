@@ -1,0 +1,48 @@
+﻿@{
+    //page title
+    ViewBag.PageTitle = "Error";
+}
+@using Career.Data.Domains.Common
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor httpContextAccessor
+@{
+    var httpContext = httpContextAccessor.HttpContext.Request;
+    var CurrentPageURL = string.Format("{0}://{1}{2}{3}", httpContext.Scheme, httpContext.Host.Value, httpContext.Path, httpContext.QueryString);
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ViewBag.PageTitle</title>
+</head>
+<body>
+    @*<div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-12">
+                        <h1 class="m-0 text-dark">@ViewBag.PageTitle</h1>
+                    </div>
+                </div>
+            </div>
+        </div>*@
+    <div align="center">
+        <br />
+        <br />
+        <p style="font-size: 16pt; font-weight: bold;">
+            We're sorry, an internal error occurred.
+        </p>
+        <p style="font-size: 14pt;">
+            Our supporting staff has been notified of this error and will address the issue shortly.<br />
+            <br />
+            We apologize for the inconvenience.<br />
+            <br />
+            Please try clicking your browsers 'back' button or try reloading the home page.
+            <br />
+            <br />
+            If you continue to receive this message, please try again in a little while.
+            <br />
+            <br />
+            Thank you for your patience.
+        </p>
+    </div>
+</body>
+</html>

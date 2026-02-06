@@ -1,0 +1,106 @@
+﻿@model IList<HelloBarModel>
+@using Career.Web.Models.Hellobar
+
+<div class="hello-bar-wrapper hellobar-slider">
+    <div class="hellobar-content">
+        <div class="learn-more" tabindex="0">
+            <div class="@(Model.Count == 1 ? "" : "owl-carousel white-arrow")" id="hellobar-slider">
+                @foreach (var helloBar in Model)
+                {
+                    string heightStyle = string.Empty;
+                    string BGColorRgbStyle = string.Empty;
+                    if (helloBar.Height != 0)
+                    {
+                        heightStyle = ";height:" + helloBar.Height + "px;";
+                    }
+
+                    @if (helloBar.PopupDisclaimer)
+                    {
+                        <div class="hellobar-item" @(string.IsNullOrEmpty(helloBar.BGColorRgb) ? "" : "style=background:" + helloBar.BGColorRgb + heightStyle) data-bs-toggle="modal" data-bs-target="#offer-details-popup-@helloBar.Id" data-ga4-event="promotion" data-sectiontitle="@helloBar.Name" data-sectiontype="HelloBar" data-sectionid="@helloBar.Id" data-sectionname="HelloBar_@helloBar.Name">
+                            <div class="hellobar-height">
+                                @Html.Raw(helloBar.Content)
+                            </div>
+                        </div>
+
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(helloBar.CustomURL))
+                        {
+                            <div class="hellobar-item" @(string.IsNullOrEmpty(helloBar.BGColorRgb) ? "" : "style=background:" + helloBar.BGColorRgb + heightStyle)>
+                                <div class="hellobar-height">
+                                    <a href="@helloBar.CustomURL" role="button" data-bs-toggle="modal" data-bs-target="#offer-details-popup-@helloBar.Id" data-ga4-event="promotion" data-sectiontitle="@helloBar.Name" data-sectiontype="HelloBar" data-sectionid="@helloBar.Id" data-sectionname="HelloBar_@helloBar.Name" aria-label="@helloBar.Name">
+                                        @Html.Raw(helloBar.Content)
+                                    </a>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="hellobar-item" style="cursor: default; @(string.IsNullOrEmpty(helloBar.BGColorRgb) ? "" : "background:" + helloBar.BGColorRgb + heightStyle)">
+                                <div class="hellobar-height">
+                                    @Html.Raw(helloBar.Content)
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Offers & Details Popup Start*@
+@foreach (var helloBar in Model.Where(x => x.PopupDisclaimer))
+{
+    <div class="modal fade offer-details-popup" id="offer-details-popup-@helloBar.Id" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content isTitle">
+                <div class="modal-header">
+                    <h4 class="modal-title">@Html.Raw(helloBar.DisclaimerTitle)</h4>
+                    <button type="button" id="offers_close" name="offers_close" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                    </button>
+                </div>
+                <div class="modal-body pdTop0">
+                    @Html.Raw(helloBar.Disclaimer)
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (Model.Count > 1)
+{
+    @*Offers & Details Popup End*@
+    <script asp-location="Footer">
+        $(document).ready(function () {
+            $('#hellobar-slider').owlCarousel({
+                items: 1,
+                loop: true,
+                margin: 0,
+                nav: true,
+                dots: false,
+                autoplay: true,
+                autoHeight: true,
+                autoHeightClass: 'owl-height',
+                autoplayTimeout: 15000
+            });
+
+            //Set Header height on slider
+            if ($(".fixedHellobar.isEnableHellobar").hasClass('mobileMode')) {
+                var owl = $('#hellobar-slider');
+                owl.on('changed.owl.carousel', function (event) {
+                    var current = event.item.index;
+                    var getCurrSliderHeight = $(event.target).find(".owl-item").eq(current).find(".hellobar-item").height();
+                    var mobHeight = $(".mobile-header").height();
+
+                    var header_height = getCurrSliderHeight + 20 + mobHeight;
+                    $(".mobile-header .search-mobile-box").css("top", header_height + "px");
+                    $(".sm_menu_outer", ".fixedHellobar.isEnableHellobar").css("top", header_height + "px");
+                });
+            }
+
+        });
+    </script>
+}

@@ -1,0 +1,88 @@
+﻿@model Career.Web.Models.Customers.CustomerModel
+
+@{
+    //page title
+    ViewBag.PageTitle = Model.FirstName + " " + Model.LastName + (!string.IsNullOrEmpty(Model.AvatarAuthorPosition) ? " - " + Model.AvatarAuthorPosition : "");
+
+    var description = !string.IsNullOrEmpty(Model.Biography) ? Model.Biography.Split(". ").FirstOrDefault() : "";
+
+    var fullName = Model.FirstName + " " + Model.LastName;
+    ViewBag.Canonical = "ourteam/";
+}
+
+@if (!string.IsNullOrEmpty(description))
+{
+    @section metatags {
+        <meta name="description" content="@description.Replace("<p>","").Replace("</p>","")">
+    }
+}
+
+<div class="team-details">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="team-details-title">
+                    <h2>@Model.FirstName @Model.LastName</h2>
+                    <h3>@Model.AvatarAuthorPosition</h3>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="team-details-dis">
+                            @Html.Raw(Model.Biography)
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="team-details-right-side">
+                            <div class="articles-picture">
+                                <img class="img-responsive" src="@Model.BioImageUrl" alt="team">
+                            </div>
+                            @if (Model.BlogPostList.Any())
+                            {
+                                <div class="articles-list-widget">
+                                    <div class="articles-list-heading">
+                                        <h3>LASTEST ARTICLES</h3>
+                                    </div>
+                                    @foreach (var blogPost in Model.BlogPostList)
+                                    {
+                                        <div class="articles-list-item">
+                                            <h4><a href="/@blogPost.SeName.Replace("inspiration/", "news/")">@Html.Raw(blogPost.Title)</a></h4>
+                                            <p>@Html.Raw(blogPost.BodyOverview)</p>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="application/ld+json">
+    {
+      "@@context": "https://schema.org",
+      "@@type": "ProfilePage",
+      "mainEntity": {
+        "@@type": "Person",
+        "name": "@fullName",
+        "description": "@Model.AvatarAuthorPosition",
+        @if (string.IsNullOrEmpty(Model.SocialMediaURLs))
+        {
+        @:"image": "@Model.BioImageUrl"
+        }
+        else
+        {
+        @:"image": "@Model.BioImageUrl",
+        }
+        @if (!string.IsNullOrEmpty(Model.SocialMediaURLs))
+        {
+        @:"sameAs": [
+        @:     @Html.Raw(Model.SocialMediaURLs)
+        @:]
+        }
+      }
+    }
+</script>

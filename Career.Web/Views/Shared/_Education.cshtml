@@ -1,0 +1,65 @@
+﻿@model ApplicationFormModel
+
+<div class="input-group phone-input1">
+    <div>        
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Highest Education:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <select asp-for="Education.HighestEducation" id="Education_HighestEducation_@(Model.Education.Count)" name="education_highesteducation_@(Model.Education.Count)">
+                        <option value="Some High School">Some High School</option>
+                        <option value="High School Diploma/GED">High School Diploma/GED</option>
+                        <option value="Technical School">Technical School</option>
+                        <option value="Some College">Some College</option>
+                        <option value="Associates Degree">Associates Degree</option>
+                        <option value="Bachelors Degree">Bachelors Degree</option>
+                        <option value="Masters Degre">Masters Degree</option>
+                        <option value="Doctorate Degree">Doctorate Degree</option>
+                    </select>                    
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+            <div class="form-group">
+                <label for="institution" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Institution:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="Education_Institution_@(Model.Education.Count)" name="education_institution_@(Model.Education.Count)" class="form-control" placeholder="Institution">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="degree-zip-fields">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="degree" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Degree / Accomplishments:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="Education_DegreeAccomplishments_@(Model.Education.Count)" name="education_degreeaccomplishments_@(Model.Education.Count)" class="form-control" placeholder="Degree / Accomplishments">
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+            <div class="form-group">
+                <label for="zipcode" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">City:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="Education_City_@(Model.Education.Count)" name="education_city_@(Model.Education.Count)" class="form-control" placeholder="City">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="degree-zip-fields">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="state1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">State:</label> 
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <select asp-for="Education.State" asp-items="Model.Education.States" id="Education_State_@(Model.Education.Count)" name="education_state_@(Model.Education.Count)">
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group-btn">
+        <button class="btn btn-danger btn-remove-phone1 education-close-btn" type="button" name="submit"><span class="glyphicon glyphicon-remove"></span></button>
+    </div>
+</div>

@@ -1,0 +1,624 @@
+﻿@using Career.Data.Domains.LandingPages
+@using Career.Web.Models.LandingPage;
+@using System.Text.RegularExpressions
+@model LandingPageModel
+
+@{
+    //title
+    ViewBag.PageTitle = !string.IsNullOrEmpty(Model.MetaTitle) ? Model.MetaTitle : "Contest Pages";
+    ViewBag.MetaDescription = !string.IsNullOrEmpty(Model.MetaDescription) ? Model.MetaDescription : ViewBag.PageTitle;
+    ViewBag.Canonical = Model.SeName +"/";
+
+    var isAnyFieldEnabled = false;
+    var formId = Regex.Replace(Model.Title, @"[^a-zA-Z0-9]", "");
+}
+
+<style>
+    .contest-page {
+        padding-top: 30px;
+        margin-top: 30px;
+    }
+
+        .contest-page .page-title h1 {
+            font-size: 42px;
+            color: #000;
+            border-bottom: 1px solid #d5d5d5;
+            margin: 0px 0px 30px 0px;
+            padding: 0px 0px 15px 0px;
+        }
+
+    .cover-picture {
+        margin-bottom: 30px;
+    }
+
+    .fan-caves-box-warpper .title {
+        margin-bottom: 30px;
+    }
+
+        .fan-caves-box-warpper .title h2 {
+            color: #323232;
+            font-size: 30px;
+            margin: 0px;
+        }
+
+    .fan-caves-box-content h3 {
+        color: #323232;
+    }
+
+    .fan-caves-box-content {
+        margin-bottom: 30px;
+    }
+
+        .fan-caves-box-content img {
+            width: 100%;
+            max-height: 253px;
+        }
+
+    .register-chance-win-box .form-control {
+        box-shadow: none;
+        border: 1px solid #a3a3a3;
+        height: 45px;
+    }
+
+    .register-chance-win-box {
+        margin-top: 30px;
+        padding-bottom: 30px;
+        margin-bottom: 30px;
+        border-bottom: 1px solid #d5d5d5;
+    }
+
+        .register-chance-win-box .submit-btn {
+            text-align: left;
+            display: inline-block;
+            margin: 20px 0px;
+        }
+
+            .register-chance-win-box .submit-btn .contestpage-submit-button {
+                min-width: 270px;
+                padding: 10px 0px;
+                font-size: 16px;
+            }
+
+    .header-box {
+        display: none;
+    }
+
+    #ui-datepicker-div select.ui-datepicker-month, #ui-datepicker-div select.ui-datepicker-year {
+        width: 48% !important;
+        padding: 2px 34px 2px 4px !important;
+        height: 34px !important;
+        margin: 0px 1% !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev, #ui-datepicker-div .ui-datepicker-next {
+        top: 7px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev-hover,
+    #ui-datepicker-div .ui-datepicker-next-hover {
+        top: 7px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev {
+        left: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-next {
+        right: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev-hover {
+        left: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-next-hover {
+        right: 5px !important;
+    }
+
+    #ui-datepicker-div select.ui-datepicker-month, #ui-datepicker-div select.ui-datepicker-year {
+        background-color: #fff !important;
+    }
+
+    input.datepicker-icon {
+        background-image: url(../../images/calendar-icon.svg);
+        background-repeat: no-repeat;
+        background-size: 26px 25px;
+        background-position: 98% center;
+    }
+
+    #contest-form-fields {
+        list-style: none;
+        padding: 0;
+    }
+
+    .signmeup-button-wrapper{
+        margin-bottom: 10px;
+    }
+</style>
+
+<link href="~/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+
+<div class="container">
+    <form action="/@Model.SeName" method="post" id="@formId" name="@formId">
+        <input asp-for="LandingPageId" type="hidden" name="contestid">
+        <input asp-for="ContestId" type="hidden">
+        <input asp-for="LandingPageTypeId" type="hidden" />
+        <input asp-for="EventFlow" type="hidden" />
+        <input asp-for="NewsLetterEnabled" type="hidden" />
+        <input asp-for="EventListEnabled" type="hidden" />
+        <input asp-for="SMSEnabled" type="hidden" />
+        <input asp-for="ClosedFormEnabled" type="hidden" />
+        <div class="page contest-page from-panel">
+            <div class="main-section">
+                @if (Model.ClosedFormEnabled)
+                {
+                    @if (Model.ClosedFormModel.TitleEnabled)
+                    {
+                        <div class="page-title isBorder">
+                            <h1>@Model.Title</h1>
+                        </div>
+                    }
+                    <div class="page-body panel-body">
+                        @if (!Model.IsMobileDevice)
+                        {
+                            @if (!string.IsNullOrEmpty(Model.ClosedFormModel.PictureUrl) && !Model.ClosedFormModel.PictureUrl.Contains("default-image"))
+                            {
+                                <div class="common-margin-bottom">
+                                    <div class="cover-picture">
+                                        <img class="img-responsive" src="@Model.ClosedFormModel.PictureUrl" alt="contest page" title="contest page">
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            @if (!string.IsNullOrEmpty(Model.ClosedFormModel.MobilePictureUrl) && !Model.ClosedFormModel.PictureUrl.Contains("default-image"))
+                            {
+                                <div class="common-margin-bottom">
+                                    <div class="cover-picture">
+                                        <img class="img-responsive" src="@Model.ClosedFormModel.MobilePictureUrl" alt="contest page" title="contest page">
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="fan-caves-box-warpper">
+                            <div class="common-margin-bottom">
+                                <div class="register-chance-win-box" id="contest-page-form">
+                                    @if (!Model.IsMobileDevice)
+                                    {
+                                        @if (!string.IsNullOrEmpty(Model.ClosedFormModel.Description))
+                                        {
+                                            <div class="title">
+                                                @Html.Raw(Model.ClosedFormModel.Description)
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @if (!string.IsNullOrEmpty(Model.ClosedFormModel.MobileDescription))
+                                        {
+                                            <div class="title">
+                                                @Html.Raw(Model.ClosedFormModel.MobileDescription)
+                                            </div>
+                                        }
+                                    }
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 odd-filed odd-left">
+                                            <div class="form-group">
+                                                <input asp-for="Email" placeholder="Email address" name="email" class="form-control" type="email">
+                                                <div style="color:orangered">@Html.ValidationMessageFor(c => c.Email)</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 odd-filed odd-right">
+                                            <div class="form-group">
+                                                <input asp-for="Phone" placeholder="Phone number" name="phone" class="form-control">
+                                                <div style="color:orangered">@Html.ValidationMessageFor(c => c.Phone)</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="submit-btn">
+                                                <input class="btn btn-primary contestpage-submit-button" value="Submit" type="submit" name="submit" id="submit">
+                                            </div>
+                                        </div>
+                                        @if (Model.ClosedFormModel.NewsLetterEnabled)
+                                        {
+                                            <div class="col-md-12" id="what">
+                                                <div class="signmeup-button-wrapper">
+                                                    <div class="checkbox">
+                                                        <input asp-for="EmailSubscribed" name="subscribedemail">
+                                                        <label for="EmailSubscribed" id="SubscribedEmail">
+                                                            Sign me up for newsletters, exclusive offers and more!
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (Model.ClosedFormModel.SMSEnabled)
+                                        {
+                                            <div class="col-md-12" id="what">
+                                                <div class="signmeup-button-wrapper">
+                                                    <div class="checkbox">
+                                                        <input asp-for="SMSSubscribed" name="subscribedSMS">
+                                                        <label for="SMSSubscribed" id="SubscribedSMS">
+                                                            Sign me up for the Furniture Mart sms offers, style tips & more!
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (Model.ClosedFormModel.EventListEnabled && Model.EventFlowEnabled && !string.IsNullOrEmpty(Model.EventFlow))
+                                        {
+                                            <div class="col-md-12" id="what">
+                                                <div class="signmeup-button-wrapper">
+                                                    <div class="checkbox">
+                                                        <input asp-for="SubscribedEventList" name="subscribedeventlist">
+                                                        <label for="SubscribedEventList" id="SubscribedEventList">
+                                                            Sign me up for notifications of events at the Furniture Mart
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @if (Model.DisplayTitle)
+                    {
+                        <div class="page-title isBorder">
+                            <h1>@Model.Title</h1>
+                        </div>
+                    }
+                    <div class="page-body panel-body">
+                        @if (!Model.IsMobileDevice || Model.LandingPageTypeId == (int)LandingPageTypeEnum.Contest)
+                        {
+                            @if (!string.IsNullOrEmpty(Model.PictureUrl) && !Model.PictureUrl.Contains("default-image"))
+                            {
+                                <div class="common-margin-bottom">
+                                    <div class="cover-picture">
+                                        <img class="img-responsive" src="@Model.PictureUrl" alt="contest page" title="contest page">
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            @if (!string.IsNullOrEmpty(Model.MobilePictureUrl) && !Model.PictureUrl.Contains("default-image"))
+                            {
+                                <div class="common-margin-bottom">
+                                    <div class="cover-picture">
+                                        <img class="img-responsive" src="@Model.MobilePictureUrl" alt="contest page" title="contest page">
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="fan-caves-box-warpper">
+                            <div class="common-margin-bottom">
+                                <div class="register-chance-win-box" id="contest-page-form">
+                                    @if (!Model.IsMobileDevice || Model.LandingPageTypeId == (int)LandingPageTypeEnum.Contest)
+                                    {
+                                        @if (!string.IsNullOrEmpty(Model.Description))
+                                        {
+                                            <div class="title">
+                                                @Html.Raw(Model.Description)
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @if (!string.IsNullOrEmpty(Model.MobileDescription))
+                                        {
+                                            <div class="title">
+                                                @Html.Raw(Model.MobileDescription)
+                                            </div>
+                                        }
+                                    }
+
+
+                                    <ul class="row" id="contest-form-fields">
+                                        @if (Model.FirstNameEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-left firstname" data-val="@((int)LandingPageFormFieldEnum.FirstName)">
+                                                <div class="form-group">
+                                                    <input asp-for="FirstName" placeholder="First name" name="firstname" class="form-control" data-val="@((int)LandingPageFormFieldEnum.FirstName)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.FirstName)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.LastNameEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-right lastname" data-val="@((int)LandingPageFormFieldEnum.LastName)">
+                                                <div class="form-group">
+                                                    <input asp-for="LastName" placeholder="Last name" name="lastname" class="form-control" data-val="@((int)LandingPageFormFieldEnum.LastName)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.LastName)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.DateOfBirthEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-right" data-val="@((int)LandingPageFormFieldEnum.DOB)">
+                                                <div class="form-group">
+                                                    <input asp-for="DateOfBirth" placeholder="Birth date" name="dateofbirth" class="form-control datepicker-icon" autocomplete="off" type="text" data-val="@((int)LandingPageFormFieldEnum.DOB)">
+                                                    <div style="color:orangered" class="date-of-birth-validation">@Html.ValidationMessageFor(c => c.DateOfBirth)</div>
+                                                    @if (!ViewData.ModelState.IsValid)
+                                                    {
+                                                        <script>
+                                                            $(window).scrollTop($('#contest-page-form').position().top);
+                                                        </script>
+                                                    }
+
+                                                    @{
+                                                        var ageLimit = Model.DateOfBirth21 ? 21 : 18;
+                                                    }
+
+                                                    <script>
+                                                        $(document).ready(function () {
+                                                            $('#DateOfBirth').datepicker({
+                                                                minDate: new Date(1900, 1 - 1, 1), maxDate: '-@(ageLimit)Y',
+                                                                changeMonth: true,
+                                                                changeYear: true,
+                                                                yearRange: '-110:-@(ageLimit)',
+                                                                onSelect: function (dateText, inst) {
+                                                                    AgeValidation();
+                                                                }
+                                                            });
+                                                        });
+
+                                                        $('#DateOfBirth').keyup(function () {
+                                                            AgeValidation();
+                                                        });
+
+                                                        function AgeValidation() {
+                                                            // reset validation message
+                                                            BirthDateValidationMessage(false);
+
+                                                            if ($("#DateOfBirth").val().length == 0) {
+                                                                return;
+                                                            }
+
+                                                            var enteredAge = getAge($("#DateOfBirth").val());
+                                                            if (enteredAge < @(ageLimit) || enteredAge > 100) {
+                                                                BirthDateValidationMessage(true);
+                                                                return false;
+
+                                                            } else if (enteredAge >= @(ageLimit)) {
+                                                                $("span[data-valmsg-for='DateOfBirth']").attr('class', 'field-validation-valid');
+                                                                $("span[data-valmsg-for='DateOfBirth']").text("");
+                                                            }
+                                                        }
+                                                        function getAge(DOB) {
+                                                            var today = new Date();
+                                                            var birthDate = new Date(DOB);
+                                                            var age = today.getFullYear() - birthDate.getFullYear();
+                                                            var m = today.getMonth() - birthDate.getMonth();
+                                                            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+                                                                age--;
+                                                            }
+                                                            return age;
+                                                        }
+
+                                                        function BirthDateValidationMessage(display) {
+                                                            if (display) {
+                                                                $("#date-of-birth-validation").show();
+                                                            } else {
+                                                                $("#date-of-birth-validation").hide();
+                                                            }
+                                                        }
+                                                    </script>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.EmailAddressEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-left" data-val="@((int)LandingPageFormFieldEnum.Email)">
+                                                <div class="form-group">
+                                                    <input asp-for="Email" placeholder="Email address" name="email" class="form-control" type="email" data-val="@((int)LandingPageFormFieldEnum.Email)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.Email)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.PhoneNumberEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-right" data-val="@((int)LandingPageFormFieldEnum.Phone)">
+                                                <div class="form-group">
+                                                    <input asp-for="Phone" placeholder="Phone number" name="phone" class="form-control" data-val="@((int)LandingPageFormFieldEnum.Phone)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.Phone)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.StreetAddressEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-right" data-val="@((int)LandingPageFormFieldEnum.StreetAddress)">
+                                                <div class="form-group">
+                                                    <input asp-for="StreetAddress" placeholder="Street Address" name="streetaddress" class="form-control" data-val="@((int)LandingPageFormFieldEnum.StreetAddress)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.StreetAddress)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.CityEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-right" data-val="@((int)LandingPageFormFieldEnum.City)">
+                                                <div class="form-group">
+                                                    <input asp-for="City" placeholder="City" name="city" class="form-control" data-val="@((int)LandingPageFormFieldEnum.City)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.City)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.StateEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-right" data-val="@((int)LandingPageFormFieldEnum.StateProvince)">
+                                                <div class="form-group">
+                                                    <select class="custom-select" asp-for="StateProvinceId" asp-items="Model.AvailableStates" name="stateprovinceid" data-val="@((int)LandingPageFormFieldEnum.StateProvince)"></select>
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.StateProvinceId)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.ZipEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-left" data-val="@((int)LandingPageFormFieldEnum.Zip)">
+                                                <div class="form-group">
+                                                    @Html.HiddenFor(c => c.ZipCodeVerification)
+                                                    <input asp-for="ZipCodeVerification" type="hidden" name="zipcodeverification">
+                                                    <input asp-for="ZipPostalCode" placeholder="Zip code" name="zippostalcode" class="form-control" data-val="@((int)LandingPageFormFieldEnum.Zip)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.ZipPostalCode)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.InstagramHandleEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-right" data-val="@((int)LandingPageFormFieldEnum.InstagramHandle)">
+                                                <div class="form-group">
+                                                    <input asp-for="InstagramHandle" placeholder="Instagram Handle" name="instagramhandle" class="form-control" data-val="@((int)LandingPageFormFieldEnum.InstagramHandle)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.InstagramHandle)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.TwitterHandleEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-xs-12 col-sm-6 odd-filed odd-right" data-val="@((int)LandingPageFormFieldEnum.TwitterHandle)">
+                                                <div class="form-group">
+                                                    <input asp-for="TwitterHandle" placeholder="Twitter Handle" name="twitterhandle" class="form-control" data-val="@((int)LandingPageFormFieldEnum.TwitterHandle)">
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.TwitterHandle)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                        @if (Model.StoreDropdownEnabled)
+                                        {
+                                            isAnyFieldEnabled = true;
+                                            <li class="col-12 col-sm-6 odd-filed odd-left" data-val="@((int)LandingPageFormFieldEnum.Location)">
+                                                <div class="form-group">
+                                                    <select class="custom-select" asp-for="LocationId"  asp-items="Model.AvailableStoreLocation" data-val="@((int)LandingPageFormFieldEnum.Location)"></select>
+                                                    <div style="color:orangered">@Html.ValidationMessageFor(c => c.LocationId)</div>
+                                                </div>
+                                            </li>
+                                        }
+                                    </ul>
+
+                                    <div class="row">
+                                        @if (Model.LandingPageTypeId == (int)LandingPageTypeEnum.Registration && (!Model.NewsLetterEnabled || !Model.EmailAddressEnabled))
+                                        {
+                                        }
+                                        else
+                                        {
+                                            <div class="col-md-12" id="what">
+                                                <div class="signmeup-button-wrapper">
+                                                    <div class="checkbox">
+                                                        <input asp-for="EmailSubscribed" name="subscribedemail">
+                                                        <label for="EmailSubscribed" id="SubscribedEmail">
+                                                            Sign me up for newsletters, exclusive offers and more!
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                        @if (Model.LandingPageTypeId == (int)LandingPageTypeEnum.Registration && Model.SMSEnabled && Model.PhoneNumberEnabled)
+                                        {
+                                            <div class="col-md-12" id="what">
+                                                <div class="signmeup-button-wrapper">
+                                                    <div class="checkbox">
+                                                        <input asp-for="SMSSubscribed" name="subscribedSMS">
+                                                        <label for="SMSSubscribed" id="SubscribedSMS">
+                                                            Sign me up for the Furniture Mart sms offers, style tips & more!
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal fade note-popup" id="sms-note-popup" role="dialog" data-backdrop="static" data-keyboard="false">
+                                                <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+                                                    <div class="modal-content isTitle">
+                                                        <div class="modal-header">
+                                                            <button type="button" id="close" name="close" class="close" data-bs-dismiss="modal" aria-label="Close">
+                                                                <span aria-hidden="true"></span>
+                                                            </button>
+                                                        </div>
+                                                        <div class="modal-body wishlist-pop-up-body">
+                                                            By submitting this form, you agree to receive recurring automated promotional and personalized marketing text messages (e.g. cart reminders) from Furniture Mart at the cell number used when signing up.
+                                                            Consent is not a condition of any purchase. Reply HELP for help and STOP to cancel. Msg frequency varies. Msg and data rates may apply. View our Terms and Privacy pages for more information.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <script asp-location="Footer">
+                                                $(document).ready(function () {
+                                                    $("#SubscribedSMS").on("change", function () {
+                                                        if ($(this).is(":checked")) {
+                                                            $("#sms-note-popup").modal('show');
+                                                        }
+                                                    });
+                                                });
+                                            </script>
+                                        }
+                                        @if (Model.LandingPageTypeId == (int)LandingPageTypeEnum.Registration && Model.EventListEnabled && Model.EventFlowEnabled && !string.IsNullOrEmpty(Model.EventFlow) && (Model.EmailAddressEnabled || Model.PhoneNumberEnabled))
+                                        {
+                                            <div class="col-md-12" id="what">
+                                                <div class="signmeup-button-wrapper">
+                                                    <div class="checkbox">
+                                                        <input asp-for="SubscribedEventList" name="subscribedeventlist">
+                                                        <label for="SubscribedEventList" id="SubscribedEventList">
+                                                            Sign me up for notifications of events at the Furniture Mart
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                        @if (Model.LandingPageTypeId == (int)LandingPageTypeEnum.Registration && !string.IsNullOrEmpty(Model.LandingPageFormFieldsSortOrder))
+                                        {
+                                            <script>
+                                                    $(document).ready(function () {
+                                                        var displayOrder = "@Model.LandingPageFormFieldsSortOrder.ToString()".split(',');
+                                                        var $list = $('#contest-form-fields');
+                                                        var $listLi = $('li', $list);
+                                                        $.each(displayOrder, function (index, value) {
+                                                            $.each($listLi, function (rowIndex, row) {
+                                                                if (value == $(row).data("val")) {
+                                                                    $list.append(row);
+                                                                }
+                                                            });
+                                                        });
+                                                    });
+                                            </script>
+                                        }
+                                        @if (isAnyFieldEnabled)
+                                        {
+                                            <div class="col-md-12">
+                                                <div class="submit-btn">
+                                                    <input class="btn btn-primary contestpage-submit-button" value="Submit" type="submit" name="submit" id="submit">
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @if (!string.IsNullOrEmpty(Model.DisclaimerText))
+                        {
+                            <div class="disclaimers-text">
+                                @Html.Raw(Model.DisclaimerText)
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </form>
+</div>

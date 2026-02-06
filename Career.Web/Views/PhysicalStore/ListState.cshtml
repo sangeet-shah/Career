@@ -1,0 +1,36 @@
+﻿@using Career.Data.Domains.Common
+@using Career.Data.Domains.Locations
+@using Career.Web.Models.StoreManagement
+@using Career.Data.Domains.PhysicalStores
+
+@model LocationStateListModel
+
+<div class="locations-item-widget">
+    <h2 class="locations-item-title">@Model.StateName</h2>
+    <div class="locations-item-group">
+        @foreach (var cityStore in Model.CityListModel.OrderBy(c=>c.City))
+        {
+            <div class="locations-item">
+                <h4>@cityStore.City</h4>
+                <ul>
+                    @foreach (var store in cityStore.PhysicalStoreListModel)
+                    {
+                        var url = "";
+                        if (store.WebsiteId == ((int)WebsiteEnum.UCF))
+                            url = store.StoreUrl.TrimEnd('/') + "/";
+                        else if (store.WebsiteId == ((int)WebsiteEnum.FMUSA))
+                            url = store.StoreUrl.TrimEnd('/') + "/";
+                        else
+                            url = store.StoreUrl;
+
+                        <li>
+                            <a href="@url">
+                                @Html.Raw(store.Name)
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+</div>

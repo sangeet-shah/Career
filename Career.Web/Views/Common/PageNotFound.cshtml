@@ -1,0 +1,33 @@
+﻿@model PageNotFoundModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "Page not found";
+}
+
+<div class="page-not-found-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                @if (!string.IsNullOrEmpty(Model.Body) && !Model.IsMobileDevice)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.Raw(Model.Body)
+                        </div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.MobileBody) && Model.IsMobileDevice)
+                {
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.Raw(Model.MobileBody)
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

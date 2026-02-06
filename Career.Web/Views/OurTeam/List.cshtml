@@ -1,0 +1,51 @@
+﻿@model Career.Web.Models.Customers.CustomerListModel
+@{
+    //page title
+    ViewBag.PageTitle = "Our Team";
+    ViewBag.Canonical = "ourteam/";
+}
+
+<div class="our-team-section">
+    <div class="container">
+        <div class="our-team-section-title">
+            <h1>OUR TEAM</h1>
+        </div>
+        <div class="row team-item-box">
+            @foreach (var customer in Model.CustomerList)
+            {
+                var fullName = string.Empty;
+                if(!string.IsNullOrEmpty(customer.FirstName))
+                {
+                    fullName = customer.FirstName.ToLower().Replace(" ", "-");
+                }
+                if (!string.IsNullOrEmpty(customer.LastName))
+                {
+                    fullName += "-" + customer.LastName.ToLower().Replace(" ", "-");
+                }
+                var route = customer.FMUSABio ? "/ourteam/" + fullName +"/" : string.Empty;
+
+                <div class="col-md-3 col-sm-6">
+                    <div class="team-item">
+                        <div class="team-picture">
+                            <a @(!string.IsNullOrEmpty(route) ? "href=" + route : "")>
+                                <img class="img-responsive" src="@customer.AvatarUrl" alt="team">
+                            </a>
+                        </div>
+                        <div class="team-dis">
+                            <h4>
+                                <a @(!string.IsNullOrEmpty(route) ? "href=" + route : "")>
+                                    @customer.FirstName @customer.LastName
+                                </a>
+                            </h4>
+                            <p>
+                                <a @(!string.IsNullOrEmpty(route) ? "href=" + route : "")>
+                                    @customer.AvatarAuthorPosition
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

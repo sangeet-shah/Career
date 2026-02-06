@@ -1,0 +1,187 @@
+﻿@model Career.Web.Models.Blogs.BlogPostListModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "News";
+    ViewBag.Canonical = "news/";
+}
+
+@if (Model.GalleryPictures.Any())
+{
+    <div class="expansion-progress-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="expansion-progress-heading">
+                        <h2>@Model.PhotoGalleryTitle</h2>
+                    </div>
+                    <div class="expansion-progress-slider-widget">
+                        <div class="item-grid">
+                            <div class="owl-carousel" id="expansion-progress-slider">
+                                @foreach (var gallery in Model.GalleryPictures)
+                                {
+                                    <div class="item-box expansion-progress-slider-img">
+                                        <img class="img-responsive" src="@gallery.PictureURL" title="@gallery.Title" alt="@gallery.AltText">
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="expansion-progress-slider-popup">
+            <div class="gallary-slider-bg"></div>
+            <div class="close-gallary">X</div>
+            <div class="owl-carousel" id="expansion-progress-slider-popup">
+                @foreach (var gallery in Model.GalleryPictures)
+                {
+                    <div class="item-box expansion-progress-slider-img">
+                        <a href="@gallery.Link" target="_blank">
+                            <img class="img-responsive" src="@gallery.PictureURL" title="@gallery.Title" alt="@gallery.AltText">
+                        </a>
+                        <h4 style="color: #fff; text-align: center;">@gallery.ShortDescription</h4>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('#expansion-progress-slider').owlCarousel({
+                loop: false,
+                margin: 15,
+                responsiveClass: true,
+                dots: false,
+                nav: true,
+                responsive: {
+                    0: {
+                        items: 2,
+                        nav: true,
+                        margin: 15,
+                        dots: true,
+                        nav: false,
+                    },
+                    600: {
+                        items: 3,
+                        dots: true,
+                        nav: false
+                    },
+                    1000: {
+                        items: 5,
+                        nav: true,
+                        loop: false
+                    }
+                }
+            })
+            $('#expansion-progress-slider-popup').owlCarousel({
+                loop: false,
+                margin: 15,
+                responsiveClass: true,
+                dots: false,
+                nav: true,
+                responsive: {
+                    0: {
+                        items: 2,
+                        nav: true,
+                        margin: 15,
+                        dots: true,
+                        nav: false,
+                    },
+                    600: {
+                        items: 3,
+                        dots: true,
+                        nav: false
+                    },
+                    1000: {
+                        items: 5,
+                        nav: true,
+                        loop: false
+                    }
+                }
+            })
+        })
+    </script>
+    <script asp-location="Footer">
+        $(document).ready(function () {
+            $("#show-gallary, .expansion-progress-slider-img").on("click", function () {
+                $('.expansion-progress-slider-popup').addClass('active');
+            });
+            $(".close-gallary, .gallary-slider-bg").on("click", function () {
+                $('.expansion-progress-slider-popup').removeClass('active');
+            });
+
+        });
+    </script>
+}
+
+@if (Model.BlogPostList.Any())
+{
+    <div class="news-list-table-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="news-list-table-heading">
+                        <h2 class="title-web">FURNITURE MART USA IN THE NEWS</h2>
+                        <h2 class="title-mobile">FMUSA IN THE NEWS</h2>
+                                  <a class="link-rss" href="/news/rss/">
+             
+                <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+                    <svg  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="#fff" d="M128.081 415.959c0 35.369-28.672 64.041-64.041 64.041S0 451.328 0 415.959s28.672-64.041 64.041-64.041 64.04 28.673 64.04 64.041zm175.66 47.25c-8.354-154.6-132.185-278.587-286.95-286.95C7.656 175.765 0 183.105 0 192.253v48.069c0 8.415 6.49 15.472 14.887 16.018 111.832 7.284 201.473 96.702 208.772 208.772.547 8.397 7.604 14.887 16.018 14.887h48.069c9.149.001 16.489-7.655 15.995-16.79zm144.249.288C439.596 229.677 251.465 40.445 16.503 32.01 7.473 31.686 0 38.981 0 48.016v48.068c0 8.625 6.835 15.645 15.453 15.999 191.179 7.839 344.627 161.316 352.465 352.465.353 8.618 7.373 15.453 15.999 15.453h48.068c9.034-.001 16.329-7.474 16.005-16.504z"/></svg>
+
+
+            </a>
+                    </div>
+                  
+                </div>
+                <div class="col-md-12">
+                    @foreach (var blogPost in Model.BlogPostList)
+                    {
+                        <div class="news-item">
+                            <div class="news-text">
+                                <h4>
+                                    <a href="/@blogPost.SeName.Replace("inspiration/","news/")">
+                                        @Html.Raw(blogPost.Title)
+                                    </a>
+                                </h4>
+                                @if (blogPost.StartDateUtc != null)
+                                {
+                                    <span>@blogPost.StartDateUtc?.ToString("MMMM dd, yyyy")</span>
+                                }
+                                <p>@Html.Raw(blogPost.BodyOverview)</p>
+                                <div class="news-mobile-arrow">
+                                    <a href="/@blogPost.SeName.Replace("inspiration/","news/")">
+                                        <img class="img-responsive" src="~/images/news-right-arrow.png" alt="news items">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="news-picture">
+                                @if (!string.IsNullOrEmpty(blogPost.FMUSAPictureURL))
+                                {
+                                    <a href="/@blogPost.SeName.Replace("inspiration/","news/")">
+                                        <img class="img-responsive" src="@blogPost.FMUSAPictureURL" alt="news items">
+                                    </a>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-12">
+                    <div class="news-pager">
+                        <div class="pager">
+                            <ul class="pagination">
+                                @for (var i = 1; i <= Model.TotalPages; i++)
+                                {
+                                    <li class="page-item @(i == Model.Page ? "active" : "")">
+                                        <a href="/news/?page=@i" class="page-link">@i</a>
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

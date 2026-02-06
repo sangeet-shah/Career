@@ -1,0 +1,1510 @@
+﻿@model ApplicationFormModel
+
+@using Career.Data.Services.Common
+@using Career.Web.Models.Career
+@using Career.Data.Domains.Common
+@inject ICommonService commonService
+
+@{
+    ViewBag.PageTitle = "Apply Job";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["HeadCustom"] = "<link rel='canonical' href='"+@Model.baseURL+"/careers/careerdetail/?id="+@Model.JobId+"' />";    
+}
+
+<link href="~/lib/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+<script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+
+<section class="contact application-page" id="contact">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-centered">
+                <h2 class="short">@Model.JobTitle</h2>
+                <hr>
+                <div class="store-info">
+                    <p>Location: @Model.Location</p>
+                    <p>Store: @Model.StoreName</p>
+                    <p>Department: @Model.Department</p>
+                </div>
+
+                <div class="clearfix"></div>
+                <p>@Model.GreetingText</p>
+                <div class="clearfix"></div>
+                <p>The Hiring Manager will contact you directly should you be selected for an interview for this position.</p>
+                <div class="clearfix"></div>
+                <div class="panel-group" id="panels">
+                    @using (Html.BeginForm("ApplyJob", "Career", FormMethod.Post, new { enctype = "multipart/form-data", id = "apply-job",name="applyjob" }))
+                    {
+                        <input type="hidden" name="jobid" id="JobId" value="@Model.JobId">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" id="pnlone" data-parent="#panels" href="#collapseOne">
+                                    <h4 class="panel-title">
+                                        Personal Information
+                                    </h4>
+                                </a>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse in">
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3  control-label">First Name*:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(c => c.FirstName, new { @class = "form-control", placeholder = "First name" })
+                                                        <div class="error" id="firstNameValidMsg">@Html.ValidationMessageFor(c => c.FirstName)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="lname" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Last Name*:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(c => c.LastName, new { @class = "form-control", placeholder = "Last name" })
+                                                        <div class="error" id="lastNameValidMsg">@Html.ValidationMessageFor(c => c.LastName)</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="email" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Address*:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(c => c.Address, new { @class = "form-control", placeholder = "Address" })
+                                                        <div class="error" id="addressValidMsg">@Html.ValidationMessageFor(c => c.Address)</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="city" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">City*:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(c => c.City, new { @class = "form-control", placeholder = "City" })
+                                                        <div class="error" id="cityValidMsg">@Html.ValidationMessageFor(c => c.City)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="state" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">State:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.DropDownListFor(c => c.State, Model.States, new { @class = "form-control" })
+                                                        <div class="error" id="stateValidMsg">@Html.ValidationMessageFor(c => c.State)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="zipcode" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Zip code*:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(c => c.ZipCode, new { @class = "form-control numeric", placeholder = "Zip code" })
+                                                        <div class="error" id="zipCodeValidMsg">@Html.ValidationMessageFor(c => c.ZipCode)</div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="tel" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Phone*:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(c => c.Phone, new { @class = "form-control numeric", placeholder = "Numbers only" })
+                                                        @Html.ValidationMessageFor(c => c.Phone)
+                                                        <div class="error" id="phoneValidMsg"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="Email" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Email*:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(c => c.Email, new { @class = "form-control", type = "email", placeholder = "Email" })
+                                                        @Html.ValidationMessageFor(c => c.Email)
+                                                        <div class="error" id="EmailValidMsg"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group pull-right">
+                                                    <div class="col-md-9 col-md-offset-3">
+                                                        <button class="btn btn-primary" id="btnNextOne" name="btnnextone" type="button" href="#collapseTwo" role="button">NEXT STEP</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" id="pnlTwo" data-parent="#panels" href="#collapseTwo">
+                                    <h4 class="panel-title">
+                                        Resume & Professional Links (Optional)
+                                    </h4>
+                                </a>
+                            </div>
+                            <div id="collapseTwo" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Upload Resume:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        <input type="file" name="resumefilepath" id="ResumeFilePath" class="statelist"> @*Resume upload*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="coverletter" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Upload Cover Letter:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        <input type="file" name="upfilecoverletterpath" id="upFileCoverLetterPath" class="statelist"> @*Upload Cover Letter*@
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="linkedin" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 social-margin control-label">LinkedIn <span class="social-span"><img class="social-icon" src="~/images/linkdin-icon-large.png"></span></label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(x => x.LinkedinURL, new { type = "url", @class = "form-control", placeholder = "Please enter your LinkedIn URL" })
+                                                        @Html.ValidationMessageFor(x => x.LinkedinURL)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="facebook" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 social-margin control-label">Facebook <span class="social-span"><img class="social-icon" src="~/images/facebook-icon-large.png"></span></label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(x => x.FacebookURL, new { type = "url", @class = "form-control", placeholder = "Please enter your Facebook URL" })
+                                                        @Html.ValidationMessageFor(x => x.FacebookURL)
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="portfolio" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Portfolio:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(x => x.PortFolioURL, new { @class = "form-control", placeholder = "Portfolio" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="social-url-list"></div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-6 col-sm-6 col-md-offset-6 col-md-6 col-lg-offset-6 col-lg-6">
+                                                <a class="btn-more btn-add-social-url pull-right"><span class="social-span"><img class="social-icon" src="~/images/add-more-icon.png"></span> Add More</a>
+                                            </div>
+                                        </div>
+                                        <div class="form-group pull-right">
+                                            <div class="col-md-9 col-md-offset-3">
+                                                <button class="btn btn-primary" id="btnNextTwo" name="btnnexttwo" type="button" href="#collapseTwo" role="button">NEXT STEP</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" id="pnlthree" data-parent="#panels" href="#collapseThree">
+                                    <h4 class="panel-title">
+                                        Education & Work Experience History
+                                    </h4>
+                                </a>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse education-history">
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <h4>EDUCATION</h4>
+                                        <div class="col-md-12">
+                                            <div class="row">
+                                                <div>
+                                                    @Html.HiddenFor(x => x.Education.Count)
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                        <div class="form-group">
+                                                            <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Highest Education:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.DropDownListFor(x => x.Education.HighestEducation, new[]{
+                                                                    new SelectListItem(){ Text = "Some High School", Value = "Some High School"},
+                                                                    new SelectListItem(){ Text = "High School Diploma/GED", Value = "High School Diploma/GED"},
+                                                                    new SelectListItem(){ Text = "Technical School", Value = "Technical School"},
+                                                                    new SelectListItem(){ Text = "Some College", Value = "Some College"},
+                                                                    new SelectListItem(){ Text = "Associates Degree", Value = "Associates Degree"},
+                                                                    new SelectListItem(){ Text = "Bachelors Degree", Value = "Bachelors Degree"},
+                                                                    new SelectListItem(){ Text = "Masters Degree", Value = "Masters Degree"},
+                                                                    new SelectListItem(){ Text = "Doctorate Degree", Value = "Doctorate Degree"},
+                                                                    }, new { @class = "form-control", @id = "Education_HighestEducation_" + Model.Education.Count, @name = "Education_HighestEducation_" + Model.Education.Count })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                        <div class="form-group">
+                                                            <label for="institution" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Institution:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.Education.Institution, new { @class = "form-control", @id = "Education_Institution_" + Model.Education.Count, @name = "Education_Institution_" + Model.Education.Count, placeholder = "Institution" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div class="degree-zip-fields">
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                        <div class="form-group">
+                                                            <label for="degree" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Degree / Accomplishments:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.Education.DegreeAccomplishments, new { @class = "form-control", @id = "Education_DegreeAccomplishments_" + Model.Education.Count, @name = "Education_DegreeAccomplishments_" + Model.Education.Count, placeholder = "Degree / Accomplishments" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                        <div class="form-group">
+                                                            <label for="zipcode" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">City:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.Education.City, new { @class = "form-control", @id = "Education_City_" + Model.Education.Count, @name = "Education_City_" + Model.Education.Count, placeholder = "City" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div class="degree-zip-fields">
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                        <div class="form-group">
+                                                            <label for="state1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">State:</label> <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.DropDownListFor(c => c.Education.State, Model.States, new { @class = "form-control", @id = "Education_State_" + Model.Education.Count, @name = "Education_State_" + Model.Education.Count })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="phone-list1"></div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <a class="btn-more pull-right btn-add-phone1"><span class="social-span"><img class="social-icon" src="~/images/add-more-icon.png"></span> Add More</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h4>WORK EXPERIENCE (Include 3 most recent)</h4>
+                                                <div class="row set-minHeight">
+                                                    @Html.HiddenFor(x => x.WorkExperience.Count)
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="job-title" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Job Title*:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.JobTitle, new { @class = "form-control", placeholder = "Job Title" })
+                                                                <div class="error" id="woJobTitleValidMsg"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="company" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Company*:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.Company, new { @class = "form-control", placeholder = "Company" })
+                                                                <div class="error" id="woCompanyValidMsg"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="state1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">State:</label> <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.DropDownListFor(c => c.WorkExperience.State, Model.States, new { @class = "form-control" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+                                                        <div class="form-group">
+                                                            <label for="city1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">City*:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.City, new { @class = "form-control", placeholder = "City" })
+                                                                <div class="error" id="woCityValidMsg"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="startdate1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Start Date:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.StartDate, "{0:MM-dd-yyyy}", new { @class = "form-control datepicker-icon readOnlyDate", autocomplete = "off", @readonly = "readonly" })
+                                                                @Html.ValidationMessageFor(c => c.WorkExperience.StartDate)
+                                                                <div class="error" id="woStartDateValidMsg"></div>
+                                                                <script>
+                                                                    $(document).ready(function () {
+                                                                        $('#WorkExperience_StartDate').datepicker({
+                                                                            changeMonth: true,
+                                                                            changeYear: true,
+                                                                            yearRange: "-200:+0",
+                                                                            maxDate: 'now'
+                                                                        });
+                                                                    });
+                                                                </script>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="enddate1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">End Date:</label> <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.EndDate, "{0:MM-dd-yyyy}", new { @class = "form-control datepicker-icon readOnlyDate", autocomplete = "off", @readonly = "readonly" })
+                                                                @Html.ValidationMessageFor(c => c.WorkExperience.EndDate)
+                                                                <div class="error" id="woEndDateValidMsg"></div>
+                                                                <script>
+                                                                    $(document).ready(function () {
+                                                                        $('#WorkExperience_EndDate').datepicker({
+                                                                            changeMonth: true,
+                                                                            changeYear: true,
+                                                                            yearRange: "-200:+0",
+                                                                            maxDate: 'now'
+                                                                        });
+                                                                    });
+                                                                </script>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    @if (!string.IsNullOrEmpty(Model.Location) && Model.Location.Trim().ToLower() != "il")
+                                                    {
+                                                        <div id="woPayUpOnLeavingContainer" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 woPayUpOnLeaving">
+                                                            <div class="form-group">
+                                                                <label for="pay" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Pay Upon Leaving*:</label>
+                                                                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                    @Html.TextBoxFor(x => x.WorkExperience.PayUpOnLeaving, new { @class = "form-control", placeholder = "Pay Upon Leaving" })
+                                                                    <div class="error" id="woPayUpOnLeavingValidMsg"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="reason" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Reason for Leaving*:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.ResionForLeaving, new { @class = "form-control", placeholder = "Reason for Leaving" })
+                                                                <div class="error" id="woResionForLeavingValidMsg"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="city1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Supervisor*:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.Supervisor, new { @class = "form-control", placeholder = "Supervisor" })
+                                                                <div class="error" id="woSupervisorValidMsg"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="phone1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Phone*:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.Phone, new { @class = "form-control numeric", placeholder = "Phone" })
+                                                                @Html.ValidationMessageFor(c => c.WorkExperience.Phone)
+                                                                <div class="error" id="woPhoneValidMsg"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="city1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Job Duties*:</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.WorkExperience.JobDuties, new { @class = "form-control", placeholder = "Job Duties" })
+                                                                <div class="error" id="woJobDutiesValidMsg"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                        <div class="form-group">
+                                                            <label for="phone1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">May we contact this employer?</label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                <div class="CurrentEmployer">
+                                                                    <div class="radio yes-radio">
+                                                                        @Html.RadioButton("MayWeContactYourCurrentEmployer", "True", new { id = "MayWeContactYourCurrentEmployerYes", @name = "MayWeContactYourCurrentEmployer" })
+                                                                        <label class="forcheckbox" for="MayWeContactYourCurrentEmployerYes">Yes</label>
+                                                                    </div>
+                                                                    <div class="radio yes-radio">
+                                                                        @Html.RadioButton("MayWeContactYourCurrentEmployer", "False", new { id = "MayWeContactYourCurrentEmployerNo", @name = "MayWeContactYourCurrentEmployer" })
+                                                                        <label class="forcheckbox" for="MayWeContactYourCurrentEmployerNo">No</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div class="phone-list2"></div>
+                                                <div class="form-group">
+                                                    <div class="col-md-12">
+                                                        <a class="btn-more pull-right btn-add-phone2"><span class="social-span"><img class="social-icon" src="~/images/add-more-icon.png"></span> Add More</a>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group pull-right">
+                                                    <div class="col-md-9 col-md-offset-3">
+                                                        <button class="btn btn-primary" id="btnNextthree" name="btnnextthree" type="button" href="#collapseTwo" role="button">NEXT STEP</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" id="pnlsix" data-parent="#panels" href="#collapsesix">
+                                    <h4 class="panel-title">
+                                        References (Work-related)
+                                    </h4>
+                                </a>
+                            </div>
+                            <div id="collapsesix" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <h4>Reference:</h4>
+                                        <div>
+                                            <div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                    <div class="form-group">
+                                                        <label for="salary" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Reference Name*:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.ReferenceName, new { @class = "form-control", placeholder = "Reference Name" })
+                                                            <div class="error" id="rfNameValidMsg"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                    <div class="form-group">
+                                                        <label for="start-date" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Reference Email*:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.ReferenceEmail, new { @class = "form-control", type = "email", placeholder = "Reference Email" })
+                                                            @Html.ValidationMessageFor(c => c.Reference.ReferenceEmail)
+                                                            <div class="error" id="rfEmailValidMsg"></div>
+                                                            <span class="error" id="rfEmailError"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="question-select">
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Phone*:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.PhoneNumber, new { @class = "form-control numeric", placeholder = "Phone" })
+                                                            @Html.ValidationMessageFor(c => c.Reference.PhoneNumber)
+                                                            <div class="error" id="rfPhoneValidMsg"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Relationship:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.DropDownListFor(x => x.Reference.Relationship, new[]{
+                                                                                                        new SelectListItem(){ Text = "Supervisor", Value = "Supervisor"},
+                                                                                                    new SelectListItem(){ Text = "Co-Worker", Value = "Co-Worker"},
+                                                                                                    new SelectListItem(){ Text = "Employee", Value = "Employee" },
+                                                                                                    new SelectListItem(){ Text = "Personal", Value = "Personal"},
+                                                                                                    new SelectListItem(){ Text = "Other", Value = "Other"},
+                                                                                                    }, new { @class = "form-control ", id = "relationship" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                        <div class="form-group">
+                                                            <label for="salary" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"></label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="otherReference" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                        <div class="form-group">
+                                                            <label for="start-date" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"></label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.Reference.ReferenceOtherOption, new { @class = "form-control", @placeholder = "Type Other Option" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <h4>Reference:</h4>
+                                        <div>
+                                            <div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                    <div class="form-group">
+                                                        <label for="salary" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Reference Name:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.ReferenceName1, new { @class = "form-control", placeholder = "Reference Name" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                    <div class="form-group">
+                                                        <label for="start-date" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Reference Email:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.ReferenceEmail1, new { @class = "form-control", placeholder = "Reference Email" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="question-select">
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Phone:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.PhoneNumber1, new { @class = "form-control numeric", placeholder = "Phone" })
+                                                            @Html.ValidationMessageFor(c => c.Reference.PhoneNumber1)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Relationship:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.DropDownListFor(x => x.Reference.Relationship1, new[]{
+                                                                                                        new SelectListItem(){ Text = "Supervisor", Value = "Supervisor"},
+                                                                                                    new SelectListItem(){ Text = "Co-Worker", Value = "Co-Worker"},
+                                                                                                    new SelectListItem(){ Text = "Employee", Value = "Employee" },
+                                                                                                    new SelectListItem(){ Text = "Personal", Value = "Personal"},
+                                                                                                    new SelectListItem(){ Text = "Other", Value = "Other"},
+                                                                                                    }, new { @class = "form-control ", id = "relationship1" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                        <div class="form-group">
+                                                            <label for="salary" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"></label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="otherReference1" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                        <div class="form-group">
+                                                            <label for="start-date" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"></label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.Reference.ReferenceOtherOption1, new { @class = "form-control", @placeholder = "Type Other Option" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <h4>Reference:</h4>
+                                        <div>
+                                            <div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                    <div class="form-group">
+                                                        <label for="salary" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Reference Name:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.ReferenceName2, new { @class = "form-control", placeholder = "Reference Name" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                    <div class="form-group">
+                                                        <label for="start-date" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Reference Email:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.ReferenceEmail2, new { @class = "form-control", placeholder = "Reference Email" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <div class="question-select">
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Phone:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.TextBoxFor(x => x.Reference.PhoneNumber2, new { @class = "form-control numeric", placeholder = "Phone" })
+                                                            @Html.ValidationMessageFor(c => c.Reference.PhoneNumber2)
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                    <div class="form-group">
+                                                        <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Relationship:</label>
+                                                        <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                            @Html.DropDownListFor(x => x.Reference.Relationship2, new[]{
+                                                                                                    new SelectListItem(){ Text = "Supervisor", Value = "Supervisor"},
+                                                                                                new SelectListItem(){ Text = "Co-Worker", Value = "Co-Worker"},
+                                                                                                new SelectListItem(){ Text = "Employee", Value = "Employee" },
+                                                                                                new SelectListItem(){ Text = "Personal", Value = "Personal"},
+                                                                                                new SelectListItem(){ Text = "Other", Value = "Other"},
+                                                                                                }, new { @class = "form-control ", id = "relationship2" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                        <div class="form-group">
+                                                            <label for="salary" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"></label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div id="otherReference2" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                        <div class="form-group">
+                                                            <label for="start-date" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label"></label>
+                                                            <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                                @Html.TextBoxFor(x => x.Reference.ReferenceOtherOption2, new { @class = "form-control", @placeholder = "Type Other Option" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-md-12 text-field-right text-field-left certification-section">
+                                        </div>
+                                        <div class="form-group pull-right">
+                                            <div class="col-md-9 col-md-offset-3">
+                                                <button class="btn btn-primary" href="#collapseTwo" id="btnNextFive" name="btnnextfive" type="button" role="button">NEXT STEP</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" id="pnlfour" data-parent="#panels" href="#collapseFour">
+                                    <h4 class="panel-title">
+                                        Furniture Mart USA - Future Employment Information
+                                    </h4>
+                                </a>
+                            </div>
+                            <div id="collapseFour" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div class="form-horizontal">
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="salary" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Starting Wage you are seeking*:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(x => x.DesiredSalary, new { @class = "form-control", placeholder = "Starting Wage you are seeking" })
+                                                        <div class="error" id="EISalaryValidMsg"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="start-date" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Eligible Start Date:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(x => x.StartDate, "{0:MM-dd-yyyy}", new { @class = "form-control datepicker-icon readOnlyDate", autocomplete = "off", @readonly = "readonly" })
+                                                        @Html.ValidationMessageFor(c => c.StartDate)
+                                                        <div class="error" id="EIStartDateValidMsg"></div>
+                                                        <script>
+                                                            $(document).ready(function () {
+                                                                $('#StartDate').datepicker({
+                                                                    changeMonth: true,
+                                                                    changeYear: true,
+                                                                    minDate: 'now'
+                                                                });
+                                                            });
+                                                        </script>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="question-select">
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Do you prefer?</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.DropDownListFor(x => x.DoYouPreferPartTime, new[] { new SelectListItem() { Text = "Any:Part-time/Full-time/Temp", Value = "Any:Part-time/Full-time/Temp" }, new SelectListItem() { Text = "Full-time", Value = "Full-time" }, new SelectListItem() { Text = "Part-time", Value = "Part-time" }, new SelectListItem() { Text = "Temp", Value = "Temp" } }, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="name" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Preferred Days:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.DropDownListFor(x => x.CanYouWork, new[] {
+                                                       new SelectListItem() { Text = "Any Day", Value = "Any Day" },
+                                                       new SelectListItem() { Text = "Weekdays", Value = "Weekdays" },
+                                                       new SelectListItem() { Text = "Weekends", Value = "Weekends" } },
+    new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="col-xs-12 col-md-12 text-field-right text-field-left certification-section">
+                                            <div class="form-group">
+                                                <label for="start-date" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label">Any days/times you are not available to work:</label>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    @Html.TextAreaFor(x => x.PreferredDaysNotAvailable, new { @class = "form-control", @placeholder = "List any days/times " })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="available" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Preferred Hours:</label>
+                                                    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                                                        @Html.DropDownListFor(x => x.NotAvailable, new[] { new SelectListItem() { Text = "Days", Value = "Days" }, new SelectListItem() { Text = "Evenings", Value = "Evenings" }, new SelectListItem() { Text = "Any Shift", Value = "Any Shift" } }, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="start-date" class="col-xs-4 col-sm-8 col-md-9 col-lg-9 control-label">Are you 18 years of age or older?</label>
+                                                    <div class="col-xs-8 col-sm-4 col-md-3 col-lg-3">
+                                                        @Html.DropDownListFor(x => x.AreYouAboveEighteen, new[] { new SelectListItem() { Text = "Yes", Value = "Yes" }, new SelectListItem() { Text = "No", Value = "No" } }, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="employer-section">
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="employed" class="col-xs-12 col-sm-4 col-md-4 col-lg-4 control-label">Were you previously employed by this company or an affiliated company?</label>
+                                                    <div class="col-xs-5 col-sm-4 col-md-3 col-lg-3 even">
+                                                        @Html.DropDownListFor(x => x.AffiliatedCompanyYESorNO, new[] { new SelectListItem() { Text = "Yes", Value = "Yes" }, new SelectListItem() { Text = "No", Value = "No" } }, new { @class = "form-control" })
+                                                    </div>
+                                                    <div class="col-xs-7 col-sm-4 col-md-5 col-lg-5 odd">
+                                                        @Html.TextBoxFor(x => x.AffiliatedCompanyListString, new { @class = "form-control", @placeholder = "If yes, provide detail" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="start-date" class="col-xs-4 col-sm-8 col-md-9 col-lg-9 control-label">If hired, can you provide documents required to establish your eligibility to work in the United States?</label>
+                                                    <div class="col-xs-8 col-sm-4 col-md-3 col-lg-3">
+                                                        @Html.DropDownListFor(x => x.CanYouProvideDocuments, new[] { new SelectListItem() { Text = "Yes", Value = "Yes" }, new SelectListItem() { Text = "No", Value = "No" } }, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="col-xs-12 col-md-12 text-field-right text-field-left certification-section">
+                                            <div class="form-group">
+                                                <label for="start-date" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label">Do you have any certifications, other knowledge, special technical or computer skills, and/or individual capabilities which prepare you for the position for which you have applied?</label>
+                                                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                    @Html.TextAreaFor(x => x.DoYouHaveAnyCertifications, new { @class = "form-control", @placeholder = "If yes, please list" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group pull-right">
+                                            <div class="col-md-9 col-md-offset-3">
+                                                <button class="btn btn-primary" href="#collapseTwo" id="btnNextFour" name="btnnextfour" type="button" role="button">NEXT STEP</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <a class="accordion-toggle collapsed" data-toggle="collapse" id="pnlfive" data-parent="#panels" href="#collapseFive">
+                                    <h4 class="panel-title">
+                                        Applicant's Authorization
+                                    </h4>
+                                </a>
+                            </div>
+                            <div id="collapseFive" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    @*<strong>EEO Statement: </strong>*@
+                                    <p>Furniture Mart USA, Inc., including its affiliated companies, is an equal opportunity employer, and will not base hiring decisions on race, color, sex, age, national origin, religion, disability or other protected status.</p><br />
+                                    <strong>Applicant’s Authorization: </strong>
+                                    <p>
+                                        This certifies that this application was completed by me, and that all entries on it and information in it are true and complete to the best of my knowledge.  If employed, I realize that false, misleading or incomplete information I give or withhold on this application or during my interview(s) or at any other time during the hiring process will disqualify me from employment or may lead to my discharge once I have been hired.
+                                        I agree that any employment relationship with this Company will be of an “at-will” nature, meaning I may resign at any time and the Company may discharge me at any time, with or without cause and with or without prior notice.  I understand that this “at-will” employment relationship may not be changed by any written document, oral statement or conduct unless the change is specifically acknowledged in writing by the CEO or President of Furniture Mart USA, Inc.
+                                        I understand that any oral or written statements that differ from this explanation of the “at-will” nature of employment at this Company are expressly disavowed and I understand that I should not rely on such statements.
+                                        I understand that the Company will perform a reference check before considering me for employment.  If required by the position applied for, I understand I may have to undergo physical examinations, drug screens, ability tests, a background check or other tests during the application process or after a conditional offer of employment has been extended, as applicable.
+                                        I authorize this Company to: (1) investigate the truthfulness of all statements made on this application; (2) contact my former employers and other listed references or any other persons who can verify information (unless expressly indicated differently above); and (3) discuss the results of any investigation with other employees of the company involved in the hiring process.  I give my consent for all contacted persons, firms and corporations, including former employers, to provide information concerning this application, and I release each such person, firm or corporation from liability for providing information to the Company.  I also release the Company and its representatives from liability for seeking this information.
+                                        If hired, I agree to conform to the policies, work rules and procedures of Furniture Mart USA, Inc., and its affiliated companies.
+                                    </p><br />
+                                    @*<strong>No Smoking Statement: </strong>*@
+                                    <p>SMOKING IS PROHIBITED IN THE WORKPLACE INCLUDING COMPANY VEHICLES.</p><br />
+                                    <div class="form-horizontal">
+                                        <div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+                                                <div class="form-group">
+                                                    <label for="position" class="col-xs-12 col-sm-5 col-md-6 col-lg-6 control-label">Where did you hear about the position?</label>
+                                                    <div class="col-xs-12 col-sm-7 col-md-6 col-lg-6">
+                                                        @Html.DropDownListFor(x => x.YouFindTheOpeningFrom, new[]{
+                                                            new SelectListItem(){ Text = "Company Website", Value = "Company Website"},
+                                                            new SelectListItem(){ Text = "Employee Referral", Value = "Employee Referral"},
+                                                            new SelectListItem(){ Text = "Indeed.com", Value = "Indeed.com"},
+                                                            new SelectListItem(){ Text = "Craigslist", Value = "Craigslist"},
+                                                            new SelectListItem(){ Text = "Keloland.com", Value = "Keloland.com"},
+                                                            new SelectListItem(){ Text = "Department of Labor", Value = "Department of Labor"},
+                                                            new SelectListItem(){ Text = "Social Media", Value = "Social Media"},
+                                                            new SelectListItem(){ Text = "Newspaper", Value = "Newspaper"},
+                                                            new SelectListItem(){ Text = "Building Sign", Value = "Building Sign"},
+                                                            new SelectListItem(){ Text = "Job Fair", Value = "Job Fair"},
+                                                            new SelectListItem(){ Text = "Walk-in", Value = "Walk-in"},
+                                                            new SelectListItem(){ Text = "College", Value = "College"},
+                                                            new SelectListItem(){ Text = "Other", Value = "Other"},
+                                                            }, new { @class = "form-control" })
+                                                    </div>
+                                                </div>
+                                                <div id="employeeNameDiv" class="col-xs-12 col-md-12 text-field-right text-field-left certification-section">
+                                                    <div class="form-group">
+                                                        <label for="start-date" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label"></label>
+                                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                            @Html.TextBoxFor(x => x.EmployeeReferralName, new { @class = "form-control", @placeholder = "Type Employee Name" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div id="otherIdDiv" class="col-xs-12 col-md-12 text-field-right text-field-left certification-section">
+                                                    <div class="form-group">
+                                                        <label for="start-date" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 control-label"></label>
+                                                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                                                            @Html.TextBoxFor(x => x.OtherOption, new { @class = "form-control", @placeholder = "Type Other Option" })
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+                                                <div class="form-group">
+                                                    <label for="sign" class="col-xs-12 col-sm-4 col-md-3 col-lg-3 control-label">E-Signature*:</label>
+                                                    <div class="col-xs-12 col-sm-8 col-md-9 col-lg-9">
+                                                        @Html.TextBoxFor(c => c.ESignature, new { @placeholder = "Please Type Full Name", @class = "string-validation form-control" })
+
+                                                        <div class="error" id="ESignatureValidMsg"></div>
+                                                        <div class="send-application-section">
+                                                            @Html.CheckBoxFor(c => c.IsReviewedApplication, new { @type = "checkbox" })
+                                                            <label for="IsReviewedApplication" id="IsReviewedApplication">
+                                                                I have reviewed my application and verify that the information provided is accurate and truthful.
+                                                            </label>
+                                                        </div>
+                                                        <div class="error">@Html.ValidationMessageFor(c => c.IsReviewedApplication)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                                                <button class="btn btn-primary send-application-button" type="submit" id="formButtonSubmit" name="formbuttonsubmit" role="button">SEND APPLICATION</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!-- panel-group -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $(document).on('keypress', '.string-validation', function (event) {
+        var regex = new RegExp("^[a-zA-Z ]+$");
+        var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+        if (!regex.test(key)) {
+            event.preventDefault();
+            return false;
+        }
+    });
+
+    $(window).load(function () {
+        $("#employeeNameDiv").hide();
+        $("#otherIdDiv").hide();
+        $("#otherReference").hide();
+        $("#otherReference1").hide();
+        $("#otherReference2").hide();
+        document.getElementById("MayWeContactYourCurrentEmployerYes").checked = true;
+        document.getElementById("MayWeContactYourCurrentEmployerNo").checked = false;
+    });
+
+    $("#relationship").change(function () {
+        if ($("#relationship option:selected").text() == "Other") {
+            $("#otherReference").show();
+        }
+        if ($("#relationship option:selected").text() != "Other") {
+            $("#otherReference").hide();
+        }
+    });
+
+    $("#relationship1").change(function () {
+        if ($("#relationship1 option:selected").text() == "Other") {
+            $("#otherReference1").show();
+        }
+        if ($("#relationship1 option:selected").text() != "Other") {
+            $("#otherReference1").hide();
+        }
+    });
+
+    $("#relationship2").change(function () {
+        if ($("#relationship2 option:selected").text() == "Other") {
+            $("#otherReference2").show();
+        }
+        if ($("#relationship2 option:selected").text() != "Other") {
+            $("#otherReference2").hide();
+        }
+    });
+
+    $("#YouFindTheOpeningFrom").change(function () {
+        if ($("#YouFindTheOpeningFrom option:selected").text() == "Employee Referral") {
+            $("#employeeNameDiv").show();
+        }
+        if ($("#YouFindTheOpeningFrom option:selected").text() != "Employee Referral") {
+            $("#employeeNameDiv").hide();
+        }
+
+        if ($("#YouFindTheOpeningFrom option:selected").text() == "Other") {
+            $("#otherIdDiv").show();
+        }
+        if ($("#YouFindTheOpeningFrom option:selected").text() != "Other") {
+            $("#otherIdDiv").hide();
+        }
+    });
+
+
+    $(function () {
+        $(document.body).on('click', '.btn-remove-phone', function () {
+            $(this).closest('.phone-input').remove();
+        });
+
+        $(document.body).on('click', '.btn-remove-phone1', function () {
+            $(this).closest('.phone-input1').remove();
+
+            var count = parseInt($('#Education_Count').val()) - 1;
+            $('#Education_Count').val(count);
+        });
+
+        $(document.body).on('click', '.btn-remove-phone2', function () {
+            $(this).closest('.phone-input2').remove();
+
+            var count = parseInt($('#WorkExperience_Count').val()) - 1;
+            $('#WorkExperience_Count').val(count);
+        });
+    });
+
+    $(".btn-add-social-url").on('click', function () {
+        DisplayAjaxLoading();
+        $.ajax({
+            async: false,
+            url: '/career/CreateSocialURL'
+        }).success(function (partialView) {
+            StopAjaxLoading();
+            $('.social-url-list').append(partialView);
+        });
+    });
+
+    $(".btn-add-phone1").on('click', function () {
+
+        var count = parseInt($('#Education_Count').val()) + 1;
+        DisplayAjaxLoading();
+        $.ajax({
+            url: '/career/CreateEducation/',
+            data: {
+                "count": count
+            },
+            type: 'GET',
+            success: function (partialView) {
+                StopAjaxLoading();
+                $('.phone-list1').append(partialView);
+                $('#Education_Count').val(count);
+            },
+            error: function (data) {
+                StopAjaxLoading();
+                console.log(data);
+            }
+        });
+    });
+
+    $(".btn-add-phone2").on('click', function () {
+
+        var id = @Model.JobId;
+        var count = parseInt($('#WorkExperience_Count').val()) + 1;
+        DisplayAjaxLoading();
+
+        $.ajax({
+            url: '/career/CreateWorkExperience/',
+            data: {
+                "id": id,
+                "count": count
+            },
+            type: 'GET',
+            success: function (partialView) {
+                StopAjaxLoading();
+                $('.phone-list2').append(partialView);
+                $('#WorkExperience_Count').val(count);
+            },
+            error: function (data) {
+                StopAjaxLoading();
+                console.log(data);
+            }
+        });
+
+    });
+
+    $(document).ready(function (e) {
+
+        // When your submit button is clicked
+        $("form").submit(function (e) {
+
+            Tab1(e);
+
+            Tab3(e);
+
+            Tab4(e);
+
+            Tab5(e);
+
+            Tab6(e);
+        });
+
+    });
+
+    $("#btnNextOne").click(function (e) {
+        Tab1(e);
+    });
+
+    $('#btnNextTwo').click(function () {
+
+        if ($("#LinkedinURL").valid() && $("#FacebookURL").valid()) {
+
+            $("#pnlthree").trigger('click');
+        }
+    });
+
+    $('#btnNextthree').click(function (e) {
+        Tab3(e)
+    });
+
+    $('#btnNextFour').click(function (e) {
+        Tab4(e);
+    });
+
+    $('#btnNextFive').click(function (e) {
+        Tab5(e);
+    });
+
+    function Tab1(e) {
+        var firstName = $('#@Html.IdFor(x => x.FirstName)').val().trim();
+        var lastName = $('#@Html.IdFor(x => x.LastName)').val().trim();
+        var address = $('#@Html.IdFor(x => x.Address)').val().trim();
+        var city = $('#@Html.IdFor(x => x.City)').val().trim();
+        var state = $('#@Html.IdFor(x => x.State)').val();
+        var zipCode = $('#@Html.IdFor(x => x.ZipCode)').val().trim();
+        var phone = $('#@Html.IdFor(x => x.Phone)').val().trim();
+        var email = $('#@Html.IdFor(x => x.Email)').val().trim();
+        var flagTab1 = true;
+
+        if (firstName.length == 0) {
+            $("#firstNameValidMsg").text("First name is required");
+            $("#firstNameValidMsg").show();
+            flagTab1 = false;
+        } else {
+            $("#firstNameValidMsg").hide();
+        }
+
+        if (lastName.length == 0) {
+            $("#lastNameValidMsg").text("Last name is required");
+            $("#lastNameValidMsg").show();
+            flagTab1 = false;
+        } else {
+            $("#lastNameValidMsg").hide();
+        }
+
+        if (address.length == 0) {
+            $("#addressValidMsg").text("Address is required");
+            $("#addressValidMsg").show();
+            flagTab1 = false;
+        } else {
+            $("#addressValidMsg").hide();
+        }
+
+        if (city.length == 0) {
+            $("#cityValidMsg").text("City is required");
+            $("#cityValidMsg").show();
+            flagTab1 = false;
+        } else {
+            $("#cityValidMsg").hide();
+        }
+
+        if (state.length == 0) {
+            $("#stateValidMsg").text("State is required");
+            $("#stateValidMsg").show();
+            flagTab1 = false;
+        } else {
+            $("#stateValidMsg").hide();
+        }
+
+        if (zipCode.length == 0) {
+            $("#zipCodeValidMsg").text("Zipcode is required");
+            $("#zipCodeValidMsg").show();
+            flagTab1 = false;
+        } else {
+            $("#zipCodeValidMsg").hide();
+        }
+
+        if (phone.length == 0) {
+            $("#phoneValidMsg").text("Phone is required");
+            $("#phoneValidMsg").show();
+            flagTab1 = false;
+        } else if (!ValidatePhone(phone)) {
+            $("#phoneValidMsg").text("Phone is not valid");
+            $("#phoneValidMsg").show();
+            flagTab1 = false;
+        } else {
+            $("#phoneValidMsg").hide();
+        }
+
+        if (email.length == 0) {
+            $("#EmailValidMsg").text("Email is required");
+            $("#EmailValidMsg").show();
+            flagTab1 = false;
+        } else if (!ValidateEmail(email)) {
+            $("#EmailValidMsg").text("Email is not valid");
+            $("#EmailValidMsg").show();
+            flagTab1 = false;
+        } else {
+            $("#EmailValidMsg").hide();
+        }
+
+        if (flagTab1) {
+            
+            $("#EmailError").hide();
+            $("#pnlTwo").trigger('click');
+        } else {
+            e.preventDefault();
+        }
+    }
+
+    function Tab3(e) {
+        var woJobTitle = $('#@Html.IdFor(x => x.WorkExperience.JobTitle)').val().trim();
+        var woCompany = $('#@Html.IdFor(x => x.WorkExperience.Company)').val().trim();
+        var woCity = $('#@Html.IdFor(x => x.WorkExperience.City)').val().trim();
+        var woStartDate = $('#@Html.IdFor(x => x.WorkExperience.StartDate)').val();
+        var woEndDate = $('#@Html.IdFor(x => x.WorkExperience.EndDate)').val();
+        var woPayUpOnLeaving = $('#@Html.IdFor(x => x.WorkExperience.PayUpOnLeaving)').val().trim();
+        var woResionForLeaving = $('#@Html.IdFor(x => x.WorkExperience.ResionForLeaving)').val().trim();
+        var woSupervisor = $('#@Html.IdFor(x => x.WorkExperience.Supervisor)').val().trim();
+        var woPhone = $('#@Html.IdFor(x => x.WorkExperience.Phone)').val().trim();
+        var woJobDuties = $('#@Html.IdFor(x => x.WorkExperience.JobDuties)').val().trim();
+        var flagTab3 = true;
+
+        if (woJobTitle.length == 0) {
+            $("#woJobTitleValidMsg").text("Job title is required");
+            $("#woJobTitleValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woJobTitleValidMsg").hide();
+        }
+
+        if (woCompany.length == 0) {
+            $("#woCompanyValidMsg").text("Company is required");
+            $("#woCompanyValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woCompanyValidMsg").hide();
+        }
+
+        if (woCity.length == 0) {
+            $("#woCityValidMsg").text("City is required");
+            $("#woCityValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woCityValidMsg").hide();
+        }
+
+        if (woStartDate.length == 0) {
+            $("#woStartDateValidMsg").text("Start date is required");
+            $("#woStartDateValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woStartDateValidMsg").hide();
+        }
+
+        if (woEndDate.length == 0) {
+            $("#woEndDateValidMsg").text("End date is required");
+            $("#woEndDateValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woEndDateValidMsg").hide();
+        }
+
+        if ("@(Model.Location.Trim().ToLower())" != "il") {
+            if (woPayUpOnLeaving.length == 0) {
+                $("#woPayUpOnLeavingValidMsg").text("Pay upon leaving is required");
+                $("#woPayUpOnLeavingValidMsg").show();
+                flagTab3 = false;
+            } else if (!ValidateNumber(woPayUpOnLeaving)) {
+                $("#woPayUpOnLeavingValidMsg").text("Only digits are allowed.");
+                $("#woPayUpOnLeavingValidMsg").show();
+                flagTab3 = false;
+            }
+            else {
+                $("#woPayUpOnLeavingValidMsg").hide();
+            }
+        }
+
+        if (woResionForLeaving.length == 0) {
+            $("#woResionForLeavingValidMsg").text("Reason for leaving is required");
+            $("#woResionForLeavingValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woResionForLeavingValidMsg").hide();
+        }
+
+        if (woSupervisor.length == 0) {
+            $("#woSupervisorValidMsg").text("Supervisor is required");
+            $("#woSupervisorValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woSupervisorValidMsg").hide();
+        }
+
+        if (woJobDuties.length == 0) {
+            $("#woJobDutiesValidMsg").text("Job duties is required");
+            $("#woJobDutiesValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woJobDutiesValidMsg").hide();
+        }
+
+        if (woPhone.length == 0) {
+            $("#woPhoneValidMsg").text("Phone is required");
+            $("#woPhoneValidMsg").show();
+            flagTab3 = false;
+        } else if (!ValidatePhone(woPhone)) {
+            $("#woPhoneValidMsg").text("Phone is not valid");
+            $("#woPhoneValidMsg").show();
+            flagTab3 = false;
+        }
+        else {
+            $("#woPhoneValidMsg").hide();
+        }
+
+        if (flagTab3) {
+            $("#pnlsix").trigger('click');
+        } else {
+            e.preventDefault();
+        }
+    }
+
+    function Tab4(e) {
+        var eISalary = $('#@Html.IdFor(x => x.DesiredSalary)').val();
+        var flagTab4 = true;
+
+        if (eISalary.length == 0) {
+            $("#EISalaryValidMsg").text("Starting wage is required");
+            $("#EISalaryValidMsg").show();
+            flagTab4 = false;
+        } else if (!ValidateNumber(eISalary)) {
+            $("#EISalaryValidMsg").text("Only digits are allowed.");
+            $("#EISalaryValidMsg").show();
+            flagTab4 = false;
+        } else {
+            $("#EISalaryValidMsg").hide();
+        }
+
+        if (flagTab4) {
+            $("#pnlfive").trigger('click');
+        } else {
+            e.preventDefault();
+        }
+    }
+
+    function Tab5(e) {
+        var rfName = $('#@Html.IdFor(x => x.Reference.ReferenceName)').val().trim();
+        var rfEmail = $('#@Html.IdFor(x => x.Reference.ReferenceEmail)').val().trim();
+        var rfPhone = $('#@Html.IdFor(x => x.Reference.PhoneNumber)').val().trim();
+        var flagTab5 = true;
+
+        if (rfName.length == 0) {
+            $("#rfNameValidMsg").text("Reference name is required");
+            $("#rfNameValidMsg").show();
+            flagTab5 = false;
+        }
+        else {
+            $("#rfNameValidMsg").hide();
+        }
+
+        if (rfPhone.length == 0) {
+            $("#rfPhoneValidMsg").text("Phone number is required");
+            $("#rfPhoneValidMsg").show();
+            flagTab5 = false;
+        } else if (!ValidatePhone(rfPhone)) {
+            $("#rfPhoneValidMsg").text("Phone is not valid");
+            $("#rfPhoneValidMsg").show();
+            flagTab5 = false;
+        }
+        else {
+            $("#rfPhoneValidMsg").hide();
+        }
+
+        if (rfEmail.length == 0) {
+            $("#rfEmailValidMsg").text("Email is required");
+            $("#rfEmailValidMsg").show();
+            flagTab5 = false;
+        } else if (!ValidateEmail(rfEmail)) {
+            $("#rfEmailValidMsg").text("Email is not valid");
+            $("#rfEmailValidMsg").show();
+            flagTab5 = false;
+        }
+        else {
+            $("#rfEmailValidMsg").hide();
+        }
+
+        if (flagTab5) {
+            $("#rfEmailError").hide();
+            $("#pnlfour").trigger('click');
+        } else {
+            e.preventDefault();
+        }
+    }
+
+    function Tab6(e) {
+        var eSignature = $('#@Html.IdFor(x => x.ESignature)').val().trim();
+        var flagTab6 = true;
+
+        if (eSignature.length == 0) {
+            $("#ESignatureValidMsg").text("E-Signature is required");
+            $("#ESignatureValidMsg").show();
+            flagTab6 = false;
+        }
+        else {
+            $("#ESignatureValidMsg").hide();
+        }
+
+        if (!$('input[name="isreviewedapplication"]').is(':checked')) {
+            alert("Verification check is required. Please check it to submit the application!");
+            flagTab6 = false;
+        }
+
+        if (!flagTab6) {
+            e.preventDefault();
+        }
+    }
+
+    function ValidateEmail(email) {
+        // Validate email format
+        var expr = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,63}$/;
+        return expr.test(email);
+    };
+
+    function ValidatePhone(phone) {
+        // Validate phone format
+        var expr = /^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$/;
+        return expr.test(phone);
+    };
+
+    function ValidateNumber(number) {
+        // Validate number
+        var expr = /^\d+$/;
+        return expr.test(number);
+    };
+</script>
+
+@if (commonService.IsMobileDevice())
+{
+    <script>
+        $(document).ready(function () {
+            $('.panel-collapse').on('shown.bs.collapse', function (e) {
+                var $panel = $(this).closest('.panel');
+                $('html,body').animate({
+                    scrollTop: $panel.offset().top
+                }, 100);
+            });
+        });
+    </script>
+}
+<script>
+    $(document).ready(function () {
+        $(".panel .accordion-toggle").on('click', function (event) {
+            jQuery('.collapse').collapse('hide');
+        });
+    });
+</script>
+
+<style>
+    #ui-datepicker-div select.ui-datepicker-month, #ui-datepicker-div select.ui-datepicker-year {
+        width: 48% !important;
+        padding: 2px 34px 2px 4px !important;
+        height: 34px !important;
+        margin: 0px 1% !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev, #ui-datepicker-div .ui-datepicker-next {
+        top: 7px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev-hover,
+    #ui-datepicker-div .ui-datepicker-next-hover {
+        top: 7px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev {
+        left: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-next {
+        right: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-prev-hover {
+        left: 5px !important;
+    }
+
+    #ui-datepicker-div .ui-datepicker-next-hover {
+        right: 5px !important;
+    }
+
+    #ui-datepicker-div select.ui-datepicker-month, #ui-datepicker-div select.ui-datepicker-year {
+        background-color: #fff !important;
+    }
+
+    input.datepicker-icon {
+        background-image: url(/../images/calendar-icon.svg);
+        background-repeat: no-repeat;
+        background-size: 26px 25px;
+        background-position: 98% center;
+    }
+</style>

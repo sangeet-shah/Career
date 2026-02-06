@@ -1,0 +1,169 @@
+﻿@model ApplicationFormModel
+
+<div class="input-group phone-input2">
+    <div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="job-title" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Job Title:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_JobTitle_@(Model.WorkExperience.Count)" name="workexperience_jobtitle_@(Model.WorkExperience.Count)" class="form-control" placeholder="Job Title" />
+                    <div style="color:orangered" id="woJobTitleValidMsg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+            <div class="form-group">
+                <label for="company" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Company:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_Company_@(Model.WorkExperience.Count)" name="workexperience_company_@(Model.WorkExperience.Count)" class="form-control" placeholder="Company" />
+                    <div style="color:orangered" id="woCompanyValidMsg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="state1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">State:</label> <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <select asp-for="WorkExperience.State" asp-items="Model.WorkExperience.States" id="workexperience_state_@(Model.WorkExperience.Count)" name="workexperience_state_@(Model.WorkExperience.Count)">
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+
+            <div class="form-group">
+                <label for="city1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">City:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_City_@(Model.WorkExperience.Count)" name="workexperience_city_@(Model.WorkExperience.Count)" class="form-control" placeholder="City" />
+                    <div style="color:orangered" id="woCityValidMsg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="startdate1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Start Date:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_StartDate_@(Model.WorkExperience.Count)" name="workexperience_startdate_@(Model.WorkExperience.Count)" class="form-control datepicker-icon readOnlyDate" autocomplete="off" readonly="readonly" value="@DateTime.UtcNow.Date" />
+                    <div style="color:orangered" id="woStartDateValidMsg"></div>
+                    <script>
+                            $(document).ready(function () {
+                                $('#WorkExperience_StartDate_@(Model.WorkExperience.Count)').datepicker({
+                                    changeMonth: true,
+                                    changeYear: true,
+                                    yearRange: '1999:c+1',
+                                    minDate: new Date(1999, 10 - 1, 25),
+                                    maxDate: '+30Y'
+                                });
+                            });
+                    </script>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+            <div class="form-group">
+                <label for="enddate1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">End Date:</label> <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_EndDate_@(Model.WorkExperience.Count)" name="workexperience_enddate_@(Model.WorkExperience.Count)" class="form-control datepicker-icon readOnlyDate" autocomplete="off" readonly="readonly" value="@DateTime.UtcNow.Date" />
+                    <div style="color:orangered" id="woEndDateValidMsg"></div>
+                    <script>
+                            $(document).ready(function () {
+                                $('#WorkExperience_EndDate_@(Model.WorkExperience.Count)').datepicker({
+                                    changeMonth: true,
+                                    changeYear: true,
+                                    yearRange: '1999:c+1',
+                                    minDate: new Date(1999, 10 - 1, 25),
+                                    maxDate: '+30Y'
+                                });
+                            });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="pay" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Pay Upon Leaving:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_PayUpOnLeaving_@(Model.WorkExperience.Count)" name="workexperience_payuponleaving_@(Model.WorkExperience.Count)" class="form-control" placeholder="Pay Upon Leaving" />
+                    <div style="color:orangered" id="woPayUpOnLeavingValidMsg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+            <div class="form-group">
+                <label for="reason" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Reason for Leaving:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_ResionForLeaving_@(Model.WorkExperience.Count)" name="workexperience_resionforleaving_@(Model.WorkExperience.Count)" class="form-control" placeholder="Reason for Leaving" />
+                    <div style="color:orangered" id="woResionForLeavingValidMsg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="city1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Supervisor:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_Supervisor_@(Model.WorkExperience.Count)" name="workexperience_supervisor_@(Model.WorkExperience.Count)" class="form-control" placeholder="Supervisor" />
+                    <div style="color:orangered" id="woSupervisorValidMsg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+            <div class="form-group">
+                <label for="phone1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Phone:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_Phone_@(Model.WorkExperience.Count)" name="workexperience_phone_@(Model.WorkExperience.Count)" class="form-control" placeholder="Phone" />
+                    <div style="color:orangered" id="woPhoneValidMsg"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-left">
+            <div class="form-group">
+                <label for="city1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">Job Duties:</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <input type="text" id="WorkExperience_JobDuties_@(Model.WorkExperience.Count)" name="workexperience_jobduties_@(Model.WorkExperience.Count)" class="form-control" placeholder="Job Duties" />
+                    <div style="color:orangered" id="woJobDutiesValidMsg"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-field-right">
+            <div class="form-group">
+                <label for="phone1" class="col-xs-4 col-sm-3 col-md-3 col-lg-3 control-label">May we contact this employer?</label>
+                <div class="col-xs-8 col-sm-9 col-md-9 col-lg-9">
+                    <div class="CurrentEmployer">
+                        <div class="radio yes-radio">
+                            <input type="radio" value="true" id="WorkExperience_MayWeContactYourCurrentEmployerYes_@(Model.WorkExperience.Count)" name="workexperience_maywecontactyourcurrentemployer_@(Model.WorkExperience.Count)" checked="checked">
+                            @{
+                                var contactYes = "WorkExperience_MayWeContactYourCurrentEmployerYes_" + Model.WorkExperience.Count;
+                            }
+                            <label class="forcheckbox" for=@contactYes>Yes</label>
+                        </div>
+                        <div class="radio yes-radio">
+                            <input type="radio" value="false" id="WorkExperience_MayWeContactYourCurrentEmployerNo_@(Model.WorkExperience.Count)" name="workexperience_maywecontactyourcurrentemployer_@(Model.WorkExperience.Count)">
+                            @{
+                                var contactNo = "WorkExperience_MayWeContactYourCurrentEmployerNo_" + Model.WorkExperience.Count;
+                            }
+                            <label class="forcheckbox" for=@contactNo>No</label>
+                        </div>
+                        <script>
+                            $(document).ready(function () {
+                                document.getElementById("WorkExperience_MayWeContactYourCurrentEmployerYes_@(Model.WorkExperience.Count)").checked = true;
+                                document.getElementById("WorkExperience_MayWeContactYourCurrentEmployerNo_@(Model.WorkExperience.Count)").checked = false;
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="input-group-btn">
+        <button class="btn btn-danger btn-remove-phone2 education-close-btn" type="button"><span class="glyphicon glyphicon-remove"></span></button>
+    </div>
+</div>

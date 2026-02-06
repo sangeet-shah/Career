@@ -1,0 +1,109 @@
+﻿@model Career.Web.Models.ScheduleOrder.ScheduleOrderDetailsModel
+
+@{
+    //page title
+    ViewBag.PageTitle = "Verify information";
+}
+
+<form asp-rount="ScheduleOrderDetail" method="post" class="schedule-order-verify" id="scheduleorderdetail" name="scheduleorderdetail">
+    <div class="container">
+        <div class="row title-order-info">
+            <div class="col-12">
+                <h4 class="text-left text-md-center">Verify Your Information</h4>
+                <h5 class="text-left text-md-center">That way we make sure your new styles make it to the right place!</h5>
+            </div>
+
+        </div>
+        <div class="row schedule-verify-sec">
+            <div class="col-12 col-sm-4 col-lg-3 pad-left-zero pad-right-zero mob-mb">
+                <div class="schedule-detail">
+                    <div class="form-group text-center img-section">
+                        <img class="lazyload" data-src="https://ik.imagekit.io/thefurnituremart/Themes/TheFurnitureMart/Content/svg/Icon_Dropoff.svg" loading="lazy" src="https://ik.imagekit.io/thefurnituremart/Themes/TheFurnitureMart/Content/svg/Icon_Dropoff.svg" width="0" height="0">
+                    </div>
+                    <div class="justify-content-between d-flex order-numberdate">
+                        <div class="order-number-date">
+                            <div class="form-group">
+                                <label for="OrderNumber">Order Number</label>
+                                <span>
+                                    @Model.OrderId
+                                </span>
+                            </div>
+                            <div class="form-group">
+                                <label for="OrderDate">Order Date</label>
+                                <span>
+                                    @Model.OrderDate.ToString("d")
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="BillingAddress">Deliver To:</label>
+                        <span>
+                            @Model.DeliverTo.Name <br />
+                            @Model.DeliverTo.Address1 <br />
+                            @(!string.IsNullOrEmpty(Model.DeliverTo.Address2) ? Model.DeliverTo.Address2 + "<br />" : "")
+                            @Model.DeliverTo.City, @Model.DeliverTo.State @Model.DeliverTo.ZipCode <br />
+                            @Model.DeliverTo.Email <br />
+                            @Model.DeliverTo.PhoneNumber
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-8 col-lg-9 pad-left-zero pad-right-zero pl-0">
+                <div class="form-group overflow-table">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Product/Description</th>
+                                <th scope="col" class="colwidth10">Quantity</th>
+                                <th scope="col" class="colwidth13">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Items)
+                            {
+                                <tr>
+                                    <td>@item.Description</td>
+                                    <td>@item.Quantity</td>
+                                    <td>@item.Price</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="Schedule-order-total">
+                    @await Html.PartialAsync("_ScheduleOrderTotal.cshtml", Model)
+                </div>
+                <div class="form-group row">
+                    <div class="col-12 text-right pad-left-zero pad-right-zero">
+                        <input type="submit" name="nextstep" class="btn schedulebtn nextbtn" value="NEXT STEP">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+<script asp-location="Footer">
+    $(document).ready(function () {
+        window.addEventListener('resize', scheduleorderverification);
+        scheduleorderverification();
+    });
+    function scheduleorderverification() {
+        var e = window, a = 'inner';
+        if (!('innerWidth' in window)) {
+            a = 'client';
+            e = document.documentElement || document.body;
+        }
+        var result = { width: e[a + 'Width'], height: e[a + 'Height'] };
+        if (result.width <= 767) {
+            $(".title-order-info").insertBefore('.order-numberdate');
+            $(".img-section").insertAfter('.order-number-date');
+        }
+        else {
+            $(".title-order-info").insertBefore('.schedule-verify-sec');
+            $(".img-section").insertBefore('.order-numberdate');
+
+        }
+    }
+</script>

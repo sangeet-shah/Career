@@ -1,0 +1,56 @@
+﻿@using Career.Data.Domains.Common
+@using Career.Web.Components
+
+<div class="company-tab">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul>
+                    <li><a id="fm" href="https://www.thefurnituremart.com/"><img src="~/images/furnitue-mart-tab.png" alt="furnitue mart"></a></li>
+                    <li><a id="ucf" href="https://www.unclaimedfreightfurniture.com/"><img src="~/images/unclamed-freight-furniture-tab.png" alt="unclamed freight furniture"></a></li>
+                    <li><a id="fmusa" href="/"><img src="~/images/fmusa-tab.png" alt="furnitue mart usa"></a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+@await Component.InvokeAsync(typeof(HelloBarViewComponent))
+<div class="company-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="mobil-nav">
+                    <div class="mobile-menu-icon">
+
+                        <!-- Single button -->
+                        <div class="btn-group dropdown">
+                            <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="~/images/menu.png" alt="menu">
+                            </button>
+                            <ul class="dropdown-menu company-header-links" aria-labelledby="dropdownMenuButton1">
+                                <li><a href="@Url.RouteUrl("ourstory")" class="menu-ourstory">Our Story</a></li>
+                                <li><a href="@Url.RouteUrl("careers")" class="menu-career">Careers</a></li>
+                                <li class="main-logo"><a href="/"><img src="~/images/main-logo-mobile.png" alt="logo" class="menu-home"></a></li>
+                                <li><a href="@Url.RouteUrl("brands")" class="menu-brand">Our Brands</a></li>
+                                <li><a href="@Url.RouteUrl("locations")" class="menu-location">Locations</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="mobile-main-logo">
+                        <a href="/"><img src="~/images/FMUSA_horiz_mobile.png" class="img-responsive" alt="logo"></a>
+                    </div>
+                    <div class="mobile-search">
+                        @*<img src="~/images/search.svg" class="img-responsive" alt="search" />*@
+                    </div>
+                </div>
+                <ul class="company-header-links destop-menu">
+                    <li><a href="@Url.RouteUrl("ourstory")" class="menu-ourstory">Our Story</a></li>
+                    <li><a href="@Url.RouteUrl("careers")" class="menu-career">Careers</a></li>
+                    <li class="main-logo"><a href="/"><img src="~/images/main-logo.png" alt="logo" class="menu-home"></a></li>
+                    <li><a href="@Url.RouteUrl("brands")" class="menu-brand">Our Brands</a></li>
+                    <li><a href="@Url.RouteUrl("locations")" class="menu-location">Locations</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

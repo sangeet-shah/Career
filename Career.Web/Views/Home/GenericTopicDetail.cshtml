@@ -1,0 +1,20 @@
+﻿@model Career.Web.Models.Legal.LegalModel
+
+@{
+    //page title
+    ViewBag.PageTitle = Model.Title;
+    ViewBag.Canonical = Model.SeName +"/";
+}
+
+<div class="our-story-main-body ca-topic-page">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title isBorder">
+                    <h1>@ViewBag.PageTitle</h1>
+                </div>
+                @Html.Raw(Model.Body)
+            </div>
+        </div>
+    </div>
+</div>
