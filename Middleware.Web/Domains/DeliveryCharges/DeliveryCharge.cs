@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.DeliveryCharges;
+namespace Middleware.Web.Domains.DeliveryCharges;
 
 public class DeliveryCharge : BaseEntity
 {

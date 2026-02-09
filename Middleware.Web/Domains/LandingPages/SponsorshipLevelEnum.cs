@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Career.Data.Domains.LandingPages;
+namespace Middleware.Web.Domains.LandingPages;
 public enum SponsorshipLevelEnum
 {
     [Display(Name = "Executive sponsor")]

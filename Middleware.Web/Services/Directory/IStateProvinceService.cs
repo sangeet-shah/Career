@@ -1,4 +1,4 @@
-using Career.Data.Domains.Directory;
+using Middleware.Web.Domains.Directory;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

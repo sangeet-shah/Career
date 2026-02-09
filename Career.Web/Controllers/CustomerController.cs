@@ -1,12 +1,11 @@
-﻿using Career.Data;
-using Career.Data.Domains.Common;
-using Career.Data.Services.Customers;
-using Career.Data.Services.Localization;
+using Career.Web.Domains.Common;
 using Career.Web.Models.Customers;
+using Career.Web.Services.ApiClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace Career.Web.Controllers;
 
@@ -14,23 +13,20 @@ public class CustomerController : Controller
 {
     #region Fields
 
-    private readonly ICustomerService _customerService;
     private readonly IHttpContextAccessor _httpContextAccessor;
-    private readonly ILocalizationService _localizationService;
-    private readonly AppSettings _appSettings;
+    private readonly IApiClient _apiClient;
+    private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
 
     #endregion
 
     #region Ctor
-    public CustomerController(ICustomerService customerService,
-                             IHttpContextAccessor httpContextAccessor,
-                             ILocalizationService localizationService,
-                             AppSettings appSettings)
+    public CustomerController(IHttpContextAccessor httpContextAccessor,
+                             IApiClient apiClient,
+                             Microsoft.Extensions.Configuration.IConfiguration configuration)
     {
-        _customerService = customerService;
         _httpContextAccessor = httpContextAccessor;
-        _localizationService = localizationService;
-        _appSettings = appSettings;
+        _apiClient = apiClient;
+        _configuration = configuration;
     }
 
     #endregion
@@ -39,37 +35,32 @@ public class CustomerController : Controller
 
     public async Task<IActionResult> Login()
     {
-        var model = new TestCustomerModel();
-        if (_appSettings.IsTestSite)
-        {
-            model.UAGoogleAnalyticsId = "UA-57932286-6";
-            model.GoogleSiteVerification = await _localizationService.GetLocaleStringResourceByNameAsync("account.login.career.googlesiteverification");
-        }
-        else
-        {
-            model.UAGoogleAnalyticsId = "UA-57932286-5";
-            model.GTMGoogleAnalyticsId = "GTM-TVQ65TT";
-        }
-        return View("~/Views/Customer/Login.cshtml", model);
+        var response = await _apiClient.GetAsync<LoginResultModel>("api/Customer/Login") ?? new LoginResultModel();
+        return View("~/Views/Customer/Login.cshtml", response.Model ?? new TestCustomerModel());
     }
 
     [HttpPost]
     public async Task<IActionResult> Login(TestCustomerModel model)
     {
-        var customer = await _customerService.GetTestCustomerAsync(emailId: model.Email, password: model.Password);
-        if (customer != null)
+        if (!ModelState.IsValid)
+            return View("~/Views/Customer/Login.cshtml", model);
+
+        var response = await _apiClient.PostAsync<TestCustomerModel, LoginResultModel>("api/Customer/Login", model) ?? new LoginResultModel();
+        if (response.IsValid)
         {
-            CookieOptions option = new CookieOptions
+            var option = new CookieOptions
             {
-                Expires = DateTime.Now.AddHours(1)
+                Expires = DateTimeOffset.Now.AddDays(24),
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.None,
+                Path = "/"
             };
-            _httpContextAccessor.HttpContext.Response.Cookies.Append(NopDefaults.AuthenticationKey, customer.CustomerGuid.ToString());
+            _httpContextAccessor.HttpContext.Response.Cookies.Append(NopDefaults.AuthenticationKey, response.Model.CustomerGuid.ToString(), option);
             return Redirect("~/");
         }
-        else
-            model.ErrorMessage = "Wrong emailid or password";
 
-        return View(model);
+        return View(response.Model ?? model);
     }
 
     #endregion

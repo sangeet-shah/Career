@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Career.Data.Domains.Media;
+namespace Middleware.Web.Domains.Media;
 
 public enum DisplaySections
 {

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Career.Data.Domains.Career;
+namespace Middleware.Web.Domains.Career;
 
 public enum BaseSalaryEnum
 {

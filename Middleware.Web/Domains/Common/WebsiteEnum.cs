@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Career.Data.Domains.Common;
+namespace Middleware.Web.Domains.Common;
 
 public enum WebsiteEnum
 {

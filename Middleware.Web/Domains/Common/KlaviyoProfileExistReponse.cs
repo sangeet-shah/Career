@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.Common;
+namespace Middleware.Web.Domains.Common;
 
 public class KlaviyoProfileExistReponse
 {

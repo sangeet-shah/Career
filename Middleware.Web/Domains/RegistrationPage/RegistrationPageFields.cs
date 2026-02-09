@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.RegistrationPage;
+﻿namespace Middleware.Web.Domains.RegistrationPage;
 
 /// <summary>
 /// Represents a registration page fields

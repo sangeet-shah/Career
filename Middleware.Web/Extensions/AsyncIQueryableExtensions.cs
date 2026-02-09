@@ -1,4 +1,4 @@
-﻿using Career.Data.Repository;
+﻿using Middleware.Web.Data.Repository;
 using LinqToDB;
 using LinqToDB.Async;
 using System;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Career.Data.Extensions;
+namespace Middleware.Web.Data.Extensions;
 
 public static class AsyncIQueryableExtensions
 {

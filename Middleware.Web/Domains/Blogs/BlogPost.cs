@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.Blogs;
+namespace Middleware.Web.Domains.Blogs;
 
 /// <summary>
 /// Represents a blog post

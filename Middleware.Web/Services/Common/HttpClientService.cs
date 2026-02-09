@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Common;
+﻿using Middleware.Web.Domains.Common;
 using Middleware.Web.Services.Logs;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 using System;
 
-namespace Career.Data.Domains.LandingPages;
+namespace Middleware.Web.Domains.LandingPages;
 public class FMSummerJamSettings : BaseEntity, ISettings
 {
     public string Title1 { get; set; }

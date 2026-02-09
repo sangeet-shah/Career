@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace Career.Data.Domains.PaycorAPI;
+namespace Middleware.Web.Domains.PaycorAPI;
 
 public class PaycorAPIJobsResponse
 {

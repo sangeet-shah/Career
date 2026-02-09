@@ -1,7 +1,7 @@
-using Career.Data.Data;
-using Career.Data.Data.Caching;
-using Career.Data.Domains.Common;
-using Career.Data.Domains.Localization;
+using Middleware.Web.Data;
+using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains.Common;
+using Middleware.Web.Domains.Localization;
 using Dapper;
 using Middleware.Web.Data;
 using System.Threading.Tasks;

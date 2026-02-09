@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Career;
+﻿namespace Middleware.Web.Domains.Career;
 
 public class CareerBrand : BaseEntity
 {

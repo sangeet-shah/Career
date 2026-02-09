@@ -1,6 +1,6 @@
-﻿using Career.Data.Domains;
+﻿using Middleware.Web.Domains;
 
-namespace Career.Data.Data.Caching;
+namespace Middleware.Web.Data.Caching;
 
 /// <summary>
 /// Represents default values related to caching entities for hub

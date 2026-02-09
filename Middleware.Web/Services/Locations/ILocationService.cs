@@ -1,7 +1,7 @@
-﻿using Career.Data.Domains.Common;
-using Career.Data.Domains.Directory;
-using Career.Data.Domains.Locations;
-using Career.Data.Domains.PhysicalStores;
+﻿using Middleware.Web.Domains.Common;
+using Middleware.Web.Domains.Directory;
+using Middleware.Web.Domains.Locations;
+using Middleware.Web.Domains.PhysicalStores;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

@@ -1,7 +1,7 @@
-using Career.Data.Data.Caching;
-using Career.Data.Domains.Blogs;
-using Career.Data.Domains.Common;
-using Career.Data.Repository;
+using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains.Blogs;
+using Middleware.Web.Domains.Common;
+using Middleware.Web.Data.Repository;
 using Dapper;
 using Middleware.Web.Data;
 using Middleware.Web.Services.Common;

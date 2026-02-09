@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Configuration
+﻿namespace Middleware.Web.Data.Configuration
 {
     /// <summary>
     /// Setting interface

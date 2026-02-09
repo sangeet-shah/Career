@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Common;
+using Career.Web.Domains.Common;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;

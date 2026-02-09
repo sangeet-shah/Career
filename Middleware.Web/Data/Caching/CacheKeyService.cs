@@ -1,10 +1,11 @@
-﻿using Career.Data.Domains;
+using Middleware.Web.Data;
+using Middleware.Web.Domains;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace Career.Data.Data.Caching;
+namespace Middleware.Web.Data.Caching;
 
 /// <summary>
 /// Represents the default cache key service implementation

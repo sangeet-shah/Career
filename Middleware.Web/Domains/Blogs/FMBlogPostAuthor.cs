@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Blogs;
+﻿namespace Middleware.Web.Domains.Blogs;
 public class FMBlogPostAuthor : BaseEntity
 {
     /// <summary>

@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.Advertisements;
+namespace Middleware.Web.Domains.Advertisements;
 
 public class AdvertisementSettingModel : ISettings
 {

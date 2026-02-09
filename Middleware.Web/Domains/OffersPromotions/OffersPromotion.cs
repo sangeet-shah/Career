@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.OffersPromotions;
+namespace Middleware.Web.Domains.OffersPromotions;
 
     public class OffersPromotion : BaseEntity
     {

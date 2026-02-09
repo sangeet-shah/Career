@@ -1,7 +1,7 @@
-using Career.Data.Data;
-using Career.Data.Data.Caching;
-using Career.Data.Domains.Common;
-using Career.Data.Domains.Customers;
+using Middleware.Web.Data;
+using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains.Common;
+using Middleware.Web.Domains.Customers;
 using Dapper;
 using Microsoft.AspNetCore.Http;
 using Middleware.Web.Data;

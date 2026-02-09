@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.Stores;
+namespace Middleware.Web.Domains.Stores;
 
 public class FMStoreSettings : ISettings
 {

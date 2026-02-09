@@ -1,12 +1,12 @@
-﻿using Career.Data.Infrastructure;
-using Career.Data.Services.Logs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.IO;
 using System.Linq;
@@ -61,9 +61,9 @@ public static class ApplicationBuilderExtensions
 
                 try
                 {
-                    var logger = EngineContext.Current.Resolve<ILogService>();
-                    //log error
-                    logger.InsertLog(exception.Message, exception?.ToString() ?? string.Empty);
+                    var loggerFactory = context.RequestServices.GetService<ILoggerFactory>();
+                    var logger = loggerFactory?.CreateLogger("ApplicationBuilderExtensions");
+                    logger?.LogError(exception, "Unhandled exception");
                 }
                 finally
                 {

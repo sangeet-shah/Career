@@ -1,22 +1,22 @@
-using Career.Data.Data;
-using Career.Data.Data.Caching;
-using Career.Data.Domains.Common;
-using Career.Data.Domains.Directory;
-using Career.Data.Domains.Locations;
-using Career.Data.Domains.PhysicalStores;
+using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains.Common;
+using Middleware.Web.Domains.Directory;
+using Middleware.Web.Domains.Locations;
+using Middleware.Web.Domains.PhysicalStores;
 using Middleware.Web.Services.Common;
 using Middleware.Web.Services.Helpers;
 using Middleware.Web.Services.Logs;
 using Middleware.Web.Services.Settings;
+using Middleware.Web.Services.Stores;
 using Dapper;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
-using static Career.Data.Domains.PhysicalStores.GoogleResponseCache;
+using static Middleware.Web.Domains.PhysicalStores.GoogleResponseCache;
 using Middleware.Web.Data;
+using Middleware.Web.Domains.Common;
+using Middleware.Web.Domains.Directory;
+using Middleware.Web.Domains.Locations;
+using Middleware.Web.Domains.PhysicalStores;
 
 namespace Middleware.Web.Services.Locations;
 
@@ -35,6 +35,7 @@ public class LocationService : ILocationService
     private readonly IHttpClientService _httpClientService;
     private readonly ILogService _logService;
     private readonly ISettingService _settingService;
+    private readonly IStoreService _storeService;
     private readonly IDateTimeHelper _dateTimeHelper;
 
     #endregion
@@ -46,6 +47,7 @@ public class LocationService : ILocationService
         IHttpClientService httpClientService,
         ILogService logService,
         ISettingService settingService,
+        IStoreService storeService,
         IDateTimeHelper dateTimeHelper)
     {
         _db = db;
@@ -53,6 +55,7 @@ public class LocationService : ILocationService
         _httpClientService = httpClientService;
         _logService = logService;
         _settingService = settingService;
+        _storeService = storeService;
         _dateTimeHelper = dateTimeHelper;
     }
 
@@ -189,22 +192,17 @@ public class LocationService : ILocationService
         var currentDay = (int)currentDate.DayOfWeek;
         var currentTime = currentDate.TimeOfDay;
 
-        foreach (var locationhour in locationhours)
-        {
-            TimeSpan? openingHour = null;
-            if (!string.IsNullOrWhiteSpace(locationhour.OpeningHour) && TimeSpan.TryParse(locationhour.OpeningHour, out var parsedOpening))
-                openingHour = parsedOpening;
-
-            TimeSpan? closingHour = null;
-            if (!string.IsNullOrWhiteSpace(locationhour.ClosingHour) && TimeSpan.TryParse(locationhour.ClosingHour, out var parsedClosing))
-                closingHour = parsedClosing;
-
-            if (locationhour.DayId == currentDay && openingHour.HasValue && closingHour.HasValue)
+            foreach (var locationhour in locationhours)
             {
-                if (currentTime >= openingHour && currentTime <= closingHour)
-                    return true;
+                var openingHour = locationhour.OpeningHour;
+                var closingHour = locationhour.ClosingHour;
+
+                if (locationhour.DayId == currentDay && openingHour.HasValue && closingHour.HasValue)
+                {
+                    if (currentTime >= openingHour && currentTime <= closingHour)
+                        return true;
+                }
             }
-        }
 
         return false;
     }
@@ -213,21 +211,16 @@ public class LocationService : ILocationService
     {
         var locationhours = await GetLocationHoursByLocationIdAsync(locationid, type);
         var hoursstring = string.Empty;
-        foreach (var locationhour in locationhours)
-        {
-            TimeSpan? openingHour = null;
-            if (!string.IsNullOrWhiteSpace(locationhour.OpeningHour) && TimeSpan.TryParse(locationhour.OpeningHour, out var parsedOpening))
-                openingHour = parsedOpening;
+            foreach (var locationhour in locationhours)
+            {
+                var openingHour = locationhour.OpeningHour;
+                var closingHour = locationhour.ClosingHour;
 
-            TimeSpan? closingHour = null;
-            if (!string.IsNullOrWhiteSpace(locationhour.ClosingHour) && TimeSpan.TryParse(locationhour.ClosingHour, out var parsedClosing))
-                closingHour = parsedClosing;
-
-            if (openingHour.HasValue)
-                hoursstring += Enum.GetName(typeof(DayOfWeek), locationhour.Day) + ": " + ConvertToTime(openingHour) + " - " + ConvertToTime(closingHour) + "<br />";
-            else
-                hoursstring += Enum.GetName(typeof(DayOfWeek), locationhour.Day) + ": Closed" + "<br />";
-        }
+                if (openingHour.HasValue)
+                    hoursstring += Enum.GetName(typeof(DayOfWeek), locationhour.Day) + ": " + ConvertToTime(openingHour) + " - " + ConvertToTime(closingHour) + "<br />";
+                else
+                    hoursstring += Enum.GetName(typeof(DayOfWeek), locationhour.Day) + ": Closed" + "<br />";
+            }
 
         return hoursstring;
     }
@@ -252,7 +245,8 @@ public class LocationService : ILocationService
                 if (location == null)
                     return null;
 
-                var credentialsSettings = await _settingService.LoadSettingAsync<FMCommonSettings>();
+                var storeId = (await _storeService.GetCurrentStoreAsync())?.Id ?? 0;
+                var credentialsSettings = await _settingService.LoadSettingAsync<FMCommonSettings>(storeId);
 
                 string placeId = string.Empty;
                 var response = await _httpClientService.GetAsync(requestUri: "https://maps.googleapis.com/maps/api/place/textsearch/json?query=" + location.Name + "&key=" + credentialsSettings.StoreLocatorGeocodingAPIKey + "&location=" + location.Latitude + "," + location.Longitude, requestHeaders: null);

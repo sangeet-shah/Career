@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.LandingPages;
+namespace Middleware.Web.Domains.LandingPages;
 public class SummerJam : BaseEntity
 {
     public string FirstName { get; set; }

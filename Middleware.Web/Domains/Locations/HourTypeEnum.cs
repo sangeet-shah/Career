@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Locations;
+﻿namespace Middleware.Web.Domains.Locations;
 
 public enum HourTypeEnum
 {

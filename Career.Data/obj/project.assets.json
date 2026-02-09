@@ -9925,11 +9925,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Project\\FM\\FMUSA CAREER\\Career\\Career.Data\\Career.Data.csproj",
+      "projectUniqueName": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Data\\Career.Data.csproj",
       "projectName": "Career.Data",
-      "projectPath": "D:\\Project\\FM\\FMUSA CAREER\\Career\\Career.Data\\Career.Data.csproj",
+      "projectPath": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Data\\Career.Data.csproj",
       "packagesPath": "C:\\Users\\sange\\.nuget\\packages\\",
-      "outputPath": "D:\\Project\\FM\\FMUSA CAREER\\Career\\Career.Data\\obj\\",
+      "outputPath": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Data\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",

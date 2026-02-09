@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.Messages;
+namespace Middleware.Web.Domains.Messages;
 
 /// <summary>
 /// Represents NewsLetterSubscription entity

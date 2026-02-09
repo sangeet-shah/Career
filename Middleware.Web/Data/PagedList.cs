@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Career.Data.Repository;
+namespace Middleware.Web.Data.Repository;
 
 /// <summary>
 /// Paged list

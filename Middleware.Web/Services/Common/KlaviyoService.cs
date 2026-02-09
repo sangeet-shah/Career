@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Common;
+﻿using Middleware.Web.Domains.Common;
 using Middleware.Web.Services.Directory;
 using Middleware.Web.Services.Logs;
 using Newtonsoft.Json;

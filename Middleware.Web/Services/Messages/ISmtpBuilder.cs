@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Messages;
+﻿using Middleware.Web.Domains.Messages;
 using MailKit.Net.Smtp;
 using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;

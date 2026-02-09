@@ -1,12 +1,12 @@
-﻿using Career.Data.Data.Caching;
-using Career.Data.Domains;
-using Career.Data.Repository;
+﻿using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains;
+using Middleware.Web.Data.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Career.Data.Data;
+namespace Middleware.Web.Data;
 
 /// <summary>
 /// Represents an entity repository

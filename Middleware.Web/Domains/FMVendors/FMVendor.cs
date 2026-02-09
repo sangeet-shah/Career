@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.FMVendors;
+﻿namespace Middleware.Web.Domains.FMVendors;
 
 public class FMVendor : BaseEntity
 {

@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.LandingPages;
+﻿namespace Middleware.Web.Domains.LandingPages;
 public enum LandingPageTypeEnum
 {
     Registration = 1,

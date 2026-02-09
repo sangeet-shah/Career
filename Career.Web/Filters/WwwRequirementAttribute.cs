@@ -1,6 +1,6 @@
-﻿using Career.Data.Domains.Seo;
-using Career.Data.Services.Settings;
-using Career.Data.Services.Stores;
+using Career.Web.Domains.Seo;
+using Career.Web.Models.Seo;
+using Career.Web.Services.ApiClient;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -35,18 +35,15 @@ public sealed class WwwRequirementAttribute : TypeFilterAttribute
 
         #region Fields
 
-        private readonly IStoreService _storeService;
-        private readonly ISettingService _settingService;
+        private readonly IApiClient _apiClient;
 
         #endregion
 
         #region Ctor
 
-        public WwwRequirementFilter(IStoreService storeService,
-            ISettingService settingService)
+        public WwwRequirementFilter(IApiClient apiClient)
         {
-            _storeService = storeService;
-            _settingService = settingService;
+            _apiClient = apiClient;
         }
 
         #endregion
@@ -59,13 +56,12 @@ public sealed class WwwRequirementAttribute : TypeFilterAttribute
         /// </summary>
         /// <param name="context">Authorization filter context</param>
         /// <param name="withWww">Whether URL must start with WWW</param>
-        private void RedirectRequest(AuthorizationFilterContext context)
+        private async Task RedirectRequestAsync(AuthorizationFilterContext context)
         {            
             if (context.HttpContext.Request.Host.Host.StartsWith("www.", StringComparison.OrdinalIgnoreCase))
             {
-                var storeId = (_storeService.GetCurrentStoreAsync().Result)?.Id ?? 0;
-                var seoSettings = _settingService.LoadSettingAsync<SeoSettings>(storeId).Result;
-                if (seoSettings.WwwRequirement != WwwRequirement.WithWww)
+                var requirement = await _apiClient.GetAsync<WwwRequirementResponse>("api/Seo/GetWwwRequirement");
+                if (requirement == null || requirement.WwwRequirement != (int)WwwRequirement.WithWww)
                     return;
 
                 var request = context.HttpContext.Request;
@@ -79,7 +75,7 @@ public sealed class WwwRequirementAttribute : TypeFilterAttribute
         /// Called early in the filter pipeline to confirm request is authorized
         /// </summary>
         /// <param name="context">Authorization filter context</param>
-        private void CheckWwwRequirement(AuthorizationFilterContext context)
+        private async Task CheckWwwRequirementAsync(AuthorizationFilterContext context)
         {
             ArgumentNullException.ThrowIfNull(context);
 
@@ -95,7 +91,7 @@ public sealed class WwwRequirementAttribute : TypeFilterAttribute
             if (context.HttpContext.Connection.RemoteIpAddress != null && IPAddress.IsLoopback(context.HttpContext.Connection.RemoteIpAddress))
                 return;
 
-            RedirectRequest(context);
+            await RedirectRequestAsync(context);
         }
 
         #endregion
@@ -107,10 +103,9 @@ public sealed class WwwRequirementAttribute : TypeFilterAttribute
         /// </summary>
         /// <param name="context">Authorization filter context</param>
         /// <returns>A task that represents the asynchronous operation</returns>
-        public Task OnAuthorizationAsync(AuthorizationFilterContext context)
+        public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
-            CheckWwwRequirement(context);
-            return Task.CompletedTask;
+            await CheckWwwRequirementAsync(context);
         }
 
         #endregion

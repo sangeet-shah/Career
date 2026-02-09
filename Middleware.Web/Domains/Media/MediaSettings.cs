@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.Media;
+namespace Middleware.Web.Domains.Media;
 
 /// <summary>
 /// Media settings

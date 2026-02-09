@@ -1,4 +1,4 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 using System;
 using System.Threading.Tasks;
 

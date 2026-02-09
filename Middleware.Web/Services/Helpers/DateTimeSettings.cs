@@ -1,4 +1,4 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
 namespace Middleware.Web.Services.Helpers;
 

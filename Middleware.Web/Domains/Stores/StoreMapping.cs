@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Stores;
+﻿namespace Middleware.Web.Domains.Stores;
 
 /// <summary>
 /// Represents a store mapping record

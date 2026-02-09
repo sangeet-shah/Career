@@ -1,5 +1,5 @@
-using Career.Data.Data;
-using Career.Data.Domains.DeliveryCharges;
+using Middleware.Web.Data;
+using Middleware.Web.Domains.DeliveryCharges;
 using Dapper;
 using Middleware.Web.Data;
 using System.Threading.Tasks;

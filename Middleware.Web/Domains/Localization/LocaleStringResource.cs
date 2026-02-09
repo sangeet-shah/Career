@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Localization;
+﻿namespace Middleware.Web.Domains.Localization;
 
 public class LocaleStringResource : BaseEntity
 {

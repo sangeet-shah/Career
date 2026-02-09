@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Data.Caching;
+﻿namespace Middleware.Web.Data.Caching;
 
 /// <summary>
 /// Represents default values related to caching

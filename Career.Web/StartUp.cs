@@ -1,6 +1,4 @@
-﻿using Career.Data;
-using Career.Data.Infrastructure;
-using Career.Web.Infrastructure;
+﻿using Career.Web.Infrastructure;
 using Career.Web.Infrastructure.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,15 +25,19 @@ public class Startup
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-        //add appSettings configuration parameters
         var appSettings = services.ConfigureStartupConfig<AppSettings>(_configuration);
-        services.RegisterDependencies(_configuration, appSettings.ConnectionStrings.DbConnection);
+        services.RegisterDependencies(_configuration, appSettings.ConnectionStrings?.DbConnection);
 
         services.AddDirectoryBrowser();
         services.AddHttpContextAccessor();
 
         // Register MVC views
-        var mvcBuilder = services.AddControllersWithViews();
+        var mvcBuilder = services.AddControllersWithViews(o =>
+        {
+            o.Filters.Add<Career.Web.Infrastructure.LayoutDataFilter>();
+            o.Filters.Add<Career.Web.Infrastructure.Filters.TestSiteAuthorizeFilter>();
+        });
+        
 
         // Register Razor Pages
         services.AddRazorPages();
@@ -58,7 +60,6 @@ public class Startup
     {
         app.UseHttpsRedirection();
 
-        EngineContext.Current.ConfigureRequestPipeline(app);
         app.UseTrailingSlashUrlMiddleware();
         //exception handling
         app.UseCareerExceptionHandler(env, _configuration);

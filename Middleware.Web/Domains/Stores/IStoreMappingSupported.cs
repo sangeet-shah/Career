@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Stores;
+﻿namespace Middleware.Web.Domains.Stores;
 
 public interface IStoreMappingSupported
 {

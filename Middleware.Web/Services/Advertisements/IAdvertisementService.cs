@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Advertisements;
+﻿using Middleware.Web.Domains.Advertisements;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

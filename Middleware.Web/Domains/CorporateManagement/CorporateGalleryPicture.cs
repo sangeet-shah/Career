@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.CorporateManagement;
+﻿namespace Middleware.Web.Domains.CorporateManagement;
 
 public class CorporateGalleryPicture : BaseEntity
 {

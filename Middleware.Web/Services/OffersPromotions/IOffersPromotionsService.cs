@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.OffersPromotions;
+﻿using Middleware.Web.Domains.OffersPromotions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

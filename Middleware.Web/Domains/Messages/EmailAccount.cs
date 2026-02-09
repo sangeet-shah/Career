@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Messages;
+﻿namespace Middleware.Web.Domains.Messages;
 
 public class EmailAccount : BaseEntity
 {

@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.Klaviyo;
+namespace Middleware.Web.Domains.Klaviyo;
 
 public class KlaviyoSettings : ISettings
 {

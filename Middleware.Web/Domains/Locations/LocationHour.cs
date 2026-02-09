@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Locations;
+namespace Middleware.Web.Domains.Locations;
 
 public class LocationHour : BaseEntity
 {
@@ -18,14 +18,14 @@ public class LocationHour : BaseEntity
     public int DayId { get; set; }
 
     /// <summary>
-    /// Gets or sets the opening hour
+    /// Gets or sets the opening hour (stored as SQL TIME -> maps to TimeSpan)
     /// </summary>
-    public string OpeningHour { get; set; }
+    public TimeSpan? OpeningHour { get; set; }
 
     /// <summary>
-    /// Gets or sets the closing hour
+    /// Gets or sets the closing hour (stored as SQL TIME -> maps to TimeSpan)
     /// </summary>
-    public string ClosingHour { get; set; }
+    public TimeSpan? ClosingHour { get; set; }
 
     public HourTypeEnum HourType
     {

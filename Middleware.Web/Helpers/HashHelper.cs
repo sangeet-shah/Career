@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Career.Data;
+namespace Middleware.Web.Data;
 
 /// <summary>
 /// Hash helper class

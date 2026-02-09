@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Stores;
+﻿using Middleware.Web.Domains.Stores;
 using System.Threading.Tasks;
 
 namespace Middleware.Web.Services.Stores;

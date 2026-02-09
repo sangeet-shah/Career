@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Banner;
+﻿using Middleware.Web.Domains.Banner;
 using System.Threading.Tasks;
 
 namespace Middleware.Web.Services.Media;

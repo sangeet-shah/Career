@@ -1,17 +1,8 @@
-﻿@using Career.Data
-@using Career.Data.Services
-@using Career.Data.Services.Settings
-@using Career.Data.Services.Stores
-@using Microsoft.Extensions.Configuration
-@using Career.Data.Domains
-@using Career.Data.Domains.Seo
-
-@inject ISettingService _settingService
-@inject IStoreService storeService
+@using Career.Web.Models.Common
 
 @{
-    var seoSettings = await _settingService.LoadSettingAsync<SeoSettings>(3);
-    var store = await storeService.GetCurrentStoreAsync();
+    var layoutData = ViewData["LayoutData"] as LayoutDataResponse ?? new LayoutDataResponse();
+    var pageTitleSeparator = layoutData.PageTitleSeparator?.Trim() ?? string.Empty;
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -27,11 +18,18 @@
         @{
             if (string.IsNullOrEmpty(ViewBag.PageTitle))
             {
-                @store.DefaultTitle
+                @layoutData.DefaultTitle
             }
             else
             {
-                @Html.Raw(ViewBag.PageTitle + " ") @(seoSettings.PageTitleSeparator.Trim() + " ")  @store.DefaultTitle
+                if (string.IsNullOrEmpty(pageTitleSeparator))
+                {
+                    @Html.Raw(ViewBag.PageTitle + " " + layoutData.DefaultTitle)
+                }
+                else
+                {
+                    @Html.Raw(ViewBag.PageTitle + " " + pageTitleSeparator + " " + layoutData.DefaultTitle)
+                }
             }
         }
     </title>
@@ -47,7 +45,7 @@
     }
     else
     {
-        <meta name="description" content="@store.HomepageDescription" />
+        <meta name="description" content="@layoutData.HomepageDescription" />
     }
 
     <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css">

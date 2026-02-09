@@ -1,13 +1,11 @@
-﻿@model LocationDetailModel
+@model LocationDetailModel
 
 @{
     ViewBag.PageTitle = Model.StoreName;
     ViewBag.Canonical = "locations/"+Model.LocationId+"/";
 }
-@using Career.Data.Domains.Common
 @using Career.Web.Models.StoreManagement
 @using Microsoft.AspNetCore.Http
-@using Career.Data
 @{
 
     int count = 0;

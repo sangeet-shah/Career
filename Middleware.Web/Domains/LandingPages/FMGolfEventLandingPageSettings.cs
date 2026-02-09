@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.LandingPages;
+namespace Middleware.Web.Domains.LandingPages;
 public class FMGolfEventLandingPageSettings : ISettings
 {
     public bool Enabled { get; set; }

@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Directory;
+﻿namespace Middleware.Web.Domains.Directory;
 
 public class StateProvince : BaseEntity
 {

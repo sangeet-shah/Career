@@ -1,7 +1,7 @@
-﻿using Career.Data.Data.Caching;
-using Career.Data.Domains.Common;
-using Career.Data.Domains.PaycorAPI;
-using Career.Data.Repository;
+﻿using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains.Common;
+using Middleware.Web.Domains.PaycorAPI;
+using Middleware.Web.Data.Repository;
 using Microsoft.Extensions.Options;
 using Middleware.Web.Options;
 using Middleware.Web.Services.Logs;

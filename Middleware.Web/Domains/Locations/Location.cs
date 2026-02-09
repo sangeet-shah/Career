@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.Locations;
+namespace Middleware.Web.Domains.Locations;
 
 /// <summary>
 /// Represents a location

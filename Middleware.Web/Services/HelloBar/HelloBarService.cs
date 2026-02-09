@@ -1,6 +1,6 @@
-using Career.Data.Data;
-using Career.Data.Data.Caching;
-using Career.Data.Domains.Common;
+using Middleware.Web.Data;
+using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains.Common;
 using Middleware.Web.Services.Stores;
 using Dapper;
 using System;

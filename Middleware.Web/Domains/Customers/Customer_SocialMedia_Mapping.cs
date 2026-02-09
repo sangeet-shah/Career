@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Customers;
+﻿namespace Middleware.Web.Domains.Customers;
 
 /// <summary>
 /// Represents a customer-social media mapping class

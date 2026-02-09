@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.LegalPages;
+﻿namespace Middleware.Web.Domains.LegalPages;
 public class LegalPage : BaseEntity
 {
 }

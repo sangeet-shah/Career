@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.Messages;
+namespace Middleware.Web.Domains.Messages;
 
 public class QueuedEmail : BaseEntity
 {

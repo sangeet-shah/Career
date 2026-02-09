@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Data.Caching;
+namespace Middleware.Web.Data.Caching;
 
 /// <summary>
 /// Cache manager interface

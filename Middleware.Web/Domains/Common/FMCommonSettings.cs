@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.Common;
+namespace Middleware.Web.Domains.Common;
 
 public class FMCommonSettings : ISettings
 {

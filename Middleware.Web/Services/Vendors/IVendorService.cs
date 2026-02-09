@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.FMVendors;
+﻿using Middleware.Web.Domains.FMVendors;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

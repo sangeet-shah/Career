@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.LandingPages;
+﻿using Middleware.Web.Domains.LandingPages;
 using System.Threading.Tasks;
 
 namespace Middleware.Web.Services.RegistrationPage;

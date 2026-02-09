@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Seo;
+﻿using Middleware.Web.Domains.Seo;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

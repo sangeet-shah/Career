@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.DeliveryCharges;
+﻿using Middleware.Web.Domains.DeliveryCharges;
 using System.Threading.Tasks;
 
 namespace Middleware.Web.Services.DeliveryCharges;

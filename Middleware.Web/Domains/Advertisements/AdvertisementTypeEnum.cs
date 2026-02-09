@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Advertisements;
+﻿namespace Middleware.Web.Domains.Advertisements;
 
 public enum AdvertisementTypeEnum
 {

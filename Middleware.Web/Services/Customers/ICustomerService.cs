@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Customers;
+﻿using Middleware.Web.Domains.Customers;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

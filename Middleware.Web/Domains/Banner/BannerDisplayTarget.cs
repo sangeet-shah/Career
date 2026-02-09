@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Banner;
+﻿namespace Middleware.Web.Domains.Banner;
 
 public class BannerDisplayTarget : BaseEntity
 {

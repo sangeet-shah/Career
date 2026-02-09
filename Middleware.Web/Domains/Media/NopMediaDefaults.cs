@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Media;
+﻿namespace Middleware.Web.Domains.Media;
 
 /// <summary>
 /// Represents default values related to media services

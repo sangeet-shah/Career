@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Career.Data.Domains.ScheduleOrder;
+namespace Middleware.Web.Domains.ScheduleOrder;
 
 /// <summary>
 /// Represents an route type enumeration

@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Common;
+﻿namespace Middleware.Web.Domains.Common;
 
 /// <summary>
 /// Represents default values related to customers data

@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.PaycorAPI;
+﻿namespace Middleware.Web.Domains.PaycorAPI;
 
 public class PaycorAPISettings
 {

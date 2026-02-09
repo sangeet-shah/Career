@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using Career.Web.Domains.PhysicalStores;
+using System.Collections.Generic;
 
 namespace Career.Web.Models.StoreManagement;
 
@@ -8,7 +9,7 @@ public record LocationDetailModel
     {
         StoreInfoModel = new StoreInfoModels();
         PhysicalStoreBannerModel = new BannerModel();
-        PhysicalStoreReviews = new List<Data.Domains.PhysicalStores.GoogleResponseCache.PhysicalStoreReview>();
+        PhysicalStoreReviews = new List<PhysicalStoreReview>();
         SchemaPictureUrls = new List<string>();
     }
     public int Id { get; set; }
@@ -67,7 +68,7 @@ public record LocationDetailModel
     public string LocationInstagramIconUrl { get; set; }
     public string LocationYouTubeIconUrl { get; set; }
 
-    public IList<Data.Domains.PhysicalStores.GoogleResponseCache.PhysicalStoreReview> PhysicalStoreReviews { get; set; }
+    public IList<PhysicalStoreReview> PhysicalStoreReviews { get; set; }
 
     public record BannerModel
     {

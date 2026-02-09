@@ -1,5 +1,5 @@
-﻿using Career.Data.Domains.Media;
-using Career.Data.Repository;
+﻿using Middleware.Web.Domains.Media;
+using Middleware.Web.Data.Repository;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 

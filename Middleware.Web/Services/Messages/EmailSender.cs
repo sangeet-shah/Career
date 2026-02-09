@@ -1,5 +1,5 @@
-﻿using Career.Data.Domains.Career;
-using Career.Data.Domains.Messages;
+﻿using Middleware.Web.Domains.Career;
+using Middleware.Web.Domains.Messages;
 using Middleware.Web.Services.Media;
 using MimeKit;
 using MimeKit.Text;

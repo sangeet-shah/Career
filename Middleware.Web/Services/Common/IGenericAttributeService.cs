@@ -1,5 +1,5 @@
-﻿using Career.Data.Domains;
-using Career.Data.Domains.Common;
+﻿using Middleware.Web.Domains;
+using Middleware.Web.Domains.Common;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

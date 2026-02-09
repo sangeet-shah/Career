@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.CorporateManagement;
+namespace Middleware.Web.Domains.CorporateManagement;
 
 public class FMCorporateManagementSettings : ISettings
 {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Career.Data.Domains.Common;
+namespace Middleware.Web.Domains.Common;
 
 public class KlaviyoEmailSubscribeProfileRequest
 {

@@ -1,7 +1,7 @@
-using Career.Data.Data;
-using Career.Data.Data.Caching;
-using Career.Data.Domains.Advertisements;
-using Career.Data.Domains.Common;
+using Middleware.Web.Data;
+using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains.Advertisements;
+using Middleware.Web.Domains.Common;
 using Middleware.Web.Services.Common;
 using Dapper;
 using System;

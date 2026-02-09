@@ -1,5 +1,5 @@
-﻿using Career.Data.Domains.Common;
-using Career.Data.Domains.LandingPages;
+using Career.Web.Domains.Common;
+using Career.Web.Domains.LandingPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;

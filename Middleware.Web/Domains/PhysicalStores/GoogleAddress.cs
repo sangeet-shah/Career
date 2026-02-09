@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Career.Data.Domains.PhysicalStores;
+namespace Middleware.Web.Domains.PhysicalStores;
 
 public class GoogleAddress
 {

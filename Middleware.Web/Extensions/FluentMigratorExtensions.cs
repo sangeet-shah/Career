@@ -1,7 +1,7 @@
-﻿//using Career.Data.Domains;
-//using Career.Data.Infrastructure;
-//using Career.Data.Mapping;
-//using Career.Data.Mapping.Builders;
+﻿//using Middleware.Web.Domains;
+//using Middleware.Web.Data.Infrastructure;
+//using Middleware.Web.Data.Mapping;
+//using Middleware.Web.Data.Mapping.Builders;
 //using FluentMigrator.Builders.Create.Table;
 //using FluentMigrator.Infrastructure.Extensions;
 //using FluentMigrator.Model;
@@ -13,7 +13,7 @@
 //using System.Linq;
 //using System.Reflection;
 
-//namespace Career.Data.Extensions;
+//namespace Middleware.Web.Data.Extensions;
 
 ///// <summary>
 ///// FluentMigrator extensions

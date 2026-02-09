@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Customers;
+﻿using Middleware.Web.Domains.Customers;
 using System.Threading.Tasks;
 
 namespace Middleware.Web.Services.Customers;

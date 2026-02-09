@@ -1,26 +1,21 @@
-﻿using Career.Data.Services.Media;
+using Career.Web.Models.Media;
+using Career.Web.Services.ApiClient;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace Career.Web.Controllers;
 
 public class PictureController : BaseController
 {
-    #region Fields
+    private readonly IApiClient _apiClient;
 
-    private readonly IPictureService _pictureService;
-
-    #endregion
-
-    #region Ctor
-
-    public PictureController(IPictureService pictureService)
+    public PictureController(IApiClient apiClient)
     {
-        _pictureService = pictureService;
+        _apiClient = apiClient;
     }
-
-    #endregion
 
     #region Method
 
@@ -38,21 +33,23 @@ public class PictureController : BaseController
             ? Request.Form[qqFileNameParameter].ToString()
             : string.Empty;
 
-        var picture = await _pictureService.InsertPictureAsync(httpPostedFile, qqFileName);
+        using var content = new MultipartFormDataContent();
+        await using var stream = httpPostedFile.OpenReadStream();
+        var fileContent = new StreamContent(stream);
+        fileContent.Headers.ContentType = new MediaTypeHeaderValue(httpPostedFile.ContentType);
+        content.Add(fileContent, "file", httpPostedFile.FileName);
+        if (!string.IsNullOrWhiteSpace(qqFileName))
+            content.Add(new StringContent(qqFileName), qqFileNameParameter);
 
-        //when returning JSON the mime-type must be set to text/plain
-        //otherwise some browsers will pop-up a "Save As" dialog.
-
-        if (picture == null)
-            return Json(new { success = false, message = "Wrong file format" });
-
-        var pictureBinary = (await _pictureService.GetPictureBinaryByPictureIdAsync(picture.Id)).BinaryData;
+        var result = await _apiClient.PostMultipartAsync<PictureUploadResult>("api/Picture/AsyncUpload", content);
+        if (result == null || !result.Success)
+            return Json(new { success = false, message = result?.Message ?? "Wrong file format" });
 
         return Json(new
         {
             success = true,
-            pictureId = picture.Id,
-            image = $"data:{picture.MimeType};base64,{System.Convert.ToBase64String(pictureBinary)}"
+            pictureId = result.PictureId,
+            image = result.Image
         });
     }
 

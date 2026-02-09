@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.Media;
+namespace Middleware.Web.Domains.Media;
 
 public class Banner : BaseEntity
 {

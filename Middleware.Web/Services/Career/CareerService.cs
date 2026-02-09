@@ -1,8 +1,8 @@
-using Career.Data.Data;
-using Career.Data.Data.Caching;
-using Career.Data.Domains.Career;
-using Career.Data.Domains.Common;
-using Career.Data.Domains.CorporateManagement;
+using Middleware.Web.Data;
+using Middleware.Web.Data.Caching;
+using Middleware.Web.Domains.Career;
+using Middleware.Web.Domains.Common;
+using Middleware.Web.Domains.CorporateManagement;
 using Dapper;
 using Middleware.Web.Data;
 using System.Collections.Generic;

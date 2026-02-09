@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Seo;
+﻿namespace Middleware.Web.Domains.Seo;
 
 /// <summary>
 /// Represents WWW requirement

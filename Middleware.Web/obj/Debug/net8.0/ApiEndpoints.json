@@ -18,6 +18,623 @@
     ]
   },
   {
+    "ContainingType": "Middleware.Web.Controllers.BlogController",
+    "Method": "ArticleList",
+    "RelativePath": "api/Blog/ArticleList",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "PhotoGalleryTitle",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "GalleryPictures",
+        "Type": "System.Collections.Generic.IList\u00601[[Middleware.Web.Models.Media.GalleryPictureMappingModel, Middleware.Web, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "BlogPostList",
+        "Type": "System.Collections.Generic.IList\u00601[[Middleware.Web.Models.Blogs.BlogPostModel, Middleware.Web, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "AvailablePageSizes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Draw",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TotalCount",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TotalPages",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.BlogController",
+    "Method": "NewsArticle",
+    "RelativePath": "api/Blog/NewsArticle/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.BlogController",
+    "Method": "NewsRss",
+    "RelativePath": "api/Blog/NewsRss",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CareerController",
+    "Method": "CareerDetail",
+    "RelativePath": "api/Career/CareerDetail/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CareerController",
+    "Method": "List",
+    "RelativePath": "api/Career/List",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "CarrerList",
+        "Type": "System.Collections.Generic.IList\u00601[[Middleware.Web.Models.Career.CareerDetailModel, Middleware.Web, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "State",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SelectedStates",
+        "Type": "System.Collections.Generic.IList\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "AvailableStates",
+        "Type": "System.Collections.Generic.IList\u00601[[Microsoft.AspNetCore.Mvc.Rendering.SelectListItem, Microsoft.AspNetCore.Mvc.ViewFeatures, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "City",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SelectedCities",
+        "Type": "System.Collections.Generic.IList\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "AvailableCities",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Mvc.Rendering.SelectListItem, Microsoft.AspNetCore.Mvc.ViewFeatures, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "JobCategory",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "SelectedJobCategories",
+        "Type": "System.Collections.Generic.IList\u00601[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "AvailableJobCategories",
+        "Type": "System.Collections.Generic.List\u00601[[Microsoft.AspNetCore.Mvc.Rendering.SelectListItem, Microsoft.AspNetCore.Mvc.ViewFeatures, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "Store",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "IsMobile",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage1",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage1Url",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage1AltText",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage1Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage2",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage2Url",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage2AltText",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage2Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage3",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage3Url",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage3AltText",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopImage3Title",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TopDescription",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Image",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "ImageUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "AltText",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MobileImage",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "MobileImageUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "MobileAltText",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Page",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "Parameters",
+        "Type": "System.Collections.Generic.Dictionary\u00602[[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=8.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]",
+        "IsRequired": false
+      },
+      {
+        "Name": "CurrentPageUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "PageSize",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "AvailablePageSizes",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "Draw",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "TotalCount",
+        "Type": "System.Int32",
+        "IsRequired": false
+      },
+      {
+        "Name": "TotalPages",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CareerController",
+    "Method": "SitemapXml",
+    "RelativePath": "api/Career/SitemapXml",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "baseUrl",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CareerHomePageController",
+    "Method": "Index",
+    "RelativePath": "api/CareerHomePage/Index",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CareerHomePageController",
+    "Method": "OurStory",
+    "RelativePath": "api/CareerHomePage/OurStory",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CommonController",
+    "Method": "CatalogAds",
+    "RelativePath": "api/Common/CatalogAds",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CommonController",
+    "Method": "ClearCache",
+    "RelativePath": "api/Common/ClearCache",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CommonController",
+    "Method": "GetLayoutData",
+    "RelativePath": "api/Common/GetLayoutData",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CommonController",
+    "Method": "OffersPromotions",
+    "RelativePath": "api/Common/OffersPromotions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CommonController",
+    "Method": "PageNotFound",
+    "RelativePath": "api/Common/PageNotFound",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CommonController",
+    "Method": "RobotsTextFile",
+    "RelativePath": "api/Common/RobotsTextFile",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CommonController",
+    "Method": "WeeklyAds",
+    "RelativePath": "api/Common/WeeklyAds",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.ContestPageController",
+    "Method": "ContestPage",
+    "RelativePath": "api/ContestPage/ContestPage/{contestId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "contestId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.ContestPageController",
+    "Method": "ContestPage",
+    "RelativePath": "api/ContestPage/ContestPage/{contestId}",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "contestId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "model",
+        "Type": "Middleware.Web.Models.LandingPage.LandingPageModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CustomerController",
+    "Method": "LoginGet",
+    "RelativePath": "api/Customer/Login",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.CustomerController",
+    "Method": "LoginPost",
+    "RelativePath": "api/Customer/Login",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.GolfLandingPageController",
+    "Method": "Register",
+    "RelativePath": "api/GolfLandingPage/Register",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.GolfLandingPageController",
+    "Method": "Register",
+    "RelativePath": "api/GolfLandingPage/Register",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Middleware.Web.Models.GolfLanding.GolfLandingPageModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.HelloBarController",
+    "Method": "List",
+    "RelativePath": "api/HelloBar/List",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "isMobile",
+        "Type": "System.Boolean",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.OurTeamController",
+    "Method": "Detail",
+    "RelativePath": "api/OurTeam/Detail/{id}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.OurTeamController",
+    "Method": "List",
+    "RelativePath": "api/OurTeam/List",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.PhysicalStoreController",
+    "Method": "List",
+    "RelativePath": "api/PhysicalStore/List",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.PhysicalStoreController",
+    "Method": "PhysicalStoreDetail",
+    "RelativePath": "api/PhysicalStore/PhysicalStoreDetail/{location}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "location",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.PictureController",
+    "Method": "AsyncUpload",
+    "RelativePath": "api/Picture/AsyncUpload",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.SeoController",
+    "Method": "GetBySlug",
+    "RelativePath": "api/Seo/GetBySlug",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "slug",
+        "Type": "System.String",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.SeoController",
+    "Method": "GetWwwRequirement",
+    "RelativePath": "api/Seo/GetWwwRequirement",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.SocialIconsController",
+    "Method": "Index",
+    "RelativePath": "api/SocialIcons/Index",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.StoreController",
+    "Method": "CurrentId",
+    "RelativePath": "api/Store/CurrentId",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "Middleware.Web.Controllers.StorisController",
     "Method": "GetChatMeterReviewFeed",
     "RelativePath": "api/Storis/GetChatMeterReviewFeed",
@@ -88,6 +705,103 @@
         "IsRequired": true
       }
     ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.SummerJamController",
+    "Method": "Index",
+    "RelativePath": "api/SummerJam/Index",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.SummerJamController",
+    "Method": "Index",
+    "RelativePath": "api/SummerJam/Index",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "slug",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "model",
+        "Type": "Middleware.Web.Models.SummerJams.SummerJamModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.SummerJamController",
+    "Method": "PrepareSummerJamModelAsync",
+    "RelativePath": "api/SummerJam/PrepareSummerJamModel",
+    "HttpMethod": "",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "model",
+        "Type": "Middleware.Web.Models.SummerJams.SummerJamModel",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "Middleware.Web.Models.SummerJams.SummerJamModel",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.TopicController",
+    "Method": "PrivacyPolicy",
+    "RelativePath": "api/Topic/PrivacyPolicy",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.TopicController",
+    "Method": "TermsConditions",
+    "RelativePath": "api/Topic/TermsConditions",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.TopicController",
+    "Method": "TermsOfUse",
+    "RelativePath": "api/Topic/TermsOfUse",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "Middleware.Web.Controllers.VendorController",
+    "Method": "OurBrands",
+    "RelativePath": "api/Vendor/OurBrands",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
     "ReturnTypes": []
   }
 ]

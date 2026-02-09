@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.Career;
+namespace Middleware.Web.Domains.Career;
 
 public class CareerSettings : ISettings
 {

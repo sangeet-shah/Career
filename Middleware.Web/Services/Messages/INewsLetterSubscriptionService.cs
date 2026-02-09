@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Messages;
+﻿using Middleware.Web.Domains.Messages;
 using System.Threading.Tasks;
 
 namespace Middleware.Web.Services.Messages;

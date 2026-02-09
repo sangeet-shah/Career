@@ -1,7 +1,7 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 using System.Collections.Generic;
 
-namespace Career.Data.Domains.Seo;
+namespace Middleware.Web.Domains.Seo;
 
 /// <summary>
 /// SEO settings

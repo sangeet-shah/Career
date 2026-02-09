@@ -1,10 +1,22 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\Project\\FM\\FMUSA CAREER\\Career\\",
+  "WorkspaceRootPath": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|d:\\project\\fm\\fmusa career\\career\\career.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "AbsoluteMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|d:\\project\\fm\\fmusa career\\career123\\09-02-2026\\career\\career.web\\services\\apiclient\\apiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|solutionrelative:career.web\\services\\apiclient\\apiclient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|d:\\project\\fm\\fmusa career\\career123\\09-02-2026\\career\\career.web\\infrastructure\\extensions\\servicecollectionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|solutionrelative:career.web\\infrastructure\\extensions\\servicecollectionextensions.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|d:\\project\\fm\\fmusa career\\career123\\09-02-2026\\career\\career.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
       "RelativeMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|solutionrelative:career.web\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|d:\\project\\fm\\fmusa career\\career123\\09-02-2026\\career\\career.web\\controllers\\commoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9295C94D-8FB6-48BD-AF90-375F4EB72BA2}|Career.Web\\Career.Web.csproj|solutionrelative:career.web\\controllers\\commoncontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,51 +26,59 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:9:0:{57d563b6-44a5-47df-85be-f4199ad6b651}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:16:0:{57d563b6-44a5-47df-85be-f4199ad6b651}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:3:0:{57d563b6-44a5-47df-85be-f4199ad6b651}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{6324226f-61b6-4f28-92ee-18d4b5fe1e48}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:130:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:129:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "ApiClient.cs",
+              "DocumentMoniker": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Web\\Services\\ApiClient\\ApiClient.cs",
+              "RelativeDocumentMoniker": "Career.Web\\Services\\ApiClient\\ApiClient.cs",
+              "ToolTip": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Web\\Services\\ApiClient\\ApiClient.cs",
+              "RelativeToolTip": "Career.Web\\Services\\ApiClient\\ApiClient.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAAkwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-09T11:22:25.774Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ServiceCollectionExtensions.cs",
+              "DocumentMoniker": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Web\\Infrastructure\\Extensions\\ServiceCollectionExtensions.cs",
+              "RelativeDocumentMoniker": "Career.Web\\Infrastructure\\Extensions\\ServiceCollectionExtensions.cs",
+              "ToolTip": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Web\\Infrastructure\\Extensions\\ServiceCollectionExtensions.cs",
+              "RelativeToolTip": "Career.Web\\Infrastructure\\Extensions\\ServiceCollectionExtensions.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAIwCIAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-09T11:28:25.784Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CommonController.cs",
+              "DocumentMoniker": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Web\\Controllers\\CommonController.cs",
+              "RelativeDocumentMoniker": "Career.Web\\Controllers\\CommonController.cs",
+              "ToolTip": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Web\\Controllers\\CommonController.cs",
+              "RelativeToolTip": "Career.Web\\Controllers\\CommonController.cs",
+              "ViewState": "AgIAADgAAAAAAAAAAAAwwEMAAAA4AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-09T11:24:37.612Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\Project\\FM\\FMUSA CAREER\\Career\\Career.Web\\appsettings.json",
+              "DocumentMoniker": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Web\\appsettings.json",
               "RelativeDocumentMoniker": "Career.Web\\appsettings.json",
-              "ToolTip": "D:\\Project\\FM\\FMUSA CAREER\\Career\\Career.Web\\appsettings.json",
+              "ToolTip": "D:\\Project\\FM\\FMUSA CAREER\\Career123\\09-02-2026\\Career\\Career.Web\\appsettings.json",
               "RelativeToolTip": "Career.Web\\appsettings.json",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAAvAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2026-02-05T15:33:13.476Z",
+              "WhenOpened": "2026-02-09T11:22:17.701Z",
               "EditorCaption": ""
             }
           ]

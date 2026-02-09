@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Career.Data.Domains.Advertisements;
+namespace Middleware.Web.Domains.Advertisements;
 
 public class Advertisement : BaseEntity
 {

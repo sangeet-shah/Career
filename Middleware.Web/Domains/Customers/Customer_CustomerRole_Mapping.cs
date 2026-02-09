@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Customers;
+﻿namespace Middleware.Web.Domains.Customers;
 
 public class Customer_CustomerRole_Mapping : BaseEntity
 {

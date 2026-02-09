@@ -1,5 +1,5 @@
-﻿using Career.Data.Domains.PaycorAPI;
-using Career.Data.Repository;
+﻿using Middleware.Web.Domains.PaycorAPI;
+using Middleware.Web.Data.Repository;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 

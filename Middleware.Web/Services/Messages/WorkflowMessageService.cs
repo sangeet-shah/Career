@@ -1,5 +1,5 @@
-using Career.Data.Data;
-using Career.Data.Domains.Messages;
+using Middleware.Web.Data;
+using Middleware.Web.Domains.Messages;
 using Dapper;
 using Middleware.Web.Data;
 using System;

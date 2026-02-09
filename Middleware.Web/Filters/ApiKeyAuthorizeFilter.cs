@@ -35,28 +35,15 @@ public sealed class ApiKeyAuthorizeFilter : IAsyncAuthorizationFilter
         if (_ignore)
             return Task.CompletedTask;
 
-        if (!context.HttpContext.Request.Headers.TryGetValue(
-            AuthenticationDefaults.API_KEY_NAME,
-            out var extractedApiKey))
+        if (!context.HttpContext.Request.Headers.TryGetValue(AuthenticationDefaults.API_KEY_NAME, out var extractedApiKey))
         {
-            context.Result = new UnauthorizedObjectResult(new
-            {
-                StatusCode = 401,
-                Message = "X-Api-Key header is missing"
-            });
+            context.Result = new UnauthorizedObjectResult(new { StatusCode = 401, Message = "X-Api-Key header is missing" });
             return Task.CompletedTask;
         }
 
         if (!string.Equals(extractedApiKey, _options.XApiKey, StringComparison.Ordinal))
         {
-            context.Result = new ObjectResult(new
-            {
-                StatusCode = 403,
-                Message = "Invalid API Key"
-            })
-            {
-                StatusCode = StatusCodes.Status403Forbidden
-            };
+            context.Result = new ObjectResult(new { StatusCode = 403, Message = "Invalid API Key" }) { StatusCode = StatusCodes.Status403Forbidden };
             return Task.CompletedTask;
         }
 

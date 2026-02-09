@@ -1,5 +1,5 @@
-using Career.Data.Data;
-using Career.Data.Domains.Directory;
+using Middleware.Web.Data;
+using Middleware.Web.Domains.Directory;
 using Dapper;
 using Middleware.Web.Data;
 using System.Collections.Generic;

@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Common;
+﻿using Middleware.Web.Domains.Common;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;

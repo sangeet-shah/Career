@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.Vendors;
+﻿namespace Middleware.Web.Domains.Vendors;
 
     /// <summary>
     /// Represents a vendor

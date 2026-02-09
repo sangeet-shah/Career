@@ -1,5 +1,5 @@
-using Career.Data.Data;
-using Career.Data.Domains.LandingPages;
+using Middleware.Web.Data;
+using Middleware.Web.Domains.LandingPages;
 using Middleware.Web.Services.Settings;
 using Middleware.Web.Services.Stores;
 using Dapper;

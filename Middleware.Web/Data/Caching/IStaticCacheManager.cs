@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Career.Data.Data.Caching;
+namespace Middleware.Web.Data.Caching;
 
 /// <summary>
 /// Represents a manager for caching between HTTP requests (long term caching)

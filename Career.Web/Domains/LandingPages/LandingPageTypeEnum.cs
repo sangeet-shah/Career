@@ -1,0 +1,7 @@
+namespace Career.Web.Domains.LandingPages;
+
+public enum LandingPageTypeEnum
+{
+    Registration = 1,
+    Contest = 2
+}

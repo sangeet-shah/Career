@@ -1,9 +1,10 @@
-﻿using Career.Data.Services.Seo;
-using Career.Data.Services.Stores;
+using Career.Web.Models.Seo;
+using Career.Web.Services.ApiClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.WebUtilities;
+using System;
 using System.Threading.Tasks;
 
 namespace Career.Web;
@@ -12,37 +13,35 @@ public class RouteValueTransformer : DynamicRouteValueTransformer
 {
     #region Fields
 
-    private readonly IUrlRecordService _urlRecordService;
-    private readonly IStoreService _storeService;
+    private readonly IApiClient _apiClient;
 
     #endregion
 
     #region Ctor
 
-    public RouteValueTransformer(IUrlRecordService urlRecordService, IStoreService storeService)
+    public RouteValueTransformer(IApiClient apiClient)
     {
-        _urlRecordService = urlRecordService;
-        _storeService = storeService;
+        _apiClient = apiClient;
     }
 
     #endregion
 
     #region Methods
 
-    public override ValueTask<RouteValueDictionary> TransformAsync(HttpContext httpContext, RouteValueDictionary values)
+    public override async ValueTask<RouteValueDictionary> TransformAsync(HttpContext httpContext, RouteValueDictionary values)
     {
         if (values == null)
-            return new ValueTask<RouteValueDictionary>(values);
+            return values;
 
         if (!values.TryGetValue("SeName", out var slugValue) || string.IsNullOrEmpty(slugValue as string))
-            return new ValueTask<RouteValueDictionary>(values);
+            return values;
 
         var slug = slugValue as string;
         if (slug == "news/rss/")
         {
             values["controller"] = "Home";
             values["action"] = "NewsRss";
-            return new ValueTask<RouteValueDictionary>(values);
+            return values;
         }
 
         // fmusa seo name should be /news/seo-name/
@@ -59,10 +58,10 @@ public class RouteValueTransformer : DynamicRouteValueTransformer
                 slug = slug.Substring(0, index);
         }
 
-        var urlRecord = _urlRecordService.GetBySlugAsync(slug).Result;
+        var urlRecord = await _apiClient.GetAsync<UrlRecordResponse>("api/Seo/GetBySlug", new { slug });
         //no URL record found
         if (urlRecord == null)
-            return new ValueTask<RouteValueDictionary>(values);
+            return values;
 
         //if URL record is not active let's find the latest one
         if (!urlRecord.IsActive)
@@ -72,7 +71,7 @@ public class RouteValueTransformer : DynamicRouteValueTransformer
             values["action"] = "InternalRedirect";
             values["permanentRedirect"] = true;
             httpContext.Items["nop.RedirectFromGenericPathRoute"] = true;
-            return new ValueTask<RouteValueDictionary>(values);
+            return values;
         }
 
         var queryParameters = QueryHelpers.ParseQuery(httpContext.Request.QueryString.ToString());
@@ -81,22 +80,10 @@ public class RouteValueTransformer : DynamicRouteValueTransformer
         switch (urlRecord.EntityName.ToLowerInvariant())
         {
             case "landingpage":
-                // find store wise topic page(we have created topic page for both stores)
-                var urlRecordStoreWiseContest = _urlRecordService.GetBySlugAsync(slug, (_storeService.GetCurrentStoreAsync()).Result?.Id ?? 0).Result;
-                if (urlRecordStoreWiseContest == null)
-                {
-                    values["controller"] = "Common";
-                    values["action"] = "PageNotFound";
-                }
-                else
-                {
-                    urlRecord = urlRecordStoreWiseContest;
-
-                    values["controller"] = "ContestPage";
-                    values["action"] = "ContestPage";
-                    values["contestId"] = urlRecord.EntityId;
-                    values["SeName"] = urlRecord.Slug;
-                }
+                values["controller"] = "ContestPage";
+                values["action"] = "ContestPage";
+                values["contestId"] = urlRecord.EntityId;
+                values["SeName"] = urlRecord.Slug;
                 break;
             case "blogpost":
                 values["controller"] = "Home";
@@ -118,7 +105,7 @@ public class RouteValueTransformer : DynamicRouteValueTransformer
                 break;
         }
 
-        return new ValueTask<RouteValueDictionary>(values);
+        return values;
     }
 
     #endregion

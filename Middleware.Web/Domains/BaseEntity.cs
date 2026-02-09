@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains;
+﻿namespace Middleware.Web.Domains;
 
 public abstract partial class BaseEntity
 {

@@ -1,6 +1,6 @@
-﻿using Career.Data.Configuration;
+﻿using Middleware.Web.Data.Configuration;
 
-namespace Career.Data.Domains.CDN;
+namespace Middleware.Web.Domains.CDN;
 
 /// <summary>
 /// Represent the cdn settings

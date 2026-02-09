@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Common;
+using Career.Web.Domains.Common;
 using System;
 using System.ComponentModel.DataAnnotations;
 

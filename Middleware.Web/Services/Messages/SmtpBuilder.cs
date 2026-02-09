@@ -1,4 +1,4 @@
-﻿using Career.Data.Domains.Messages;
+﻿using Middleware.Web.Domains.Messages;
 using Middleware.Web.Services.Logs;
 using MailKit.Net.Smtp;
 using MailKit.Security;

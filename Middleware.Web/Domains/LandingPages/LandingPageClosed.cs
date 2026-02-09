@@ -1,4 +1,4 @@
-﻿namespace Career.Data.Domains.LandingPages;
+﻿namespace Middleware.Web.Domains.LandingPages;
 public class LandingPageClosed : BaseEntity
 {
     public int LandingPageId { get; set; }
