@@ -3,6 +3,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection;
@@ -43,8 +44,10 @@ public class ApiClient : IApiClient
             return await _cache.GetOrAddAsync(resolvedCacheKey, async () =>
             {
                 var response = await _httpClient.GetAsync(BuildRequestUrl(url), ct);
-                response.EnsureSuccessStatusCode();
+                if (response.StatusCode == HttpStatusCode.NotFound)
+                    return default; // or null, or new T()
 
+                response.EnsureSuccessStatusCode();
                 var result = await ReadJsonOrDefaultAsync<T>(response.Content, ct);
                 return result;
             }, cacheTtl);
@@ -53,6 +56,22 @@ public class ApiClient : IApiClient
         {
             _logger.LogWarning(ex, "API GET failed: {Path}", path);
             return default;
+        }
+    }
+
+    public async Task<string> GetStringAsync(string path, object? query = null, CancellationToken ct = default)
+    {
+        try
+        {
+            var url = AppendQueryString(path, BuildQueryString(query));
+            var response = await _httpClient.GetAsync(BuildRequestUrl(url), ct);
+            response.EnsureSuccessStatusCode();
+            return await response.Content.ReadAsStringAsync(ct);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogWarning(ex, "API GET string failed: {Path}", path);
+            return null;
         }
     }
 
@@ -158,6 +177,6 @@ public class ApiClient : IApiClient
             return default;
 
         return JsonSerializer.Deserialize<T>(payload, DefaultJsonOptions);
-    }
+    }   
 }
 

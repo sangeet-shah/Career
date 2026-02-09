@@ -1,8 +1,8 @@
 @model ApplicationFormModel
 
 @using Career.Web.Models.Career
-@using Career.Web.Infrastructure
-@inject IUserAgentHelper userAgentHelper
+@using Career.Web.Domains.Common
+@inject Career.Web.Infrastructure.IUserAgentHelper UserAgentHelper
 
 @{
     ViewBag.PageTitle = "Apply Job";
@@ -1442,7 +1442,7 @@
     };
 </script>
 
-@if (userAgentHelper.IsMobileDevice())
+@if (UserAgentHelper.IsMobileDevice())
 {
     <script>
         $(document).ready(function () {

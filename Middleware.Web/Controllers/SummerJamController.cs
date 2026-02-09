@@ -1,139 +1,60 @@
-using Middleware.Web.Domains.LandingPages;
-using Middleware.Web.Models.SummerJams;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Middleware.Web.Filters;
-using Middleware.Web.Services.Common;
-using Middleware.Web.Services.Localization;
-using Middleware.Web.Services.Locations;
-using Middleware.Web.Services.Media;
-using Middleware.Web.Services.Settings;
-using Middleware.Web.Services.Stores;
+using Middleware.Web.Domains.LandingPages;
 using Middleware.Web.Services.SummerJams;
+using System;
+using System.Threading.Tasks;
 
 namespace Middleware.Web.Controllers;
 
-[Route("api/[controller]/[action]")]
 [ApiController]
-[ApiKeyAuthorize]
+[Route("api/[controller]")]
 public class SummerJamController : ControllerBase
 {
-    #region Fields
-
     private readonly ISummerJamService _summerJamService;
-    private readonly ICommonService _commonService;
-    private readonly ILocationService _locationService;
-    private readonly ISettingService _settingService;
-    private readonly IStoreService _storeService;
-    private readonly IPictureService _pictureService;
-    private readonly ILocalizationService _localizationService;
 
-    #endregion
-
-    #region Ctor
-
-    public SummerJamController(ISummerJamService summerJamService,
-        ICommonService commonService,
-        ISettingService settingService,
-        IStoreService storeService,
-        IPictureService pictureService,
-        ILocalizationService localizationService,
-        ILocationService locationService)
+    public SummerJamController(ISummerJamService summerJamService)
     {
         _summerJamService = summerJamService;
-        _commonService = commonService;
-        _settingService = settingService;
-        _storeService = storeService;
-        _pictureService = pictureService;
-        _localizationService = localizationService;
-        _locationService = locationService;
     }
 
-    #endregion
-
-    #region Utilities
-
-    public async Task<SummerJamModel> PrepareSummerJamModelAsync(SummerJamModel model)
+    [HttpPost("Insert")]
+    public async Task<IActionResult> Insert([FromBody] SummerJamInsertRequest request)
     {
-        foreach (var item in (await _locationService.GetAllStatesAsync()).Where(k => k.CountryId == 1))
-            model.States.Add(new SelectListItem { Text = item.Name, Value = item.Name });
+        if (request == null)
+            return BadRequest();
 
-        var storeId = (await _storeService.GetCurrentStoreAsync())?.Id ?? 0;
-        var fmSummerJamSettings = await _settingService.LoadSettingAsync<FMSummerJamSettings>(storeId);
-
-        model.FMUSASummerJamSetting = fmSummerJamSettings;
-
-        var currentDate = _commonService.ConvertToUserTime(DateTime.UtcNow, DateTimeKind.Utc);
-
-        model.FMUSASummerJamSetting.StartDateUtc = fmSummerJamSettings.StartDateUtc;
-        model.FMUSASummerJamSetting.EndDateUtc = fmSummerJamSettings.EndDateUtc;
-
-        if (model.FMUSASummerJamSetting.StartDateUtc.HasValue && currentDate < model.FMUSASummerJamSetting.StartDateUtc.Value)
-            return null;
-
-        if (model.FMUSASummerJamSetting.EndDateUtc.HasValue && currentDate > model.FMUSASummerJamSetting.EndDateUtc.Value)
-            return null;
-
-        model.FMUSASummerJamSetting.ViewPatioSetMobileImageIdUrl = await _pictureService.GetPictureUrlAsync(model.FMUSASummerJamSetting.ViewPatioSetMobileImageId);
-
-        model.FMUSASummerJamSetting.ViewPatioSetWebImageIdUrl = await _pictureService.GetPictureUrlAsync(model.FMUSASummerJamSetting.ViewPatioSetImageId);
-
-        model.FMUSASummerJamSetting.DailyLineUpMobileImageIdUrl = await _pictureService.GetPictureUrlAsync(model.FMUSASummerJamSetting.DailyLineUpMobileImageId);
-
-        model.FMUSASummerJamSetting.DailyLineUpWebImageIdUrl = await _pictureService.GetPictureUrlAsync(model.FMUSASummerJamSetting.DailyLineUpImageId);
-
-        return model;
-    }
-
-    #endregion
-
-    #region Method
-
-    [HttpGet]
-    public async Task<IActionResult> Index()
-    {
-        var model = new SummerJamModel();
-        model = await PrepareSummerJamModelAsync(model);
-
-        if (model == null)
-            return NotFound();
-
-        return Ok(model);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Index([FromQuery] string slug, [FromBody] SummerJamModel model)
-    {
-        if (ModelState.IsValid)
+        var summerJam = new SummerJam
         {
-            var summerJam = new Middleware.Web.Domains.LandingPages.SummerJam
-            {
-                FirstName = model.FirstName,
-                LastName = model.LastName,
-                Email = model.Email,
-                Address1 = model.AddressLine1,
-                Address2 = model.AddressLine,
-                City = model.City,
-                StateProvinceId = (await _locationService.GetAllStatesAsync()).Where(k => k.Name == model.State).FirstOrDefault().Id,
-                Phone = model.Phone,
-                ZipCode = model.ZipCode,
-                DOB = model.DOB.Value,
-                CreatedDateUtc = DateTime.UtcNow,
-                StoreId = 3
-            };
-            await _summerJamService.InsertSummerJamAsync(summerJam);
-
-            if (summerJam.Id != 0)
-            {
-                model.StateName = (await _locationService.GetAllStatesAsync()).Where(x => x.Id == summerJam.StateProvinceId).FirstOrDefault().Name;
-
-                model.Success = true;
-            }
-        }
-
-        model = await PrepareSummerJamModelAsync(model);
-        return Ok(model);
+            FirstName = request.FirstName,
+            LastName = request.LastName,
+            Email = request.Email,
+            Address1 = request.Address1,
+            Address2 = request.Address2,
+            City = request.City,
+            StateProvinceId = request.StateProvinceId,
+            Phone = request.Phone,
+            ZipCode = request.ZipCode,
+            DOB = request.DOB,
+            CreatedDateUtc = request.CreatedDateUtc,
+            StoreId = request.StoreId
+        };
+        await _summerJamService.InsertSummerJamAsync(summerJam);
+        return Ok(new { Success = true, Id = summerJam.Id });
     }
+}
 
-    #endregion
+public class SummerJamInsertRequest
+{
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    public string Address1 { get; set; }
+    public string Address2 { get; set; }
+    public string City { get; set; }
+    public int StateProvinceId { get; set; }
+    public string ZipCode { get; set; }
+    public string Phone { get; set; }
+    public DateTime? DOB { get; set; }
+    public DateTime CreatedDateUtc { get; set; }
+    public int StoreId { get; set; }
 }

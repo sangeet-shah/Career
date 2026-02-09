@@ -34,7 +34,6 @@ public class Startup
         // Register MVC views
         var mvcBuilder = services.AddControllersWithViews(o =>
         {
-            o.Filters.Add<Career.Web.Infrastructure.LayoutDataFilter>();
             o.Filters.Add<Career.Web.Infrastructure.Filters.TestSiteAuthorizeFilter>();
         });
         

@@ -1,5 +1,5 @@
-using Career.Web.Domains.PhysicalStores;
 using System.Collections.Generic;
+using Career.Web.Domains.PhysicalStores;
 
 namespace Career.Web.Models.StoreManagement;
 

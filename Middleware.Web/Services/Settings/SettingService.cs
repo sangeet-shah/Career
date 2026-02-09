@@ -135,11 +135,6 @@ public class SettingService : ISettingService
         return (await conn.QueryAsync<Setting>(sql, new { Name = "%" + name + "%" })).FirstOrDefault();
     }
 
-    public async Task<string> GetSettingValueAsync(string name)
-    {
-        return (await GetSettingByNameAsync(name))?.Value;
-    }
-
     public async Task SetSettingAsync<T>(string key, T value, int storeId = 0, bool clearCache = true)
     {
         await SetSettingAsync(typeof(T), key, value, storeId, clearCache);

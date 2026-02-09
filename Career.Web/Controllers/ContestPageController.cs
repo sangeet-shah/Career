@@ -1,26 +1,369 @@
-using Career.Web.Infrastructure;
-using Career.Web.Models.LandingPage;
-using Career.Web.Models.Security;
+using Career.Data.Domains.Common;
+using Career.Data.Domains.Klaviyo;
+using Career.Data.Domains.LandingPages;
+using Career.Data.Domains.Messages;
+using Career.Data.Services.Common;
+using Career.Data.Services.DeliveryCharges;
+using Career.Web.Services.Helpers;
+using Career.Data.Services.LandingPages;
+using Career.Data.Services.Logs;
+using Career.Web.Models.Api;
 using Career.Web.Services.ApiClient;
+using Career.Data.Services.Messages;
+using Career.Data.Services.RegistrationPage;
+using Career.Data.Services.Security;
+using Career.Data.Services.Seo;
+using Career.Data.Services.Settings;
+using Career.Data.Services.Stores;
+using Career.Web.Domains.Common;
+using Career.Web.Domains.LandingPages;
+using Career.Web.Models.LandingPage;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
 
 namespace Career.Web.Controllers;
 
 public class ContestPageController : BaseController
 {
-    private readonly IApiClient _apiClient;
-    private readonly IUserAgentHelper _userAgentHelper;
+    #region Fields
 
-    public ContestPageController(IApiClient apiClient, IUserAgentHelper userAgentHelper)
+    private readonly ILandingPageRecordService _landingPageRecordService;
+    private readonly ICommonService _commonService;
+    private readonly IApiClient _apiClient;
+    private readonly IPermissionService _permissionService;
+    private readonly ILandingPageService _landingPageService;
+    private readonly IUrlRecordService _urlRecordService;
+    private readonly IDeliveryChargeService _deliveryChargeService;
+    private readonly IDateTimeHelper _dateTimeHelper;
+    private readonly IRegistrationPageFieldsService _registrationPageFieldsService;
+    private readonly ILandingPageClosedService _landingPageClosedService;
+    private readonly IKlaviyoService _klaviyoService;
+    private readonly ILogService _logService;
+    private readonly INewsLetterSubscriptionService _newsLetterSubscriptionService;
+    private readonly ISettingService _settingService;
+    private readonly IStoreService _storeService;
+
+    #endregion
+
+    #region Ctor
+
+    public ContestPageController(ILandingPageRecordService landingPageRecordService,
+        ICommonService commonService,
+        IApiClient apiClient,
+        IPermissionService permissionService,
+        ILandingPageService contestService,
+        IUrlRecordService urlRecordService,
+        IDeliveryChargeService deliveryChargeService,
+        IDateTimeHelper dateTimeHelper,
+        IRegistrationPageFieldsService registrationPageFieldsService,
+        ILandingPageClosedService landingPageClosedService,
+        IKlaviyoService klaviyoService,
+        ILogService logService,
+        INewsLetterSubscriptionService newsLetterSubscriptionService,
+        ISettingService settingService,
+        ILandingPageService landingPageService,
+        IStoreService storeService)
     {
+        _landingPageRecordService = landingPageRecordService;
+        _commonService = commonService;
         _apiClient = apiClient;
-        _userAgentHelper = userAgentHelper;
+        _permissionService = permissionService;
+        _urlRecordService = urlRecordService;
+        _deliveryChargeService = deliveryChargeService;
+        _dateTimeHelper = dateTimeHelper;
+        _registrationPageFieldsService = registrationPageFieldsService;
+        _landingPageClosedService = landingPageClosedService;
+        _klaviyoService = klaviyoService;
+        _logService = logService;
+        _newsLetterSubscriptionService = newsLetterSubscriptionService;
+        _settingService = settingService;
+        _landingPageService = landingPageService;
+        _storeService = storeService;
     }
 
-    
+    #endregion
+
+    #region Utilities
+
+    /// <summary>
+    /// Prepare contest page log model
+    /// </summary>
+    /// <param name="model">model</param>
+    /// <returns>contest page log</returns>
+    public async Task<LandingPageModel> PrepareContestPageLogClosedFormModelAsync(LandingPageModel model, int contestId)
+    {
+        var closedForm = await _landingPageClosedService.GetClosedFromByLandingPageIdAsync(contestId);
+        if (closedForm == null)
+            return model;
+
+        model.ClosedFormEnabled = true;
+        model.ClosedFormModel.PictureUrl = (await _apiClient.GetAsync<PictureUrlResponse>("api/Picture/GetPictureUrl", new { pictureId = closedForm.BannerPictureId, targetSize = 1280, showDefaultPicture = true }))?.Url;
+        model.ClosedFormModel.MobilePictureUrl = (await _apiClient.GetAsync<PictureUrlResponse>("api/Picture/GetPictureUrl", new { pictureId = closedForm.BannerMobilePictureId, targetSize = 350, showDefaultPicture = true }))?.Url;
+        model.ClosedFormModel.Description = closedForm.Description;
+        model.ClosedFormModel.MobileDescription = closedForm.MobileDescription;
+        model.ClosedFormModel.EventListEnabled = closedForm.EventListEnabled;
+        model.ClosedFormModel.NewsLetterEnabled = closedForm.NewsLetterEnabled;
+        model.ClosedFormModel.SMSEnabled = closedForm.SMSEnabled;
+        model.ClosedFormModel.TitleEnabled = closedForm.TitleEnabled;
+
+        return model;
+    }
+
+    public async Task<LandingPageModel> PrepareContestPageModelAsync(LandingPageModel model, LandingPage contest)
+    {
+        if (contest != null)
+        {
+            if (contest.LandingPageTypeId == (int)LandingPageTypeEnum.Registration)
+            {
+                if (contest.EndDateUtc != null)
+                {
+                    var currentDate = _dateTimeHelper.ConvertToUserTime(DateTime.UtcNow, DateTimeKind.Utc);
+                    if (contest.EndDateUtc > currentDate && contest.MaxRegistrationEnabled)
+                    {
+                        var contestPageLogsCount = await _landingPageRecordService.GetLandingPageRecordsCountBylandingPageIdAsync(contest.Id);
+                        if (contest.MaxRegistrations.HasValue && contest.MaxRegistrations.Value <= contestPageLogsCount)
+                            await PrepareContestPageLogClosedFormModelAsync(model, contest.Id);
+                    }
+                    else if (contest.EndDateUtc <= currentDate)
+                        await PrepareContestPageLogClosedFormModelAsync(model, contest.Id);
+                }
+                else
+                {
+                    if (contest.MaxRegistrationEnabled)
+                    {
+                        var contestPageLogsCount = await _landingPageRecordService.GetLandingPageRecordsCountBylandingPageIdAsync(contest.Id);
+                        if (contest.MaxRegistrations.HasValue && contest.MaxRegistrations.Value <= contestPageLogsCount)
+                            await PrepareContestPageLogClosedFormModelAsync(model, contest.Id);
+                    }
+                }
+
+                //Closed form should only show if the checkboxes for newsletter or sms are checked in the closed form admin area
+                if (model.ClosedFormEnabled && !model.ClosedFormModel.NewsLetterEnabled && !model.ClosedFormModel.SMSEnabled)
+                    return null;
+
+                if (!model.ClosedFormEnabled)
+                {
+                    model.MobilePictureUrl = (await _apiClient.GetAsync<PictureUrlResponse>("api/Picture/GetPictureUrl", new { pictureId = contest.BannerMobilePictureId, targetSize = 350, showDefaultPicture = true }))?.Url ?? string.Empty;
+                    model.MobileDescription = contest.MobileDescription;
+
+                    var registrationPageFields = await _registrationPageFieldsService.GetRegistrationPageFieldsByContestIdAsync(contest.Id);
+                    if (registrationPageFields != null)
+                        model.LandingPageFormFieldsSortOrder = registrationPageFields.FieldIds;
+                }
+            }
+
+            if (!model.ClosedFormEnabled)
+            {
+                model.StartDate = contest.StartDateUtc;
+                model.EndDate = contest.EndDateUtc;
+                model.PictureUrl = (await _apiClient.GetAsync<PictureUrlResponse>("api/Picture/GetPictureUrl", new { pictureId = contest.BannerPictureId, showDefaultPicture = true }))?.Url;
+                model.MetaDescription = contest.MetaDescription;
+                model.MetaTitle = contest.MetaTitle;
+                model.DisclaimerText = contest.Disclaimer;
+                model.ZipCodeVerification = contest.ZipCodeVerification;
+                model.Description = contest.Description;
+                model.FirstNameEnabled = contest.FirstNameEnabled;
+                model.FirstNameRequired = contest.FirstNameRequired;
+                model.LastNameEnabled = contest.LastNameEnabled;
+                model.LastNameRequired = contest.LastNameRequired;
+                model.DateOfBirthEnabled = contest.DOBEnabled;
+                model.DateOfBirthRequired = contest.DOBRequired;
+                model.EmailAddressEnabled = contest.EmailEnabled;
+                model.EmailAddressRequired = contest.EmailRequired;
+                model.PhoneNumberEnabled = contest.PhoneNumberEnabled;
+                model.PhoneNumberRequired = contest.PhoneNumberRequired;
+                model.StreetAddressEnabled = contest.AddressEnabled;
+                model.StreetAddressRequired = contest.AddressRequired;
+                model.CityEnabled = contest.CityEnabled;
+                model.CityRequired = contest.CityRequired;
+                model.StateEnabled = contest.StateProvinceEnabled;
+                model.StateRequired = contest.StateProvinceRequired;
+                model.ZipEnabled = contest.ZipCodeEnabled;
+                model.ZipRequired = contest.ZipCodeRequired;
+                model.InstagramHandleEnabled = contest.InstagrameHandleEnabled;
+                model.InstagramHandleRequired = contest.InstagrameHandleRequired;
+                model.TwitterHandleEnabled = contest.TwitterHandleEnabled;
+                model.TwitterHandleRequired = contest.TwitterHandleRequired;
+                model.StoreDropdownEnabled = contest.LocationEnabled;
+                model.StoreDropdownRequired = contest.LocationRequired;
+
+                if (contest.StateProvinceEnabled)
+                {
+                    //states
+                    var states = await _apiClient.GetAsync<List<StateProvinceDto>>("api/Location/GetAllStates");
+                    if (states != null && states.Any())
+                    {
+                        model.AvailableStates.Add(new SelectListItem { Text = "State", Value = "0" });
+                        foreach (var state in states)
+                            model.AvailableStates.Add(new SelectListItem { Text = state.Name, Value = state.Id.ToString(), Selected = (state.Id == model.StateProvinceId) });
+                    }
+                }
+
+                if (contest.LocationEnabled)
+                {
+                    model.AvailableStoreLocation.Add(new SelectListItem { Text = "Choose you local store", Value = "0" });
+                    var physicalStores = await _apiClient.GetAsync<LocationDto[]>("api/Location/GetLocations", new { websiteId = (int)WebsiteEnum.FMUSA });
+                    if (physicalStores != null)
+                    {
+                        foreach (var physicalStore in physicalStores)
+                        {
+                            model.AvailableStoreLocation.Add(new SelectListItem
+                            {
+                                Text = physicalStore.Name,
+                                Value = physicalStore.Id.ToString(),
+                                Selected = (physicalStore.Id == model.LocationId)
+                            });
+                        }
+                    }
+                }
+            }
+        }
+
+        model.Title = contest.Title;
+        model.DisplayTitle = contest.DisplayTitle;
+        model.NewsLetterEnabled = contest.NewsLetterEnabled;
+        model.EventListEnabled = contest.EventListEnabled;
+        model.SMSEnabled = contest.SMSEnabled;
+        model.EventFlowEnabled = contest.EventFlowEnabled;
+        model.EventFlow = contest.EventFlow;
+        model.IsMobileDevice = _commonService.IsMobileDevice();
+        model.LandingPageTypeId = contest.LandingPageTypeId;
+        model.EmailSubscribed = true;
+        model.SubscribedEventList = true;
+
+        return model;
+    }
+
+    protected async Task<Dictionary<string, string>> CustomModelStateErrorAsync(LandingPageModel model, LandingPage contest)
+    {
+        var error = new Dictionary<string, string>();
+        if (!model.ClosedFormEnabled && contest.FirstNameEnabled && contest.FirstNameRequired)
+        {
+            if (model.FirstName == null)
+                error.Add(nameof(model.FirstName), "First name is required");
+        }
+
+        // Last name
+        if (!model.ClosedFormEnabled && contest.LastNameEnabled && contest.LastNameRequired)
+        {
+            if (model.LastName == null)
+                error.Add(nameof(model.LastName), "Last name is required");
+        }
+
+        // Date Of Birth
+        if (!model.ClosedFormEnabled && contest.DOBEnabled && contest.DOBRequired)
+        {
+            if (model.DateOfBirth == null)
+                error.Add(nameof(model.DateOfBirth), "Date of birth is required");
+            else
+            {
+                //var ageLimit = contest.DateOfBirth21 ? 21 : 18;
+                var ageLimit = 18;
+                if (NopDefaults.GetDifferenceInYears(model.DateOfBirth.Value, DateTime.Today) < ageLimit)
+                    error.Add(nameof(model.DateOfBirth), $"Must be {ageLimit} years or older to be eligible for this registration.");
+            }
+        }
+
+        // Email
+        if ((contest.EmailEnabled && contest.EmailRequired) || model.EmailSubscribed || model.SubscribedEventList || model.Email != null)
+        {
+            if ((model.EmailSubscribed || (!model.ClosedFormEnabled && contest.EmailEnabled && contest.EmailRequired)) && model.Email == null)
+                error.Add(nameof(model.Email), "Valid email address is required.");
+            else if (model.SubscribedEventList && model.Email == null && model.Phone == null)
+                error.Add(nameof(model.Email), "Please provide email or phone to get event notification.");
+            else if (model.Email != null)
+            {
+                Regex re = new Regex(NopDefaults.EmailValidationExpression);
+                if (!re.IsMatch(model.Email))
+                    error.Add(nameof(model.Email), "Wrong email.");
+            }
+        }
+
+        // Phone
+        if ((contest.PhoneNumberEnabled && contest.PhoneNumberRequired) || model.SMSSubscribed || model.SubscribedEventList || model.Phone != null)
+        {
+            if ((model.SMSSubscribed || (!model.ClosedFormEnabled && contest.PhoneNumberEnabled && contest.PhoneNumberRequired)) && model.Phone == null)
+                error.Add(nameof(model.Phone), "Phone number is required.");
+            else if (model.SubscribedEventList && model.Phone == null && model.Email == null)
+                error.Add(nameof(model.Phone), "Please provide email or phone to get event notification.");
+            else if (model.Phone != null)
+            {
+                string phoneRegex = @"^\(?(\d{3})\)?[- ]?(\d{3})[- ]?(\d{4})$";
+                Regex re = new Regex(phoneRegex);
+                if (!re.IsMatch(model.Phone))
+                    error.Add(nameof(model.Phone), "This phone number is invalid or not from USA.");
+            }
+        }
+
+        // Street address
+        if (!model.ClosedFormEnabled && contest.AddressEnabled && contest.AddressRequired)
+        {
+            if (model.StreetAddress == null)
+                error.Add(nameof(model.StreetAddress), "Street address is required.");
+        }
+
+        // City
+        if (!model.ClosedFormEnabled && contest.CityEnabled && contest.CityRequired)
+        {
+            if (model.City == null)
+                error.Add(nameof(model.City), "City is required.");
+        }
+
+        // State
+        if (!model.ClosedFormEnabled && contest.StateProvinceEnabled && contest.StateProvinceRequired)
+        {
+            if (model.StateProvinceId == 0)
+                error.Add(nameof(model.StateProvinceId), "State is required.");
+        }
+
+        // State
+        if (!model.ClosedFormEnabled && contest.LocationEnabled && contest.LocationRequired)
+        {
+            if (model.LocationId == 0)
+                error.Add(nameof(model.LocationId), "Local store is required.");
+        }
+
+        // Zip
+        if (!model.ClosedFormEnabled && contest.ZipCodeEnabled && contest.ZipCodeRequired)
+        {
+            if (model.ZipPostalCode == null)
+                error.Add(nameof(model.ZipPostalCode), "Zip is required.");
+            else
+            {
+                if (contest.ZipCodeVerification)
+                {
+                    var deliveryCharge = await _deliveryChargeService.GetDeliveryChargeByZipPostalCodeAsync(model.ZipPostalCode);
+                    if (deliveryCharge == null)
+                        error.Add(nameof(model.ZipPostalCode), "We're sorry, the zip code you entered is not within our delivery area.");
+                }
+            }
+        }
+
+        // Instagram handle
+        if (!model.ClosedFormEnabled && contest.InstagrameHandleEnabled && contest.InstagrameHandleRequired)
+        {
+            if (model.InstagramHandle == null)
+                error.Add(nameof(model.InstagramHandle), "Instagram handle is required.");
+        }
+
+        // Twitter handle
+        if (!model.ClosedFormEnabled && contest.TwitterHandleEnabled && contest.TwitterHandleRequired)
+        {
+            if (model.TwitterHandle == null)
+                error.Add(nameof(model.TwitterHandle), "Twitter handle is required.");
+        }
+
+        return error;
+    }
+
+    #endregion
+
+    #region Method
 
     public IActionResult Index()
     {
@@ -29,77 +372,198 @@ public class ContestPageController : BaseController
 
     public async Task<IActionResult> ContestPage(int contestId)
     {
-        
-
-        ContestPageResponseModel response;
-        try
-        {
-            response = await _apiClient.GetAsync<ContestPageResponseModel>($"api/ContestPage/ContestPage/{contestId}");
-        }
-        catch
-        {
+        var contest = await _landingPageService.GetlandingPageByIdAsync(contestId);
+        var currentDate = _commonService.ConvertToUserTime(DateTime.UtcNow, DateTimeKind.Utc);
+        if (contest == null)
             return InvokeHttp404();
-        }
+        if (!contest.Published)
+            return InvokeHttp404();
+        if (contest.StartDateUtc != null && contest.StartDateUtc >= currentDate)
+            return InvokeHttp404();
+        if (contest.EndDateUtc != null && contest.EndDateUtc <= currentDate && contest.LandingPageTypeId == (int)LandingPageTypeEnum.Contest)
+            return InvokeHttp404();
+        //Store mapping
+        if (contest.StoreId != 0 && contest.StoreId != (await _storeService.GetCurrentStoreAsync()).Id)
+            return InvokeHttp404();
 
-        response.Model.IsMobileDevice = _userAgentHelper.IsMobileDevice();
-        return View("ContestPage", response.Model);
+        var seName = await _urlRecordService.GetSeNameAsync(contest.Id, nameof(LandingPage));
+        var model = new LandingPageModel { LandingPageId = contest.Id, SeName = seName };
+        model = await PrepareContestPageModelAsync(model, contest);
+
+        if (model == null)
+            return InvokeHttp404();
+
+        return View("ContestPage", model);
     }
 
     [HttpPost]
     public async Task<IActionResult> ContestPage(int contestId, LandingPageModel model)
     {
-        ContestPageResponseModel response;
-        try
-        {
-            response = await _apiClient.PostAsync<LandingPageModel, ContestPageResponseModel>($"api/ContestPage/ContestPage/{contestId}", model);
-        }
-        catch
-        {
+        var contest = await _landingPageService.GetlandingPageByIdAsync(contestId);
+        var currentDate = _commonService.ConvertToUserTime(DateTime.UtcNow, DateTimeKind.Utc);
+        if (contest == null)
             return InvokeHttp404();
-        }
+        if (!contest.Published)
+            return InvokeHttp404();
+        if (contest.StartDateUtc != null && contest.StartDateUtc >= currentDate)
+            return InvokeHttp404();
+        if (contest.EndDateUtc != null && contest.EndDateUtc <= currentDate && contest.LandingPageTypeId == (int)LandingPageTypeEnum.Contest)
+            return InvokeHttp404();
 
-        if (response == null)
+        //custom errors            
+        foreach (var customError in await CustomModelStateErrorAsync(model, contest))
+            ModelState.AddModelError(customError.Key, customError.Value);
+
+        if (ModelState.IsValid)
         {
-            ModelState.AddModelError(string.Empty, "Unable to submit the form. Please try again.");
-            var fallback = await _apiClient.GetAsync<ContestPageResponseModel>($"api/ContestPage/ContestPage/{contestId}");
-            var fallbackModel = fallback?.Model ?? model;
-            if (fallback?.Model != null)
+            var contestPageLog = new LandingPageRecord();
             {
-                fallbackModel.FirstName = model.FirstName;
-                fallbackModel.LastName = model.LastName;
-                fallbackModel.DateOfBirth = model.DateOfBirth;
-                fallbackModel.Email = model.Email;
-                fallbackModel.Phone = model.Phone;
-                fallbackModel.StreetAddress = model.StreetAddress;
-                fallbackModel.City = model.City;
-                fallbackModel.StateProvinceId = model.StateProvinceId;
-                fallbackModel.ZipPostalCode = model.ZipPostalCode;
-                fallbackModel.InstagramHandle = model.InstagramHandle;
-                fallbackModel.TwitterHandle = model.TwitterHandle;
-                fallbackModel.LocationId = model.LocationId;
-                fallbackModel.EmailSubscribed = model.EmailSubscribed;
-                fallbackModel.SMSSubscribed = model.SMSSubscribed;
-                fallbackModel.SubscribedEventList = model.SubscribedEventList;
-                fallbackModel.EventFlow = model.EventFlow;
-                fallbackModel.ContestId = model.ContestId;
-                fallbackModel.LandingPageId = model.LandingPageId;
+                contestPageLog.FirstName = model.FirstName;
+                contestPageLog.LastName = model.LastName;
+                contestPageLog.DOB = model.DateOfBirth.HasValue ? model.DateOfBirth.Value : (DateTime?)null;
+                contestPageLog.Email = !string.IsNullOrEmpty(model.Email) ? model.Email.ToLower() : null;
+                contestPageLog.PhoneNumber = model.Phone;
+                contestPageLog.Address = model.StreetAddress;
+                contestPageLog.City = model.City;
+                contestPageLog.StateProvinceId = model.StateProvinceId > 0 ? model.StateProvinceId : null;
+                contestPageLog.ZipCode = model.ZipPostalCode;
+                contestPageLog.InstagramHandle = model.InstagramHandle;
+                contestPageLog.TwitterHandle = model.TwitterHandle;
+                contestPageLog.CreatedOnUtc = DateTime.UtcNow;
+                contestPageLog.StoreId = (await _storeService.GetCurrentStoreAsync()).Id;
+                contestPageLog.LandingPageId = contest.Id;
+                contestPageLog.LocationId = model.LocationId == 0 ? null : model.LocationId;
+            }
+            var klaviyoSettings = await _settingService.LoadSettingAsync<KlaviyoSettings>((await _storeService.GetCurrentStoreAsync())?.Id ?? 0);
+
+            if (klaviyoSettings.Enable && !string.IsNullOrEmpty(klaviyoSettings.PrivateAPIKey))
+            {
+                //News letter
+                if (!string.IsNullOrEmpty(klaviyoSettings.NewsLetterListId) && !string.IsNullOrEmpty(model.Email) && model.NewsLetterEnabled)
+                {
+                    model.Email = model.Email.Trim();
+                    var userExist = await _klaviyoService.IsKlaviyoProfileExistByEmailAsync(model.Email, klaviyoSettings.PrivateAPIKey, klaviyoSettings.NewsLetterListId);
+                    if (userExist && !model.EmailSubscribed)
+                    {
+                        var responseErrorMessage = await _klaviyoService.UnSubscribeEmailAsync(model.Email, klaviyoSettings.PrivateAPIKey, klaviyoSettings.NewsLetterListId);
+                        if (!string.IsNullOrEmpty(responseErrorMessage))
+                        {
+                            _logService.Error(responseErrorMessage);
+                            contestPageLog.EmailSubscribed = true;
+                        }
+                        else
+                            contestPageLog.EmailSubscribed = model.EmailSubscribed;
+                    }
+                    else if (!userExist && model.EmailSubscribed)
+                    {
+                        var responseErrorMessage = await _klaviyoService.SubscribeEmailAsync(model.Email, klaviyoSettings.PrivateAPIKey, klaviyoSettings.NewsLetterListId);
+                        if (!string.IsNullOrEmpty(responseErrorMessage))
+                        {
+                            _logService.Error(responseErrorMessage);
+                            contestPageLog.EmailSubscribed = false;
+                        }
+                        else
+                            contestPageLog.EmailSubscribed = model.EmailSubscribed;
+                    }
+                    else if (userExist && model.EmailSubscribed)
+                        contestPageLog.EmailSubscribed = model.EmailSubscribed;
+
+                    if (!(!userExist && !model.EmailSubscribed))
+                    {
+                        var subscription = await _newsLetterSubscriptionService.GetNewsLetterSubscriptionByEmailAndStoreIdAsync(model.Email, (await _storeService.GetCurrentStoreAsync())?.Id ?? 0);
+                        if (subscription == null)
+                        {
+                            var newsLetterSubscription = new NewsLetterSubscription
+                            {
+                                NewsLetterSubscriptionGuid = Guid.NewGuid(),
+                                Email = model.Email,
+                                Active = model.EmailSubscribed,
+                                StoreId = (await _storeService.GetCurrentStoreAsync())?.Id ?? 0,
+                                CreatedOnUtc = DateTime.UtcNow,
+                            };
+                            await _newsLetterSubscriptionService.InsertNewsLetterSubscriptionAsync(newsLetterSubscription);
+                        }
+                        else
+                        {
+                            subscription.Active = model.EmailSubscribed;
+                            await _newsLetterSubscriptionService.UpdateNewsLetterSubscriptionAsync(subscription);
+                        }
+                    }
+                }
+
+                //SMS
+                if (!string.IsNullOrEmpty(klaviyoSettings.SMSListId) && !string.IsNullOrEmpty(model.Phone) && model.SMSEnabled)
+                {
+                    model.Phone = model.Phone.Trim();
+                    var userExist = await _klaviyoService.IsKlaviyoProfileExistByPhoneAsync(model.Phone, klaviyoSettings.PrivateAPIKey, klaviyoSettings.SMSListId);
+                    if (userExist && !model.SMSSubscribed)
+                    {
+                        var responseErrorMessage = await _klaviyoService.UnSubscribeSMSAsync(model.Phone, klaviyoSettings.PrivateAPIKey, klaviyoSettings.SMSListId);
+                        if (!string.IsNullOrEmpty(responseErrorMessage))
+                        {
+                            contestPageLog.SMSSubscribed = true;
+                            _logService.Error(responseErrorMessage);
+                        }
+                        else
+                            contestPageLog.SMSSubscribed = model.SMSSubscribed;
+                    }
+                    else if (!userExist && model.SMSSubscribed)
+                    {
+                        var responseErrorMessage = await _klaviyoService.SubscribeSMSAsync(model.Phone, klaviyoSettings.PrivateAPIKey, klaviyoSettings.SMSListId);
+                        if (!string.IsNullOrEmpty(responseErrorMessage))
+                        {
+                            contestPageLog.SMSSubscribed = false;
+                            _logService.Error(responseErrorMessage);
+                        }
+                        else
+                            contestPageLog.SMSSubscribed = model.SMSSubscribed;
+                    }
+                    else if (userExist && model.SMSSubscribed)
+                        contestPageLog.SMSSubscribed = model.SMSSubscribed;
+                }
+
+                //Event list
+                if (model.SubscribedEventList && (!string.IsNullOrEmpty(model.Email) || !string.IsNullOrEmpty(model.Phone)))
+                {
+                    // add to event list of klaviyo
+                    if (!string.IsNullOrEmpty(klaviyoSettings.EventListId))
+                    {
+                        var profileProperties = new Dictionary<string, object>
+                        {
+                            { "email", model.Email }
+                        };
+                        await _klaviyoService.AddToListAsync(listId: klaviyoSettings.EventListId, privateAPIKey: klaviyoSettings.PrivateAPIKey, profileProperties: profileProperties);
+
+                        // add event Flow as event in klaviyo
+                        var responseErrorMessage = await _klaviyoService.SubscribeEventListAsync(model.FirstName, model.LastName, model.Email, model.Phone, model.ZipPostalCode, model.City, model.StateProvinceId, model.EventFlow, klaviyoSettings.PrivateAPIKey, klaviyoSettings.EventListId);
+                        if (!string.IsNullOrEmpty(responseErrorMessage))
+                            _logService.Error(responseErrorMessage);
+                        else
+                            contestPageLog.EmailSubscribed = model.EmailSubscribed;
+                    }
+
+                    //Add to event newsletter list
+                    if (!string.IsNullOrEmpty(klaviyoSettings.EventNewsletterListId))
+                    {
+                        var profileProperties = new Dictionary<string, object>
+                        {
+                            { "email", model.Email }
+                        };
+                        await _klaviyoService.AddToListAsync(listId: klaviyoSettings.EventNewsletterListId, privateAPIKey: klaviyoSettings.PrivateAPIKey, profileProperties: profileProperties);
+                    }
+                }
             }
 
-            fallbackModel.IsMobileDevice = _userAgentHelper.IsMobileDevice();
-            return View("ContestPage", fallbackModel);
+            await _landingPageRecordService.InsertLandingPageRecordAsync(contestPageLog);
+            model = await PrepareContestPageModelAsync(model, contest);
+            return View("ContestPageResult", model);
         }
 
-        if (response.Errors?.Count > 0)
-        {
-            foreach (var error in response.Errors)
-                ModelState.AddModelError(error.Key, error.Value);
-        }
-
-        response.Model.IsMobileDevice = _userAgentHelper.IsMobileDevice();
-        if (response.ShowResult)
-            return View("ContestPageResult", response.Model);
-
-        return View("ContestPage", response.Model);
+        model.ContestId = contestId;
+        model.LandingPageId = contestId;
+        model = await PrepareContestPageModelAsync(model, contest);
+        return View(model);
     }
 
+    #endregion
 }

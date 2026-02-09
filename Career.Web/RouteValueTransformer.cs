@@ -1,32 +1,21 @@
-using Career.Web.Models.Seo;
+using Career.Web.Models.Api;
 using Career.Web.Services.ApiClient;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.WebUtilities;
-using System;
 using System.Threading.Tasks;
 
 namespace Career.Web;
 
 public class RouteValueTransformer : DynamicRouteValueTransformer
 {
-    #region Fields
-
     private readonly IApiClient _apiClient;
-
-    #endregion
-
-    #region Ctor
 
     public RouteValueTransformer(IApiClient apiClient)
     {
         _apiClient = apiClient;
     }
-
-    #endregion
-
-    #region Methods
 
     public override async ValueTask<RouteValueDictionary> TransformAsync(HttpContext httpContext, RouteValueDictionary values)
     {
@@ -44,29 +33,22 @@ public class RouteValueTransformer : DynamicRouteValueTransformer
             return values;
         }
 
-        // fmusa seo name should be /news/seo-name/
         if (slug.Split('/').Length > 2 && !slug.Split('/')[1].Contains("page="))
             slug = slug.Replace("news/", "inspiration/");
 
-        var newsSlug = string.Empty;
         if (slug.Split('/').Length > 1 && slug.Split('/')[1].Contains("page="))
         {
-            newsSlug = slug.Split('/')[1];
-
-            int index = slug.IndexOf("/");
+            var index = slug.IndexOf("/");
             if (index >= 0)
                 slug = slug.Substring(0, index);
         }
 
-        var urlRecord = await _apiClient.GetAsync<UrlRecordResponse>("api/Seo/GetBySlug", new { slug });
-        //no URL record found
+        var urlRecord = await _apiClient.GetAsync<UrlRecordDto>("api/UrlRecord/GetBySlug", new { slug });
         if (urlRecord == null)
             return values;
 
-        //if URL record is not active let's find the latest one
         if (!urlRecord.IsActive)
         {
-            //redirect to active slug if found
             values["controller"] = "Common";
             values["action"] = "InternalRedirect";
             values["permanentRedirect"] = true;
@@ -74,16 +56,24 @@ public class RouteValueTransformer : DynamicRouteValueTransformer
             return values;
         }
 
-        var queryParameters = QueryHelpers.ParseQuery(httpContext.Request.QueryString.ToString());
-
-        //since we are here, all is ok with the slug, so process URL
-        switch (urlRecord.EntityName.ToLowerInvariant())
+        switch (urlRecord.EntityName?.ToLowerInvariant())
         {
             case "landingpage":
-                values["controller"] = "ContestPage";
-                values["action"] = "ContestPage";
-                values["contestId"] = urlRecord.EntityId;
-                values["SeName"] = urlRecord.Slug;
+                var store = await _apiClient.GetAsync<StoreDto>("api/Store/GetCurrentStore");
+                var storeId = store?.Id ?? 0;
+                var urlRecordStoreWiseContest = await _apiClient.GetAsync<UrlRecordDto>("api/UrlRecord/GetBySlug", new { slug, storeId });
+                if (urlRecordStoreWiseContest == null)
+                {
+                    values["controller"] = "Common";
+                    values["action"] = "PageNotFound";
+                }
+                else
+                {
+                    values["controller"] = "ContestPage";
+                    values["action"] = "ContestPage";
+                    values["contestId"] = urlRecordStoreWiseContest.EntityId;
+                    values["SeName"] = urlRecordStoreWiseContest.Slug;
+                }
                 break;
             case "blogpost":
                 values["controller"] = "Home";
@@ -99,14 +89,8 @@ public class RouteValueTransformer : DynamicRouteValueTransformer
                 values["action"] = "Detail";
                 values["id"] = urlRecord.EntityId;
                 break;
-            default:
-                //no record found, thus generate an event this way developers could insert their own types
-
-                break;
         }
 
         return values;
     }
-
-    #endregion
 }

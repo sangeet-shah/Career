@@ -33,10 +33,7 @@ public interface ISettingService
     Task<T> GetSettingByKeyAsync<T>(string key, T defaultValue = default(T),
         int storeId = 0, bool loadSharedValueIfNotFound = false);
 
-    /// <summary>
-    /// Get Setting value
-    /// </summary>
-    Task<string> GetSettingValueAsync(string name);
+    
 
     /// <summary>
     /// Set setting value

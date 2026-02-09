@@ -63,7 +63,9 @@ public class UrlRecordService : IUrlRecordService
                 var storeMappingSql = $"SELECT EntityId, EntityName FROM [{StoreMappingTable}] WHERE StoreId = @StoreId";
                 var mappings = (await conn.QueryAsync<StoreMappingKey>(storeMappingSql, new { StoreId = storeId }))
                     .Select(m => (m.EntityId, m.EntityName)).ToHashSet();
-                query = query.Where(ur => mappings.Contains((ur.EntityId, ur.EntityName))).OrderByDescending(ur => ur.IsActive).ThenBy(ur => ur.Id).ToList();
+                var result = query.Where(ur => mappings.Contains((ur.EntityId, ur.EntityName))).OrderByDescending(ur => ur.IsActive).ThenBy(ur => ur.Id).ToList();
+                if (result.Count > 0)
+                    query = result;
             }
         }
 

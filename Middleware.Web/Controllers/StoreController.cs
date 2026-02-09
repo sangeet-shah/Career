@@ -1,12 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using Middleware.Web.Filters;
 using Middleware.Web.Services.Stores;
 
 namespace Middleware.Web.Controllers;
 
-[Route("api/[controller]/[action]")]
 [ApiController]
-[ApiKeyAuthorize]
+[Route("api/[controller]")]
 public class StoreController : ControllerBase
 {
     private readonly IStoreService _storeService;
@@ -16,10 +14,13 @@ public class StoreController : ControllerBase
         _storeService = storeService;
     }
 
-    [HttpGet]
-    public async Task<IActionResult> CurrentId()
+    /// <summary>
+    /// Get current store
+    /// </summary>
+    [HttpGet("GetCurrentStore")]
+    public async Task<IActionResult> GetCurrentStore()
     {
         var store = await _storeService.GetCurrentStoreAsync();
-        return Ok(new { storeId = store?.Id ?? 0 });
+        return Ok(store);
     }
 }

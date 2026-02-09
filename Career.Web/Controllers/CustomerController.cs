@@ -1,67 +1,57 @@
-using Career.Web.Domains.Common;
+using Career.Web.Models.Api;
 using Career.Web.Models.Customers;
 using Career.Web.Services.ApiClient;
+using Career.Web.Domains.Common;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
 
 namespace Career.Web.Controllers;
 
 public class CustomerController : Controller
 {
-    #region Fields
-
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IApiClient _apiClient;
-    private readonly Microsoft.Extensions.Configuration.IConfiguration _configuration;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly AppSettings _appSettings;
 
-    #endregion
-
-    #region Ctor
-    public CustomerController(IHttpContextAccessor httpContextAccessor,
-                             IApiClient apiClient,
-                             Microsoft.Extensions.Configuration.IConfiguration configuration)
+    public CustomerController(IApiClient apiClient,
+        IHttpContextAccessor httpContextAccessor,
+        AppSettings appSettings)
     {
-        _httpContextAccessor = httpContextAccessor;
         _apiClient = apiClient;
-        _configuration = configuration;
+        _httpContextAccessor = httpContextAccessor;
+        _appSettings = appSettings;
     }
-
-    #endregion
-
-    #region Methods
 
     public async Task<IActionResult> Login()
     {
-        var response = await _apiClient.GetAsync<LoginResultModel>("api/Customer/Login") ?? new LoginResultModel();
-        return View("~/Views/Customer/Login.cshtml", response.Model ?? new TestCustomerModel());
+        var model = new TestCustomerModel();
+        if (_appSettings.IsTestSite)
+        {
+            model.UAGoogleAnalyticsId = "UA-57932286-6";
+            var localeResp = await _apiClient.GetAsync<LocaleStringResponse>("api/Localization/GetLocaleStringResourceByName", new { resourceName = "account.login.career.googlesiteverification" });
+            model.GoogleSiteVerification = localeResp?.Value;
+        }
+        else
+        {
+            model.UAGoogleAnalyticsId = "UA-57932286-5";
+            model.GTMGoogleAnalyticsId = "GTM-TVQ65TT";
+        }
+        return View("~/Views/Customer/Login.cshtml", model);
     }
 
     [HttpPost]
     public async Task<IActionResult> Login(TestCustomerModel model)
     {
-        if (!ModelState.IsValid)
-            return View("~/Views/Customer/Login.cshtml", model);
-
-        var response = await _apiClient.PostAsync<TestCustomerModel, LoginResultModel>("api/Customer/Login", model) ?? new LoginResultModel();
-        if (response.IsValid)
+        var customer = await _apiClient.GetAsync<CustomerDto>("api/Customer/GetTestCustomer", new { emailId = model.Email, password = model.Password });
+        if (customer != null)
         {
-            var option = new CookieOptions
-            {
-                Expires = DateTimeOffset.Now.AddDays(24),
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.None,
-                Path = "/"
-            };
-            _httpContextAccessor.HttpContext.Response.Cookies.Append(NopDefaults.AuthenticationKey, response.Model.CustomerGuid.ToString(), option);
+            var option = new CookieOptions { Expires = DateTime.Now.AddDays(30) };
+            _httpContextAccessor.HttpContext.Response.Cookies.Append(NopDefaults.AuthenticationKey, customer.CustomerGuid.ToString());
             return Redirect("~/");
         }
-
-        return View(response.Model ?? model);
+        model.ErrorMessage = "Wrong emailid or password";
+        return View(model);
     }
-
-    #endregion
 }

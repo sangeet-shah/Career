@@ -1,13 +1,9 @@
-@using Career.Web.Models.Common
-@{
-    var layoutData = ViewData["LayoutData"] as LayoutDataResponse ?? new LayoutDataResponse();
-    var isTestSite = layoutData.IsTestSite;
-}
+@inject AppSettings _appSettings
 
-<script async src='https://www.googletagmanager.com/gtag/js?id=@(isTestSite ? "UA-57932286-6" : "UA-57932286-5")'></script>
+<script async src='https://www.googletagmanager.com/gtag/js?id=@(_appSettings.IsTestSite ? "UA-57932286-6" : "UA-57932286-5")'></script>
 <script>
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
-    gtag('config', '@(isTestSite ? "UA-57932286-6" : "UA-57932286-5")' @(isTestSite ? Html.Raw(", {'debug_mode':true}") : null));
+    gtag('config', '@(_appSettings.IsTestSite ? "UA-57932286-6" : "UA-57932286-5")' @(_appSettings.IsTestSite ? Html.Raw(", {'debug_mode':true}") : null));
 </script>

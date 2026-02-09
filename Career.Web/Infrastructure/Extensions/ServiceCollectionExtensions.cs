@@ -1,6 +1,8 @@
 using System;
 using Career.Web.Services.ApiClient;
 using Career.Web.Services.Caching;
+using Career.Web.Services.FmeHttpClient;
+using Career.Web.Services.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Career.Web.Infrastructure;
@@ -20,7 +22,6 @@ public static class ServiceCollectionExtensions
         services.AddMemoryCache();
         services.AddScoped<IApiCache, MemoryApiCache>();
         services.AddScoped<RouteValueTransformer>();
-        services.AddScoped<LayoutDataFilter>();
 
         services.AddHttpClient();
         // Register delegating handler used by ApiClient HttpClient
@@ -33,11 +34,18 @@ public static class ServiceCollectionExtensions
             {
                 var config = sp.GetRequiredService<IConfiguration>();
                 client.BaseAddress = new Uri(config["Api:BaseUrl"]);
-                // add both header forms to be compatible with middleware expectations
                 client.DefaultRequestHeaders.Add("XApiKey", config["Api:XApiKey"]);
-                // Store alias for API (FM_Store.Alias, e.g. nameof(WebsiteEnum.FMUSA) = "FMUSA"); API uses it for store-wise LoadSettingAsync
-                client.DefaultRequestHeaders.Add("XStoreAlias", config["Api:StoreAlias"]?.Trim());
+                client.DefaultRequestHeaders.Add("XStoreAlias", config["Api:XStoreAlias"]?.Trim());
             });
+
+        services.AddHttpClient(HttpClientService.FmeBridgeClientName, (sp, client) =>
+        {
+            var appSettings = sp.GetService<AppSettings>();
+            if (!string.IsNullOrEmpty(appSettings?.fmebridgeUrl))
+                client.BaseAddress = new Uri(appSettings.fmebridgeUrl);
+        });
+        services.AddScoped<IHttpClientService, HttpClientService>();
+        services.AddScoped<IDateTimeHelper, DateTimeHelper>();
     }
 
     public static TConfig ConfigureStartupConfig<TConfig>(this IServiceCollection services, IConfiguration configuration) where TConfig : class, new()
